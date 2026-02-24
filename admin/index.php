@@ -235,7 +235,10 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
                 <i class="fa fa-briefcase"></i> Careers
               </a>
               <a href="add-news-event.php" class="btn btn-danger">
-                <i class="fa fa-calendar"></i> News & Events
+                <i class="fa fa-calendar"></i> Awards
+              </a>
+              <a href="view-events.php" class="btn btn-purple" style="background: #bd15b5; color: white;">
+                <i class="fa fa-file-text"></i> View Events
               </a>
               <a href="view-managecontact.php" class="btn btn-info">
                 <i class="fa fa-envelope"></i> View Enquiries

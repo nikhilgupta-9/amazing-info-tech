@@ -1,9 +1,0 @@
-2026-01-28 08:58:55 - Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server
-2026-01-28 09:02:49 - Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server
-2026-01-28 09:05:00 - Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server
-2026-01-28 09:07:35 - Exception: SMTP Error: Could not connect to SMTP host. Failed to connect to server
-{"ip":"122.161.66.52","email":"iamnikhilgupta9@gmail.com","name":"Mohit Kumar","timestamp":"2026-01-28 09:50:11","status":"exception","error":"SMTP Error: Could not connect to SMTP host. Failed to connect to server"}
-{"ip":"122.161.66.52","email":"ram@gmail.com","name":"ram kumar","timestamp":"2026-01-28 09:52:06","status":"exception","error":"SMTP Error: Could not connect to SMTP host. Failed to connect to server"}
-{"ip":"122.161.66.52","email":"rameshsingh@gmail.com","name":"Ramesh Singh","timestamp":"2026-01-28 09:54:13","status":"exception","error":"SMTP Error: Could not connect to SMTP host. Failed to connect to server"}
-{"ip":"122.161.66.52","email":"iamnikhilgupta9@gmail.com","name":"Mohit Kumar","timestamp":"2026-01-28 09:54:38","status":"exception","error":"SMTP Error: Could not connect to SMTP host. Failed to connect to server"}
-{"ip":"122.161.66.52","email":"rameshsingh@gmail.com","name":"Ramesh Singh","timestamp":"2026-01-28 10:01:09","status":"exception","error":"SMTP Error: data not accepted."}

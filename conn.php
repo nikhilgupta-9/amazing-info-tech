@@ -1,115 +1,75 @@
 <?php
 
+/**
+ * Production-ready configuration
+ * Short and efficient version
+ */
+
+// Environment detection
 if (!function_exists('ww_is_local_host')) {
-    function ww_is_local_host()
+    function ww_is_local_host(): bool
     {
-        return false;
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+        return strpos($host, 'localhost') !== false ||
+            strpos($host, '127.0.0.1') !== false ||
+            strpos($host, '::1') !== false;
     }
 }
 
+$is_local = ww_is_local_host();
 
-$site_root = 'https://' . $_SERVER['HTTP_HOST'] . '/';
-$site_root = 'https://amazinginfotech.in/admin';
-// $site_root = 'https://localhost/amazin/';
-$site = 'https://amazinginfotech.in/';
-// $site = 'https://localhost/amazin/';
+// Site URLs
+$site = $is_local ? 'http://localhost/amazing/' : 'https://amazinginfotech.in/';
+$site_root = $is_local ? 'http://localhost/amazing/admin' : 'https://amazinginfotech.in/admin';
 
-if (ww_is_local_host()) {
-    $site_root = 'http://localhost:8000/admin';
-    $site = 'http://localhost:8000/';
-}
-
-// define site url
-if (!defined("SITE_URL")) {
+if (!defined("SITE_URL"))
     define("SITE_URL", $site);
-}
+if (!defined("ADMIN_URL"))
+    define("ADMIN_URL", $site_root);
 
-if (session_id() == '' || !isset($_SESSION) || session_status() === PHP_SESSION_NONE) {
+// Session
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.cookie_secure', !$is_local);
     session_start();
 }
-$ses_id = session_id();
 
-// $host = 'localhost';
-// $username = 'amazing';
-// $password = 'KJcd+j(g2yPL';
-// $dbName = 'amazing';
+// Database
+$db_config = $is_local
+    ? ['host' => 'localhost', 'user' => 'root', 'pass' => '', 'name' => 'amazin_db']
+    : ['host' => 'localhost', 'user' => 'amazing', 'pass' => 'KJcd+j(g2yPL', 'name' => 'amazing'];
 
-$host = 'localhost';
-$username = 'root';
-$password = '';
-$dbName = 'amazin_db';
+$conn = new mysqli($db_config['host'], $db_config['user'], $db_config['pass'], $db_config['name']);
+$conn->set_charset('utf8mb4');
 
-if (ww_is_local_host()) {
-    $host = 'localhost';
-    $username = 'root';
-    $password = '';
-    $dbName = 'amazin_db';
-}
-
-$conn = new mysqli($host, $username, $password, $dbName);
 if ($conn->connect_errno) {
-    echo $conn->connect_error;
+    error_log("DB connection failed: " . $conn->connect_error);
+    die($is_local ? $conn->connect_error : "Database error");
 }
 
-
+// IP function
 if (!function_exists('ww_get_client_ip')) {
-    /**
-     * @return mixed
-     * Return ip address of client
-     */
-    function ww_get_client_ip()
+    function ww_get_client_ip(): string
     {
-        return $_SERVER['REMOTE_ADDR'];
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
     }
-
 }
 
+// Encryption/Decryption
 if (!function_exists('ww_encryptor')) {
-    /**
-     * @param $string
-     * @return string
-     * encryptor
-     */
     function ww_encryptor($string)
     {
-        $output = false;
-        $encrypt_method = "AES-256-CBC";
-        //pls set your unique hashing key
-        $secret_key = 'e@c@l@i@c@k';
-        $secret_iv = 'S3cur3';
-        // hash
-        $key = hash('sha512', $secret_key);
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha512', $secret_iv), 0, 16);
-        //do the encyption given text/string/number
-        $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
-        $output = base64_encode($output);
-        return $output;
+        $key = hash('sha512', 'e@c@l@i@c@k');
+        $iv = substr(hash('sha512', 'S3cur3'), 0, 16);
+        return base64_encode(openssl_encrypt($string, 'AES-256-CBC', $key, 0, $iv));
     }
 }
 
-/**
- * ww_decryptor
- */
 if (!function_exists('ww_decryptor')) {
     function ww_decryptor($string)
     {
-        $output = false;
-
-        $encrypt_method = "AES-256-CBC";
-        //pls set your unique hashing key
-        $secret_key = 'e@c@l@i@c@k';
-        $secret_iv = 'S3cur3';
-
-        // hash
-        $key = hash('sha512', $secret_key);
-
-        // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
-        $iv = substr(hash('sha512', $secret_iv), 0, 16);
-        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-        return $output;
+        $key = hash('sha512', 'e@c@l@i@c@k');
+        $iv = substr(hash('sha512', 'S3cur3'), 0, 16);
+        return openssl_decrypt(base64_decode($string), 'AES-256-CBC', $key, 0, $iv);
     }
 }
-
-
-?>
