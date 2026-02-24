@@ -1,0 +1,100 @@
+# ==============================
+# OS Files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# IDE / Editor Files
+# ==============================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==============================
+# Logs
+# ==============================
+*.log
+logs/
+error_log
+debug.log
+
+# ==============================
+# Environment Files
+# ==============================
+.env
+.env.local
+.env.*.local
+
+# ==============================
+# Configuration Files (Sensitive)
+# ==============================
+config/database.php
+config/connect.php
+config/config.php
+
+# ==============================
+# Uploads (Dynamic Content)
+# ==============================
+uploads/
+public/uploads/
+assets/uploads/
+
+# ==============================
+# Cache & Temporary Files
+# ==============================
+cache/
+tmp/
+temp/
+*.cache
+
+# ==============================
+# Session Files
+# ==============================
+sessions/
+*.sess
+
+# ==============================
+# Composer
+# ==============================
+vendor/
+composer.lock
+
+# ==============================
+# Node (if used for frontend)
+# ==============================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ==============================
+# Build / Compiled Files
+# ==============================
+dist/
+build/
+
+# ==============================
+# Database Files
+# ==============================
+*.sql
+*.sqlite
+*.db
+
+# ==============================
+# Backup Files
+# ==============================
+*.bak
+*.backup
+*.old
+
+*.zip
+/node_modules/
+/vendor/
+.env
+*.log

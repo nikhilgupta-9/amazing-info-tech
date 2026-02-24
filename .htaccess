@@ -1,0 +1,19 @@
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+ RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+# Remove trailing slashes for consistency (optional)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# Rewrite rules for product-related pages
+RewriteRule ^product-details/(.*)$ product-details.php?alias=$1 [L,QSA]
+RewriteRule ^news-details/(.*)$ news-details.php?alias=$1 [L,QSA]
+RewriteRule ^allnews/(.*)$ news-and-events.php?alias=$1 [L,QSA]
+RewriteRule ^allproducts/(.*)$ products.php?alias=$1 [L,QSA]
+
+# Handle existing files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Custom 404 page
+ErrorDocument 404 /index.php
