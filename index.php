@@ -13,9 +13,9 @@ while ($row = $result->fetch_assoc()) {
 }
 
 
-// Fetch news and events for the table
+// Fetch recent awards for the homepage awards strip (matches the 4-column layout)
 $branches = [];
-$result = $conn->query("SELECT * FROM `news_events`");
+$result = $conn->query("SELECT * FROM `news_events` ORDER BY created_at DESC LIMIT 4");
 if ($result) {
    while ($row = $result->fetch_assoc()) {
       $branches[] = $row;
@@ -493,83 +493,39 @@ if ($result) {
 
 
 
-      <!-- team-area -->
-      <div class="team-area bg pt-80 pb-20">
+      <!-- awards-area -->
+      <div class="awards-area bg pt-80 pb-80">
          <div class="container">
             <div class="row">
                <div class="col-lg-6 mx-auto wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
                   <div class="site-heading text-center">
-
-                     <h2 class="site-title">Recent AMAZING INFOTECH<span>Awards</span></h2>
+                     <h2 class="site-title">Recent AMAZING INFOTECH <span>Awards</span></h2>
                      <div class="heading-divider"></div>
                   </div>
                </div>
             </div>
-            <div class="row mt-5">
-
-               <?php foreach ($branches as $branch): ?>
-
-                  <div class="col-md-6 col-lg-3">
-                     <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                        <div class="team-img">
-                           <img src="admin/<?php echo htmlspecialchars($branch['image_path']); ?>" alt="thumb">
+            <div class="row mt-5 justify-content-center">
+               <?php foreach ($branches as $i => $branch): ?>
+                  <div class="col-6 col-lg-3">
+                     <div class="award-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="<?= $i * 0.25 ?>s">
+                        <div class="award-img">
+                           <img src="admin/<?php echo htmlspecialchars($branch['image_path']); ?>" alt="<?php echo htmlspecialchars(stripslashes($branch['title'])); ?>">
                         </div>
-                        <div class="team-content">
-                           <div class="team-bio">
-                              <h5><a href="news-and-events.php"><?php echo htmlspecialchars($branch['title']); ?></a></h5>
-
-                           </div>
+                        <div class="award-content">
+                           <h5><a href="news-and-events.php"><?php echo htmlspecialchars(ww_truncate(stripslashes($branch['title']), 55)); ?></a></h5>
                         </div>
-
                      </div>
                   </div>
                <?php endforeach; ?>
-               <!-- <div class="col-md-6 col-lg-3">
-                  <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".50s">
-                     <div class="team-img">
-                        <img src="assets/img/awrd-2a.jpg" alt="thumb">
-                     </div>
-                     <div class="team-content">
-                        <div class="team-bio">
-                           <h5><a href="#">Greate Asia and India FY22</a></h5>
-
-                        </div>
-                     </div>
-
-                  </div>
-               </div>
-               <div class="col-md-6 col-lg-3">
-                  <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".75s">
-                     <div class="team-img">
-                        <img src="assets/img/awrd-3a.jpg" alt="thumb">
-                     </div>
-                     <div class="team-content">
-                        <div class="team-bio">
-                           <h5><a href="#">HP Design Jet Channel Event</a></h5>
-
-                        </div>
-                     </div>
-
-                  </div>
-               </div>
-               <div class="col-md-6 col-lg-3">
-                  <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="1s">
-                     <div class="team-img">
-                        <img src="assets/img/awrd-4a.jpg" alt="thumb">
-                     </div>
-                     <div class="team-content">
-                        <div class="team-bio">
-                           <h5><a href="#">Metro Partner Amazing Infotech Pvt. Ltd.</a></h5>
-
-                        </div>
-                     </div>
-
-                  </div>
-               </div> -->
             </div>
+            <?php if ($branches): ?>
+               <div class="text-center mt-4">
+                  <a href="news-and-events.php" class="theme-btn">View All Awards <i class="fas fa-arrow-right"></i></a>
+               </div>
+            <?php endif; ?>
          </div>
       </div>
-      <!-- team-area end -->
+      <!-- awards-area end -->
 
 
 

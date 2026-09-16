@@ -2737,6 +2737,9 @@ label{
 .team-area{
     position:relative
 }
+.awards-area{
+    position:relative
+}
 .team-item{
     padding:20px;
     margin-bottom:90px;
@@ -2812,6 +2815,59 @@ label{
     background:var(--color-white);
     left:-50px;
     top:7px
+}
+.award-item{
+    position:relative;
+    margin-bottom:25px;
+    height:calc(100% - 25px);
+    background-color:var(--color-white);
+    padding:15px;
+    border-radius:20px;
+    box-shadow:var(--box-shadow);
+    transition:var(--transition)
+}
+.award-item:hover{
+    transform:translateY(-5px)
+}
+.award-img{
+    overflow:hidden;
+    border-radius:15px;
+    aspect-ratio:4/3
+}
+.award-img img{
+    width:100%;
+    height:100%;
+    border-radius:15px;
+    object-fit:cover;
+    transition:var(--transition)
+}
+.award-item:hover .award-img img{
+    transform:scale(1.1)
+}
+.award-content{
+    padding-top:15px
+}
+.award-content h5{
+    font-size:16px;
+    margin:0;
+    line-height:1.5
+}
+.award-content h5 a{
+    color:var(--color-dark)
+}
+.award-content h5 a:hover{
+    color:var(--theme-color)
+}
+.award-content p{
+    margin:8px 0 0;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--body-text-color)
+}
+@media all and (max-width:576px){
+    .award-content h5{
+        font-size:14px
+    }
 }
 .pricing-item{
     position:relative;

@@ -34,8 +34,8 @@ echo '</pre>';
         
 
 
-$apiKey = '44ce7708-239a-488a-9ee5-50d1945aaa26';
-$merchantId = 'M22VCV02JBS4Q';
+$apiKey = ww_env('PHONEPE_SALT_KEY');
+$merchantId = ww_env('PHONEPE_MERCHANT_ID');
 
 $paymentData = array(
     'merchantId' => $merchantId,
@@ -71,8 +71,8 @@ $request = json_encode(array('request'=>$payloadMain));
 
 
 
-$merchantId = 'M22VCV02JBS4Q'; 
-$apiKey="44ce7708-239a-488a-9ee5-50d1945aaa26";
+$merchantId = ww_env('PHONEPE_MERCHANT_ID');
+$apiKey = ww_env('PHONEPE_SALT_KEY');
 $redirectUrl = 'payment-success.php';
 
 $order_id = uniqid(); 

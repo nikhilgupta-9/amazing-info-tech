@@ -21,8 +21,8 @@ if (mysqli_num_rows($header) > 0) {
 
 
 
-$merchantId = 'M22VCV02JBS4Q'; // Replace with your actual Merchant ID
-$apiKey = "44ce7708-239a-488a-9ee5-50d1945aaa26"; // Replace with your actual API key
+$merchantId = ww_env('PHONEPE_MERCHANT_ID');
+$apiKey = ww_env('PHONEPE_SALT_KEY');
 $order_id = uniqid(); // Generate a unique order ID for each transaction
 $name = $_POST['customer_name'] ?? 'John Doe'; // Customer's name
 $email = $_POST['customer_email'] ?? 'example@example.com'; // Customer's email

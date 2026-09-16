@@ -1,14 +1,6 @@
 <?php
 
  include("conn.php");
- 
-$url = mysqli_real_escape_string($conn, $_GET['alias']);
-
-// Query to get the subcategory based on the `ct_pd_url`
-$query = "SELECT * FROM tbl_blog WHERE blog_url = '$url' AND is_active = '1' LIMIT 1";
-$header = mysqli_query($conn, $query);
-
-
 
 // Fetch news and events for the table
 $branches = [];
@@ -62,8 +54,8 @@ if ($result) {
        
       
       
-                <!-- team-area -->
-        <div class="team-area bg pt-80 pb-20">
+                <!-- awards-area -->
+        <div class="awards-area bg pt-80 pb-80">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 mx-auto wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
@@ -76,71 +68,23 @@ if ($result) {
                     </div>
                 </div>
                 <div class="row mt-5">
-                <!-- <?php echo htmlspecialchars($branch['created_at']); ?> -->
-                <?php foreach ($branches as $branch): ?>
-                                                   
-                                               
+                <?php foreach ($branches as $i => $branch): ?>
                     <div class="col-md-6 col-lg-3">
-                        <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                            <div class="team-img">
-                                <img src="admin/<?php echo htmlspecialchars($branch['image_path']); ?>" alt="thumb">
+                        <div class="award-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="<?= ($i % 4) * 0.25 ?>s">
+                            <div class="award-img">
+                                <img src="admin/<?php echo htmlspecialchars($branch['image_path']); ?>" alt="<?php echo htmlspecialchars(stripslashes($branch['title'])); ?>">
                             </div>
-                            <div class="team-content">
-                                <div class="team-bio">
-                                    <h5><a href="#"><?php echo htmlspecialchars($branch['title']); ?></a></h5>
-                                    <p><?php echo htmlspecialchars($branch['description']); ?> </p> 
-                                </div>
+                            <div class="award-content">
+                                <h5><a href="#"><?php echo htmlspecialchars(ww_truncate(stripslashes($branch['title']), 55)); ?></a></h5>
+                                <p><?php echo htmlspecialchars(ww_truncate(stripslashes($branch['description']), 140)); ?></p>
                             </div>
-                             
                         </div>
                     </div>
                     <?php endforeach; ?>
-                    <!-- <div class="col-md-6 col-lg-3">
-                        <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".50s">
-                            <div class="team-img">
-                                <img src="assets/img/awrd-2a.jpg" alt="thumb">
-                            </div>
-                            <div class="team-content">
-                                <div class="team-bio">
-                                    <h5><a href="#">Greater Asia and India FY22</a></h5>
-                                    <p>We were honored with HP Large Format Design Star Performer in Emerging Countries in FY 2022 at the Greater Asia and India Event. Amazing Infotech has a track record of delivering high-demand and reliable products, and our commitment goes beyond providing the right printer/plotter. We are always one step ahead when it comes to delivering a seamless customer experience; whether it is initial consultation, quick issue resolution, or swift assistance, we give it all. </p>
-                                </div>
-                            </div>
- 
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".75s">
-                            <div class="team-img">
-                                <img src="assets/img/awrd-3a.jpg" alt="thumb">
-                            </div>
-                            <div class="team-content">
-                                <div class="team-bio">
-                                    <h5><a href="#">HP Design Jet Channel Event</a></h5>
-                                     <p>At the HP Malta meet at the HP Design Jet Channel Event, we also won Best Performing Partner In Emerging Countries. This award honors our passion and commitment to driving sales, delivering outstanding customer support, and helping businesses achieve operational excellence through high-precise and sustainable DesignJet printers/plotters. </p>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="team-item wow fadeInUp" data-wow-duration="1s" data-wow-delay="1s">
-                            <div class="team-img">
-                                <img src="assets/img/awrd-4a.jpg" alt="thumb">
-                            </div>
-                            <div class="team-content">
-                                <div class="team-bio">
-                                    <h5><a href="#">Metro Partner Amazing Infotech Pvt. Ltd.</a></h5>
-                                    <p>We were rewarded with the Large Format Best Metro Partner Award at the HP Channel Meet hosted in FY24. The rewards highlight that clients can rely on our experts for a smooth operational experience and minimal downtime with the HP Printers and Plotters. With our wide range of products in the plotters/printers category, businesses get access to industry-leading products with technical expertise.</p>
-                                </div>
-                            </div>
-                           
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
-        <!-- team-area end -->
+        <!-- awards-area end -->
         
       </main>
        <?php include('footer.php')?>

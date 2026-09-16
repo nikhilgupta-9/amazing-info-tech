@@ -3,19 +3,15 @@ include_once "conn.php";
 require "vendor/autoload.php";
 
 
-//const WW_PHONEPE_MERCHANTID = "AMAZINGUAT";
-//const WW_PHONEPE_SALTKEY = "d745c8af-62b4-4d31-b52c-2e1043685e86";
-
-
 // live keys
-$ww_merchant_id = "M22VCV02JBS4Q";
-$ww_salt_key = "44ce7708-239a-488a-9ee5-50d1945aaa26";
+$ww_merchant_id = ww_env('PHONEPE_MERCHANT_ID');
+$ww_salt_key = ww_env('PHONEPE_SALT_KEY');
 // live keys end
 
 // Testing keys
 if (ww_is_local_host()) {
-    $ww_merchant_id = "AMAZINGUAT";
-    $ww_salt_key = "d745c8af-62b4-4d31-b52c-2e1043685e86";
+    $ww_merchant_id = ww_env('PHONEPE_MERCHANT_ID_UAT', 'AMAZINGUAT');
+    $ww_salt_key = ww_env('PHONEPE_SALT_KEY_UAT');
     define("WW_PHONEPE_ENV", \PhonePe\Env::UAT);
 } else {
     define("WW_PHONEPE_ENV", \PhonePe\Env::PRODUCTION);

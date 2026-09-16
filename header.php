@@ -247,6 +247,8 @@ if ($sql_select = $conn->query($query_select)) {
     }
 </style>
 
-<!-- Make sure Font Awesome is included in your head -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- Font Awesome already loaded per-page via assets/css/all-fontawesome.min.css (local Pro 6.5.2 bundle).
+     A second, conflicting copy (Free 6.0.0 from CDN) used to load here and override the local
+     Pro font-family site-wide, which broke every Pro-only icon (e.g. fa-bring-forward) into a
+     blank box. Removed - do not re-add a second Font Awesome source. -->
 <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lf__TwrAAAAALKz4Z0g7EYSkE297cwgS9z5L5Xn"></script>

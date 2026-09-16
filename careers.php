@@ -13,12 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle resume upload
     if (!empty($_FILES['file']['name'])) {
-        $target_dir = "resumes/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true); // Create directory if it doesn't exist
+        $upload = ww_secure_resume_upload($_FILES['file'], 'resumes/');
+        if ($upload['ok']) {
+            $resume_path = $upload['path'];
+        } else {
+            echo "<script>alert(" . json_encode($upload['error']) . ");</script>";
         }
-        $resume_path = $target_dir . basename($_FILES['file']['name']);
-        move_uploaded_file($_FILES['file']['tmp_name'], $resume_path);
     }
 
     // Insert data into the database
@@ -127,18 +127,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $number = $_POST['number'];
-    $applyFor = $_POST['apply_for'];
-    $resume = $_FILES['file']['name'];
-    $temp_name = $_FILES['file']['tmp_name'];
-    $folder = "admin/uploads/resumes/" . $resume;
+    $name = $conn->real_escape_string($_POST['name']);
+    $email = $conn->real_escape_string($_POST['email']);
+    $number = $conn->real_escape_string($_POST['number']);
+    $applyFor = $conn->real_escape_string($_POST['apply_for']);
+
+    $upload = ww_secure_resume_upload($_FILES['file'], 'admin/uploads/resumes/');
 
     // Upload the resume to the folder
-    if (move_uploaded_file($temp_name, $folder)) {
+    if ($upload['ok']) {
+        $resume = $upload['name'];
+        $folder = $upload['path'];
         // Save form data to the database
-        $sql = "INSERT INTO `career_applications`(`name`, `email`, `mobile_no`, `apply_for`, `resume`) 
+        $sql = "INSERT INTO `career_applications`(`name`, `email`, `mobile_no`, `apply_for`, `resume`)
                 VALUES ('$name', '$email', '$number', '$applyFor', '$resume')";
         $res = mysqli_query($conn, $sql);
 

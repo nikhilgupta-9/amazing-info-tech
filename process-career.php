@@ -15,10 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // File upload path
     $uploadDir = 'admin/uploads/resumes/';
-    $uploadFile = $uploadDir . basename($resume['name']);
+    $upload = ww_secure_resume_upload($resume, $uploadDir);
+    $uploadFile = $upload['path'] ?? '';
 
     // Save the uploaded file
-    if (move_uploaded_file($resume['tmp_name'], $uploadFile)) {
+    if ($upload['ok']) {
         // Email configuration
         $to = "ksuraj.2me@gmail.com"; // HR email
         $subject = "New Career Application: $name";

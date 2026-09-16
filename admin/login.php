@@ -12,7 +12,7 @@ if(isset($_POST['submit']))
 {
 	
 	$l_ip = $_SERVER['REMOTE_ADDR'];
-	$user_name = $_POST['user_name'];
+	$user_name = $conn->real_escape_string($_POST['user_name']);
 	$password = md5($_POST['password']);
 	$current_dt = @date("Y-m-d H:i:s",time());
 	$query_select = "SELECT * FROM attempts WHERE l_user_name='".$user_name."' AND l_status=0";
