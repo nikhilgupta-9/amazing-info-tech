@@ -2,8 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/f16xsqtlhgjy/public_html/
-    - /bin/rsync -a --exclude='.git' ./ $DEPLOYPATH---
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/f16xsqtlhgjy/public_html/
     - /bin/rsync -a --exclude='.git' ./ $DEPLOYPATH
