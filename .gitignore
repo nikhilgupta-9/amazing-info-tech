@@ -41,9 +41,7 @@ config/config.php
 # ==============================
 # Uploads (Dynamic Content)
 # ==============================
-uploads/
-public/uploads/
-assets/uploads/
+
 
 # ==============================
 # Cache & Temporary Files
@@ -95,6 +93,6 @@ build/
 
 *.zip
 /node_modules/
-/vendor/
+
 .env
 *.log
