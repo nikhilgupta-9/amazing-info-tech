@@ -20,6 +20,54 @@ $title = "";
 $image = "";
 $logo_title = "";
 $status = "";
+$logo_directory = __DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'logo';
+$logo_asset_folders = array(
+	'fav_icon_image' => 'fav_icon_image',
+	'left_logo' => 'left_logo',
+	'center_logo' => 'center_logo',
+	'right_logo' => 'right_logo',
+	'footer_logo' => 'footer_logo',
+	'iso_logo' => 'iso_logo'
+);
+
+function save_logo_asset($field, $column, $folder, $id, $conn)
+{
+	if (!isset($_FILES[$field]) || $_FILES[$field]['error'] !== UPLOAD_ERR_OK) {
+		return;
+	}
+
+	$directory = __DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $folder;
+	if (!is_dir($directory)) {
+		mkdir($directory, 0755, true);
+	}
+
+	$extension = strtolower(pathinfo($_FILES[$field]['name'], PATHINFO_EXTENSION));
+	$base_name = pathinfo($_FILES[$field]['name'], PATHINFO_FILENAME);
+	$base_name = preg_replace('/[^a-zA-Z0-9-]+/', '-', $base_name);
+	$file_name = time() . '-' . trim($base_name, '-') . ($extension ? '.' . $extension : '');
+
+	$old_statement = $conn->prepare("SELECT `$column` FROM logo WHERE id = ?");
+	if ($old_statement) {
+		$old_statement->bind_param('i', $id);
+		$old_statement->execute();
+		$old_result = $old_statement->get_result();
+		if ($old_result && ($old_row = $old_result->fetch_assoc()) && !empty($old_row[$column])) {
+			$old_path = $directory . DIRECTORY_SEPARATOR . $old_row[$column];
+			if (is_file($old_path)) {
+				unlink($old_path);
+			}
+		}
+	}
+
+	$destination = $directory . DIRECTORY_SEPARATOR . $file_name;
+	if (move_uploaded_file($_FILES[$field]['tmp_name'], $destination)) {
+		$update_statement = $conn->prepare("UPDATE logo SET `$column` = ? WHERE id = ?");
+		if ($update_statement) {
+			$update_statement->bind_param('si', $file_name, $id);
+			$update_statement->execute();
+		}
+	}
+}
 
 /* get id */
 
@@ -42,14 +90,15 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 			
 			if(isset($_FILES['logo_image']) && $_FILES['logo_image']['error']==0)
 			{
-
-				$array = explode('.', $_FILES['logo_image']['name']);
-				$logoimage = $array[0];
-				$logoimage1 = $array[1];
+				if (!is_dir($logo_directory)) {
+					mkdir($logo_directory, 0755, true);
+				}
+				$logo_extension = strtolower(pathinfo($_FILES['logo_image']['name'], PATHINFO_EXTENSION));
+				$logoimage = pathinfo($_FILES['logo_image']['name'], PATHINFO_FILENAME);
 				$time =time();
 				$logoimage = $time.$logoimage;
 				$logoimage = str_replace("---","-",preg_replace("/[^-a-zA-Z0-9s]/", "-", strtolower(trim($logoimage)))); 
-				$logoimage = $logoimage.".".$logoimage1;  
+				$logoimage = $logoimage . '.' . $logo_extension;
 
 			    $logoimagename = "";
 					if($id!="")
@@ -68,18 +117,23 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 					}
 						if($logoimagename!="")
 						{
-						$unlkheaderfile = "uploads/logo/".$logoimagename;
+						$unlkheaderfile = $logo_directory . '/' . $logoimagename;
 						if (file_exists($unlkheaderfile)) { unlink($unlkheaderfile); }
 						}
-					$logofilename = "uploads/logo/". $logoimage;
+					$logofilename = $logo_directory . '/' . $logoimage;
 					$mv =move_uploaded_file($_FILES['logo_image']['tmp_name'],$logofilename);
-					$query_imageup="UPDATE logo SET logo_image='".$logoimage."' WHERE id='".$id."'";
-					if($sql_imageup=$conn->prepare($query_imageup))
-					$sql_imageup->execute();
+					if ($mv) {
+						$query_imageup="UPDATE logo SET logo_image='".$logoimage."' WHERE id='".$id."'";
+						if($sql_imageup=$conn->prepare($query_imageup))
+						$sql_imageup->execute();
+					}
 			} 
 
-			
-			if(isset($_FILES['fav_icon_image']) && $_FILES['fav_icon_image']['error']==0)
+			foreach ($logo_asset_folders as $field => $folder) {
+				save_logo_asset($field, $field, $folder, $id, $conn);
+			}
+
+			if(false && isset($_FILES['fav_icon_image']) && $_FILES['fav_icon_image']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['fav_icon_image']['name']);
@@ -119,7 +173,7 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 
 			
 			
-			if(isset($_FILES['left_logo']) && $_FILES['left_logo']['error']==0)
+			if(false && isset($_FILES['left_logo']) && $_FILES['left_logo']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['left_logo']['name']);
@@ -159,7 +213,7 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 
 			
 			
-			if(isset($_FILES['center_logo']) && $_FILES['center_logo']['error']==0)
+			if(false && isset($_FILES['center_logo']) && $_FILES['center_logo']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['center_logo']['name']);
@@ -199,7 +253,7 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 
 			
 			
-			if(isset($_FILES['right_logo']) && $_FILES['right_logo']['error']==0)
+			if(false && isset($_FILES['right_logo']) && $_FILES['right_logo']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['right_logo']['name']);
@@ -239,7 +293,7 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 
 			
 			
-			if(isset($_FILES['footer_logo']) && $_FILES['footer_logo']['error']==0)
+			if(false && isset($_FILES['footer_logo']) && $_FILES['footer_logo']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['footer_logo']['name']);
@@ -277,7 +331,7 @@ if(isset($_POST['submit']) && $_POST['submit']=="add")
 					$sql_imageup->execute();
 			} 
 
-			if(isset($_FILES['iso_logo']) && $_FILES['iso_logo']['error']==0)
+			if(false && isset($_FILES['iso_logo']) && $_FILES['iso_logo']['error']==0)
 			{
 
 				$array = explode('.', $_FILES['iso_logo']['name']);
@@ -350,6 +404,16 @@ if($id!="")
     }
 }
 
+$logo_site_url = rtrim($site_root, '/') . '/';
+$logo_preview_urls = array();
+foreach (array_merge(array('logo_image' => 'logo'), $logo_asset_folders) as $logo_field => $logo_folder) {
+	$logo_file = ${$logo_field} ?? '';
+	$logo_path = __DIR__ . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $logo_folder . DIRECTORY_SEPARATOR . $logo_file;
+	$logo_preview_urls[$logo_field] = ($logo_file && file_exists($logo_path))
+		? $logo_site_url . 'admin/uploads/' . $logo_folder . '/' . rawurlencode($logo_file)
+		: $logo_site_url . 'assets/img/logo-new.png';
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -376,6 +440,19 @@ if($id!="")
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<link href="dist/css/editor.css" type="text/css" rel="stylesheet"/>
+		<style>
+			.logo-preview {
+				display:block;
+				width:220px;
+				height:90px;
+				padding:10px;
+				object-fit:contain;
+				border:1px solid #e5eaee;
+				border-radius:6px;
+				background:#f7f9fa;
+				margin-bottom:10px;
+			}
+		</style>
     
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -410,7 +487,9 @@ if($id!="")
 					   if($logo_image!="")
 						   {
 					?>
-					<img src="uploads/logo/<?php echo $result['logo_image'];?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<?php
+					?>
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['logo_image'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="<?php echo htmlspecialchars($logo_title, ENT_QUOTES, 'UTF-8'); ?>">
 					   <?php 
 						  }	
 					   ?>
@@ -424,7 +503,7 @@ if($id!="")
 					   if($fav_icon_image!="")
 						   {
 					?>
-					<img src="uploads/fav_icon_image/<?php echo $result['fav_icon_image']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['fav_icon_image'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="Favicon">
 					<?php
 						   }
 					   ?>
@@ -441,7 +520,7 @@ if($id!="")
 					   if($left_logo!="")
 						   {
 					?>
-					<img src="uploads/left_logo/<?php echo $result['left_logo']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['left_logo'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="Left logo">
 					<?php
 						   }
 					   ?>
@@ -455,7 +534,7 @@ if($id!="")
 					   if($center_logo!="")
 						   {
 					?>
-					<img src="uploads/center_logo/<?php echo $result['center_logo']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['center_logo'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="Center logo">
 					<?php
 						   }
 					   ?>
@@ -469,7 +548,7 @@ if($id!="")
 					   if($right_logo!="")
 						   {
 					?>
-					<img src="uploads/right_logo/<?php echo $result['right_logo']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['right_logo'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="Right logo">
 					<?php
 						   }
 					   ?>
@@ -483,7 +562,7 @@ if($id!="")
 					   if($footer_logo!="")
 						   {
 					?>
-					<img src="uploads/footer_logo/<?php echo $result['footer_logo']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['footer_logo'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="Footer logo">
 					<?php
 						   }
 					   ?>
@@ -497,7 +576,7 @@ if($id!="")
 					   if($iso_logo!="")
 						   {
 					?>
-					<img src="uploads/iso_logo/<?php echo $result['iso_logo']?>" height="100" width="120" title="<?php echo $title; ?> Image">
+					<img src="<?php echo htmlspecialchars($logo_preview_urls['iso_logo'], ENT_QUOTES, 'UTF-8'); ?>" class="logo-preview" alt="ISO logo">
 					<?php
 						   }
 					   ?>

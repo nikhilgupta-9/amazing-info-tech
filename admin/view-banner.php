@@ -119,11 +119,174 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+  <style>
+    .banner-page .box {
+      border-top: 3px solid #3c8dbc;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+    }
+
+    .banner-page .box-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #edf0f2;
+    }
+
+    .banner-page .box-header h3 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #263238;
+    }
+
+    .banner-page .box-header p {
+      margin: 5px 0 0;
+      color: #7b8794;
+    }
+
+    .banner-page .banner-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .banner-page .banner-actions {
+      white-space: nowrap;
+    }
+
+    .banner-page .banner-actions .btn {
+      margin-left: 5px;
+    }
+
+    .banner-page .banner-table > thead > tr > th {
+      padding: 13px 10px;
+      background: #f5f8fa;
+      color: #455a64;
+      border-bottom: 2px solid #e5eaee;
+      white-space: nowrap;
+    }
+
+    .banner-page .banner-table > tbody > tr > td {
+      padding: 12px 10px;
+      vertical-align: middle;
+    }
+
+    .banner-page .banner-table > tbody > tr:hover {
+      background: #fbfdff;
+    }
+
+    .banner-page .banner-preview {
+      display: block;
+      width: 112px;
+      height: 48px;
+      object-fit: cover;
+      border: 1px solid #e1e7eb;
+      border-radius: 5px;
+      background: #f5f7f9;
+    }
+
+    .banner-page .banner-title {
+      display: block;
+      max-width: 220px;
+      color: #263238;
+      font-weight: 600;
+      white-space: normal;
+    }
+
+    .banner-page .banner-description {
+      max-width: 250px;
+      color: #71808d;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .banner-page .banner-date {
+      color: #54636d;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .banner-page .status-badge {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .banner-page .status-active {
+      color: #176b3a;
+      background: #e5f6ec;
+    }
+
+    .banner-page .status-inactive {
+      color: #8a4b08;
+      background: #fff1d6;
+    }
+
+    .banner-page .edit-button {
+      display: flex;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .banner-page .edit-button li {
+      list-style: none;
+    }
+
+    .banner-page .edit-button a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      color: #fff;
+    }
+
+    .banner-page .edit-button li:first-child a {
+      background: #3c8dbc;
+    }
+
+    .banner-page .edit-button li:last-child a {
+      background: #dd4b39;
+    }
+
+    .banner-page .empty-banners {
+      padding: 40px 20px;
+      color: #7b8794;
+      text-align: center;
+    }
+
+    @media (max-width: 767px) {
+      .banner-page .box-body {
+        padding: 10px;
+      }
+
+      .banner-page .banner-toolbar {
+        align-items: flex-start;
+      }
+
+      .banner-page .banner-actions {
+        width: 100%;
+      }
+
+      .banner-page .banner-actions .btn {
+        margin: 0 5px 5px 0;
+      }
+
+      .banner-page .banner-table {
+        min-width: 980px;
+      }
+    }
+  </style>
 		
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert.min.css" />      
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini banner-page">
 <div class="wrapper">
    <?php include('header.php') ?>
   <?php include('left-menu.php') ?>
@@ -135,19 +298,27 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
 
 
           <div class="box">
-            <div class="main-title">
-			<?php if(isset($_REQUEST['msg'])) { ?> <h5 class="h5-headn hegt-96" style="color:green;"><?php echo $_REQUEST['msg']; ?></h5> <?php } else { ?>
-           <h3>View Banner</h3>
-		   <?php } ?>
-           </div>
+            <div class="box-header">
+              <div class="banner-toolbar">
+                <div>
+                  <h3>Homepage Banners</h3>
+                  <p>Review banner artwork, publish status and upload date.</p>
+                </div>
+                <div class="banner-actions">
+                  <?php if(isset($_REQUEST['msg'])) { ?>
+                    <span class="text-success"><i class="fa fa-check-circle"></i> <?php echo htmlspecialchars($_REQUEST['msg'], ENT_QUOTES, 'UTF-8'); ?></span>
+                  <?php } ?>
+                  <a href="add-banner.php" class="btn btn-primary"><i class="fa fa-plus"></i> Add Banner</a>
+                </div>
+              </div>
+            </div>
 		   <form  action="<?php $_SERVER['PHP_SELF'] ?>" method ="post">
-           <a href="add-banner.php" class="btn btn-addnew">Add New</a>
             <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
+              <div class="table-responsive">
+              <table id="example1" class="table table-bordered table-striped banner-table">
                 <thead>
                     <tr>
-             
-                  <td colspan="6" style="text-align:right;">				  
+                  <td colspan="7" style="text-align:right;">
                    <input type="submit" class="btn btn-danger" style="margin-top:2px;" name="delete_all" value="Delete" onClick="return confirm('Are you sure? You want to Delete');" >
 				   </td>
                   <td colspan="2" style="text-align:right;">
@@ -158,8 +329,9 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
                 <tr>
                 <th>Sr. N.</th>    
                   <th>Title</th>
-                  <th>Image</th>
-                  <th>At Home</th>
+                  <th>Preview</th>
+                  <th>Uploaded On</th>
+                  <th>Homepage</th>
                   <th>Status</th>
                   <th>Content</th>
                   <th>
@@ -171,7 +343,7 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
                 <tbody>
                 <?php   $query="SELECT * FROM banner ORDER BY id DESC";
                 $result=mysqli_query($conn,$query);
-                if(mysqli_num_rows($result)){
+                if($result && mysqli_num_rows($result) > 0){
                   $i=1;
 					 while($row=mysqli_fetch_array($result))
 					{
@@ -181,12 +353,23 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
                     ?>    
                 <tr>
                 <td><?php echo $i; ?></td>    
-                  <td><?php  echo $row['title'];   ?></td>
-                  <td><img src="uploads/banner/<?php echo $row['image']; ?>" width="70px" height="70px" ></td>
-                    <td>Yes</td>
-                  <td> <?php  if($row['status']=='1'){ echo "Enable";}else { echo "Disable";}   ?>	</td>
+                  <td><span class="banner-title"><?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?></span></td>
+                  <td><img class="banner-preview" src="uploads/banner/<?php echo htmlspecialchars($row['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($row['title'], ENT_QUOTES, 'UTF-8'); ?>"></td>
+                  <td class="banner-date">
+                    <?php
+                    echo !empty($row['created_at']) ? date('d M Y, h:i A', strtotime($row['created_at'])) : 'Date unavailable';
+                    ?>
+                  </td>
+                  <td><span class="status-badge status-active"><i class="fa fa-home"></i> Yes</span></td>
+                  <td>
+                    <?php if($row['status']=='1'){ ?>
+                      <span class="status-badge status-active"><i class="fa fa-check"></i> Active</span>
+                    <?php } else { ?>
+                      <span class="status-badge status-inactive"><i class="fa fa-pause"></i> Inactive</span>
+                    <?php } ?>
+                  </td>
                     <td>
-                    <?php  echo substr($row['title'],0,45);   ?>
+                    <div class="banner-description"><?php echo htmlspecialchars(substr(strip_tags((string) ($row['content'] ?? $row['title'])), 0, 90), ENT_QUOTES, 'UTF-8'); ?><?php echo strlen((string) ($row['content'] ?? '')) > 90 ? '...' : ''; ?></div>
                     </td>
                  <td>
                    <input type="checkbox" value="<?php echo $row['id']; ?>" name="check_status[]" class="checkSingle" />
@@ -202,12 +385,14 @@ if(isset($_POST['unchk_btn']) && !empty($_POST['unchk_btn']))
 				<?php
                     $i++;
                   }                  
-                }
-
-                 ?>
+                } else {
+               ?>
+                 <tr><td colspan="9"><div class="empty-banners"><i class="fa fa-picture-o fa-2x"></i><br>No banners found. Add your first homepage banner.</div></td></tr>
+               <?php } ?>
                </tbody>
                
               </table>
+              </div>
             </div>
 		</form>	
             <!-- /.box-body -->

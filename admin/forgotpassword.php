@@ -1,3 +1,35 @@
+<?php
+require_once __DIR__ . '/config/conn.php';
+
+$message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $email = trim($_POST['email'] ?? '');
+
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $message = 'Please enter a valid email address.';
+  } else {
+    $statement = $conn->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
+    if ($statement) {
+      $statement->bind_param('s', $email);
+      $statement->execute();
+      $statement->store_result();
+    }
+
+    if ($statement && $statement->num_rows === 1) {
+      $statement->bind_result($user_id);
+      $statement->fetch();
+      $_SESSION['password_reset_user'] = (int) $user_id;
+      $_SESSION['password_reset_token'] = bin2hex(random_bytes(32));
+      $_SESSION['password_reset_expires'] = time() + 900;
+      header('Location: resetpassword.php?token=' . urlencode($_SESSION['password_reset_token']));
+      exit;
+    }
+
+    $message = 'No admin account was found for that email address.';
+  }
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +52,15 @@
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">Forgot Password</p>
+    <p class="login-box-msg">Enter your admin email to reset the password.</p>
+
+    <?php if ($message !== ''): ?>
+      <p class="text-center text-danger"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php endif; ?>
 
     <form action="" method="post">
        <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+        <input type="email" name="email" class="form-control" placeholder="Email" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="row">

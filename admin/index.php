@@ -6,14 +6,26 @@ if (!isset($_SESSION['user_name']) || empty($_SESSION['user_name'])) {
   exit();
 }
 
+function admin_count($query)
+{
+  global $conn;
+  $result = mysqli_query($conn, $query);
+  if (!$result) {
+    return 0;
+  }
+
+  $row = mysqli_fetch_assoc($result);
+  return (int) ($row['total'] ?? 0);
+}
+
 // Get counts for dashboard statistics
-$banner_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM banner WHERE status='1'"))['total'];
-$product_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM cat_prod WHERE status='1'"))['total'];
-$menu_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM cms_menu WHERE status='1'"))['total'];
-$enquiry_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_contact"))['total'];
-$career_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM career_applications"))['total'];
-$branches_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM branches WHERE status='1'"))['total'];
-$news_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM news_events order by `created_at`"))['total'];
+$banner_count = admin_count("SELECT COUNT(*) AS total FROM banner WHERE status='1'");
+$product_count = admin_count("SELECT COUNT(*) AS total FROM cat_prod WHERE status='1'");
+$menu_count = admin_count("SELECT COUNT(*) AS total FROM cms_menu WHERE status='1'");
+$enquiry_count = admin_count("SELECT COUNT(*) AS total FROM tbl_contact");
+$career_count = admin_count("SELECT COUNT(*) AS total FROM career_applications");
+$branches_count = admin_count("SELECT COUNT(*) AS total FROM branches WHERE status='1'");
+$news_count = admin_count("SELECT COUNT(*) AS total FROM news_events");
 
 // Get recent enquiries
 $recent_enquiries = mysqli_query($conn, "SELECT * FROM tbl_contact ORDER BY id DESC LIMIT 5");
@@ -274,7 +286,7 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
                       </tr>
                     </thead>
                     <tbody>
-                      <?php if (mysqli_num_rows($recent_enquiries) > 0): ?>
+                      <?php if ($recent_enquiries && mysqli_num_rows($recent_enquiries) > 0): ?>
                         <?php while ($enquiry = mysqli_fetch_assoc($recent_enquiries)): ?>
                           <tr>
                             <td><?php echo htmlspecialchars(substr($enquiry['name'], 0, 13)) . "..."; ?></td>
@@ -317,7 +329,7 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
                       </tr>
                     </thead>
                     <tbody>
-                      <?php if (mysqli_num_rows($recent_careers) > 0): ?>
+                      <?php if ($recent_careers && mysqli_num_rows($recent_careers) > 0): ?>
                         <?php while ($career = mysqli_fetch_assoc($recent_careers)): ?>
                           <tr>
                             <td><?php echo htmlspecialchars($career['name']); ?></td>

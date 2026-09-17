@@ -5,20 +5,76 @@ include("conn.php");
 $query_select = "SELECT * FROM logo WHERE 1";
 if ($sql_select = $conn->query($query_select)) {
     if ($sql_select->num_rows > 0) {
-        $result = $sql_select->fetch_array(MYSQLI_ASSOC);
-        $logo_title = stripslashes($result['logo_title']);
-        $logo_image = $result['logo_image'];
-        $fav_icon_image = $result['fav_icon_image'];
-        $left_logo = $result['left_logo'];
-        $center_logo = $result['center_logo'];
-        $right_logo = $result['right_logo'];
-        $footer_logo = $result['footer_logo'];
-        $iso_logo = $result['iso_logo'];
+        $logo_record = $sql_select->fetch_array(MYSQLI_ASSOC);
+        $logo_title = stripslashes($logo_record['logo_title']);
+        $logo_image = $logo_record['logo_image'];
+        $fav_icon_image = $logo_record['fav_icon_image'];
+        $left_logo = $logo_record['left_logo'];
+        $center_logo = $logo_record['center_logo'];
+        $right_logo = $logo_record['right_logo'];
+        $footer_logo = $logo_record['footer_logo'];
+        $iso_logo = $logo_record['iso_logo'];
         $pagetaskname = " Update ";
     }
 
 }
 
+
+$query = "SELECT * FROM users WHERE id='1'";
+if($sql_query = $conn->query($query))
+{
+if($sql_query->num_rows>0)
+{
+$result = $sql_query->fetch_array(MYSQLI_ASSOC);
+$name = $result['name'];
+$company_name = $result['company_name'];
+$email = $result['email'];
+$enquiry_email = $result['enquiry_email'];
+$mobile = $result['mobile'];
+// $landline_no = $result['landline_no'];
+$whatsapp_number = $result['whatsapp_number'];
+$customer_support_number = $result['customer_support_number'];
+$paytm_number = $result['paytm_number'];
+$paytm_file = $result['paytm_file'];
+$fax_number = $result['fax_number'];
+$working_hours = $result['working_hours'];
+$working_hours1 = $result['working_hours1'];
+$working_hours2 = $result['working_hours2'];
+$working_hours3 = $result['working_hours3'];
+$working_hours4 = $result['working_hours4'];
+$working_hours5 = $result['working_hours5'];
+$address = $result['address'];
+$state = $result['state'];
+$city = $result['city'];
+$pin_code = $result['pin_code'];
+$head_office = $result['head_office'];
+// $office_email = $result['office_email'];
+$office_number = $result['office_number'];
+$google_map = $result['google_map'];
+$country = $result['country'];
+$website = $result['website'];
+$catalog_url = $result['catalog_url'];
+$skype_link = $result['skype_link'];
+$facebook_link = $result['facebook_link'];
+$twittter_link = $result['twittter_link'];
+$linkedin_link = $result['linkedin_link'];
+$instagram_link = $result['instagram_link'];
+$youtube_link = $result['youtube_link'];
+$pinterest_link = $result['pinterest_link'];
+$others_link = $result['others_link'];
+// $live_chat_code = $result['live_chat_code'];
+$visitor_vounter_code = $result['visitor_vounter_code'];
+$language_converter_code = $result['language_converter_code'];
+// $google_map1 = $result['google_map1'];
+$blog_url = $result['blog_url'];
+$designed_dev = $result['designed_dev'];
+$copyright = $result['copyright'];
+$domain_name = $result['domain_name'];
+$out_going_server = $result['out_going_server'];
+$server_email = $result['server_email'];
+$server_email_password = $result['server_email_password'];
+}
+}
 ?>
 <style>
     .nav-item {
@@ -36,13 +92,13 @@ if ($sql_select = $conn->query($query_select)) {
                 <div class="header-top-left">
                     <div class="header-top-social">
                         <span>Follow Us:</span>
-                        <a href="https://www.facebook.com/AmazingInfotech.Official" target="_blank"><i
+                        <a href="<?= $facebook_link ?>" target="_blank"><i
                                 class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/amazing_infotech/" target="_blank"><i
+                        <a href="<?= $instagram_link ?>" target="_blank"><i
                                 class="fab fa-instagram"></i></a>
-                        <a href="https://www.youtube.com/@AmazingInfotechOfficial" target="_blank"><i
+                        <a href="<?= $youtube_link ?>" target="_blank"><i
                                 class="fab fa-youtube"></i></a>
-                        <a href="https://www.linkedin.com/company/amazing-infotech-pvt-ltd-india/" target="_blank"><i
+                        <a href="<?= $linkedin_link ?>" target="_blank"><i
                                 class="fa-brands fa-linkedin"></i></a>
                         <!--<a href="https://www.pinterest.com/amazinginfotechpvtltd/" target="_blank"><i class="fa-brands fa-pinterest-p"></i></a>-->
                     </div>
@@ -52,7 +108,7 @@ if ($sql_select = $conn->query($query_select)) {
                         <ul>
                             <li>
                                 <div class="header-top-contact-info">
-                                    <a href="tel:9971314354"><i class="far fa-phone"></i> +91-9971314354</a>
+                                    <a href="tel:<?=$mobile?>"><i class="far fa-phone"></i> +91-<?=$mobile?></a>
                                 </div>
                             </li>
                             <li>
@@ -86,7 +142,7 @@ if ($sql_select = $conn->query($query_select)) {
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <a href="index.php" class="offcanvas-brand" id="offcanvasNavbarLabel">
-                            <img src="admin/uploads/logo/<?php echo $result['logo_image']; ?>"
+                            <img src="<?php echo htmlspecialchars(($logo_image && file_exists(__DIR__ . '/admin/uploads/logo/' . $logo_image)) ? $site . 'admin/uploads/logo/' . $logo_image : $site . 'assets/img/logo-new.png', ENT_QUOTES, 'UTF-8'); ?>"
                                 alt="Amazing Infotech Logo">
                         </a>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -158,11 +214,11 @@ if ($sql_select = $conn->query($query_select)) {
 
 <!-- Floating Contact Buttons -->
 <div class="floating-contact-buttons">
-    <a href="https://wa.me/918800520198" class="float-btn whatsapp-btn" target="_blank" title="Chat on WhatsApp">
+    <a href="https://wa.me/91<?=$whatsapp_number?>" class="float-btn whatsapp-btn" target="_blank" title="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
         <span class="tooltip">Chat with us</span>
     </a>
-    <a href="tel:+918800520198" class="float-btn call-btn" title="Call Us">
+    <a href="tel:+91<?=$mobile?>" class="float-btn call-btn" title="Call Us">
         <i class="fas fa-phone-alt"></i>
         <span class="tooltip">Call us</span>
     </a>

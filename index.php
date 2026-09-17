@@ -48,17 +48,26 @@ if ($result) {
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
 
          <div class="carousel-inner">
-            <?php $query = "SELECT * FROM banner ORDER BY id DESC";
+            <?php $query = "SELECT * FROM banner where status = 1 ORDER BY id DESC";
             $result = mysqli_query($conn, $query);
-            if (mysqli_num_rows($result)) {
-               $i = 1;
+            if ($result && mysqli_num_rows($result) > 0) {
+               $i = 0;
                while ($row = mysqli_fetch_array($result)) {
                   ?>
-                  <div class="carousel-item active">
-                     <img src="admin/uploads/banner/<?php echo $row['image']; ?>" class="d-block w-100" alt="">
+                  <div class="carousel-item<?php echo $i === 0 ? ' active' : ''; ?>">
+                     <img src="admin/uploads/banner/<?php echo $row['image']; ?>" class="d-block w-100"
+                        alt="Amazing Infotech banner" <?php echo $i === 0 ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"'; ?>>
                   </div>
                   <?php
+                  $i++;
                }
+            } else {
+               ?>
+               <div class="carousel-item active">
+                  <img src="admin/uploads/banner/1748504529ban1.png" class="d-block w-100"
+                     alt="Amazing Infotech banner" fetchpriority="high" loading="eager">
+               </div>
+               <?php
             }
             ?>
             <!-- <div class="carousel-item">
@@ -279,10 +288,10 @@ if ($result) {
                   </div>
                </div>
             </div>
-            <div class="row">
+            <div class="row products-grid">
                <?php
 
-               $sub_cat = "SELECT * FROM `cat_prod` WHERE sub_category_id != '0' AND status = '1' LIMIT 6";
+               $sub_cat = "SELECT * FROM `cat_prod` WHERE sub_category_id != '0' AND status = '1' LIMIT 8";
                $res2 = mysqli_query($conn, $sub_cat);
 
 
@@ -294,7 +303,7 @@ if ($result) {
                   $short_desc = htmlspecialchars($product_row['small_description']);
                   $product_images = explode(",", $product_row['cat_pd_image']);
                   ?>
-                  <div class="col-md-6 col-lg-4">
+                  <div class="col-md-6 col-lg-3">
                      <div class="service-item wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
                         <div class="service-img">
                            <img src="<?= $site ?>admin/uploads/product/cat_pd_image/<?= $product_images[0]; ?>"
@@ -323,6 +332,9 @@ if ($result) {
                }
                ?>
             </div>
+            <div class="products-more text-center">
+               <a href="products.php" class="theme-btn">View More Products <i class="fas fa-arrow-right"></i></a>
+            </div>
 
          </div>
       </div>
@@ -337,7 +349,7 @@ if ($result) {
                      </p>
                   </div>
                   <div class="mb-20 mt-10">
-                     <a href="#" class="cta-border-btn"><i class="fal fa-headset"></i> +91-9971314354 </a>
+                     <a href="#" class="cta-border-btn"><i class="fal fa-headset"></i> +91-<?=$mobile?>  </a>
                   </div>
                   <a href="#" class="theme-btn">Contact Now <i class="fas fa-arrow-right"></i></a>
                </div>
@@ -456,11 +468,16 @@ if ($result) {
                   $image = $row['image'];
                   $post = $row['designation'];
                   $date = $row['date'];
+                  $testimonial_image = $image ? __DIR__ . '/admin/uploads/service/' . $image : '';
                   ?>
                   <div class="testimonial-single">
                      <div class="testimonial-content">
                         <div class="testimonial-author-img">
-                           <img src="<?= $site ?>admin/uploads/service/<?= $image ?>" alt>
+                           <?php if ($testimonial_image && file_exists($testimonial_image)): ?>
+                              <img src="<?= $site ?>admin/uploads/service/<?= htmlspecialchars($image, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?>">
+                           <?php else: ?>
+                              <span class="testimonial-fallback-icon" aria-label="No profile image"><i class="fas fa-user"></i></span>
+                           <?php endif; ?>
                         </div>
                         <div class="testimonial-author-info">
                            <h4><?= $name ?> </h4>

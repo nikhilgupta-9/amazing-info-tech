@@ -1,60 +1,5 @@
 <?php include("conn.php"); 
 
-$query = "SELECT * FROM users WHERE id='1'";
-if($sql_query = $conn->query($query))
-{
-if($sql_query->num_rows>0)
-{
-$result = $sql_query->fetch_array(MYSQLI_ASSOC);
-$name = $result['name'];
-$company_name = $result['company_name'];
-$email = $result['email'];
-$enquiry_email = $result['enquiry_email'];
-$mobile = $result['mobile'];
-// $landline_no = $result['landline_no'];
-$whatsapp_number = $result['whatsapp_number'];
-$customer_support_number = $result['customer_support_number'];
-$paytm_number = $result['paytm_number'];
-$paytm_file = $result['paytm_file'];
-$fax_number = $result['fax_number'];
-$working_hours = $result['working_hours'];
-$working_hours1 = $result['working_hours1'];
-$working_hours2 = $result['working_hours2'];
-$working_hours3 = $result['working_hours3'];
-$working_hours4 = $result['working_hours4'];
-$working_hours5 = $result['working_hours5'];
-$address = $result['address'];
-$state = $result['state'];
-$city = $result['city'];
-$pin_code = $result['pin_code'];
-$head_office = $result['head_office'];
-// $office_email = $result['office_email'];
-$office_number = $result['office_number'];
-$google_map = $result['google_map'];
-$country = $result['country'];
-$website = $result['website'];
-$catalog_url = $result['catalog_url'];
-$skype_link = $result['skype_link'];
-$facebook_link = $result['facebook_link'];
-$twittter_link = $result['twittter_link'];
-$linkedin_link = $result['linkedin_link'];
-$instagram_link = $result['instagram_link'];
-$youtube_link = $result['youtube_link'];
-$pinterest_link = $result['pinterest_link'];
-$others_link = $result['others_link'];
-// $live_chat_code = $result['live_chat_code'];
-$visitor_vounter_code = $result['visitor_vounter_code'];
-$language_converter_code = $result['language_converter_code'];
-// $google_map1 = $result['google_map1'];
-$blog_url = $result['blog_url'];
-$designed_dev = $result['designed_dev'];
-$copyright = $result['copyright'];
-$domain_name = $result['domain_name'];
-$out_going_server = $result['out_going_server'];
-$server_email = $result['server_email'];
-$server_email_password = $result['server_email_password'];
-}
-}
 
 ?>
  <footer class="footer-area">
@@ -147,24 +92,23 @@ $server_email_password = $result['server_email_password'];
                          <li><a href="<?=$site?>refund-policy.php">refund policy</a></li>
                             <li><a href="<?=$site?>shipping-policy.php">shipping policy</a></li>
                      </ul>
-                     </ul>
                   </div>
                </div>
             </div>
          </div>
       </footer>
 <a href="#" id="scroll-top"><i class="fas fa-angle-up"></i></a>
-      <script src="assets/js/jquery-3.7.1.min.js"></script>
-      <script src="assets/js/modernizr.min.js"></script>
-      <script src="assets/js/bootstrap.bundle.min.js"></script>
-      <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-      <script src="assets/js/jquery.magnific-popup.min.js"></script>
-      <script src="assets/js/isotope.pkgd.min.js"></script>
-      <script src="assets/js/jquery.appear.min.js"></script>
-      <script src="assets/js/jquery.easing.min.js"></script>
-      <script src="assets/js/owl.carousel.min.js"></script>
-      <script src="assets/js/counter-up.js"></script>
-      <script src="assets/js/masonry.pkgd.min.js"></script>
-      <script src="assets/js/wow.min.js"></script>
-      <script src="assets/js/main.js"></script>
+      <script src="<?=$site?>assets/js/jquery-3.7.1.min.js"></script>
+      <script src="<?=$site?>assets/js/modernizr.min.js"></script>
+      <script src="<?=$site?>assets/js/bootstrap.bundle.min.js"></script>
+      <script src="<?=$site?>assets/js/imagesloaded.pkgd.min.js"></script>
+      <script src="<?=$site?>assets/js/jquery.magnific-popup.min.js"></script>
+      <script src="<?=$site?>assets/js/isotope.pkgd.min.js"></script>
+      <script src="<?=$site?>assets/js/jquery.appear.min.js"></script>
+      <script src="<?=$site?>assets/js/jquery.easing.min.js"></script>
+      <script src="<?=$site?>assets/js/owl.carousel.min.js"></script>
+      <script src="<?=$site?>assets/js/counter-up.js"></script>
+      <script src="<?=$site?>assets/js/masonry.pkgd.min.js"></script>
+      <script src="<?=$site?>assets/js/wow.min.js"></script>
+      <script src="<?=$site?>assets/js/main.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>

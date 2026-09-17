@@ -28,6 +28,7 @@ $username = $is_local ? ww_env('DB_USER', 'root') : ww_env('DB_USER_PROD');
 $password = $is_local ? ww_env('DB_PASS', '') : ww_env('DB_PASS_PROD');
 $dbName = $is_local ? ww_env('DB_NAME', 'amazing_db') : ww_env('DB_NAME_PROD');
 
+mysqli_report(MYSQLI_REPORT_OFF);
 $conn = new mysqli($host, $username, $password, $dbName);
 if ($conn->connect_errno) {
 	echo $conn->connect_error;
