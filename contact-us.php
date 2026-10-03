@@ -1,320 +1,363 @@
-<?php include("conn.php");
+<?php
+include("conn.php");
 
-$query = "SELECT * FROM users WHERE id='1'";
-if ($sql_query = $conn->query($query)) {
-  if ($sql_query->num_rows > 0) {
-    $result = $sql_query->fetch_array(MYSQLI_ASSOC);
-    $name = $result['name'];
-    $company_name = $result['company_name'];
-    $email = $result['email'];
-    $enquiry_email = $result['enquiry_email'];
-    $mobile = $result['mobile'];
-    $whatsapp_number = $result['whatsapp_number'];
-    $customer_support_number = $result['customer_support_number'];
-    $paytm_number = $result['paytm_number'];
-    $paytm_file = $result['paytm_file'];
-    $fax_number = $result['fax_number'];
-    $working_hours = $result['working_hours'];
-    $working_hours1 = $result['working_hours1'];
-    $working_hours2 = $result['working_hours2'];
-    $working_hours3 = $result['working_hours3'];
-    $working_hours4 = $result['working_hours4'];
-    $working_hours5 = $result['working_hours5'];
-    $address = $result['address'];
-    $state = $result['state'];
-    $city = $result['city'];
-    $pin_code = $result['pin_code'];
-    $head_office = $result['head_office'];
-    $office_number = $result['office_number'];
-    $google_map = $result['google_map'];
-    $country = $result['country'];
-    $website = $result['website'];
-    $catalog_url = $result['catalog_url'];
-    $skype_link = $result['skype_link'];
-    $facebook_link = $result['facebook_link'];
-    $twittter_link = $result['twittter_link'];
-    $linkedin_link = $result['linkedin_link'];
-    $instagram_link = $result['instagram_link'];
-    $youtube_link = $result['youtube_link'];
-    $pinterest_link = $result['pinterest_link'];
-    $others_link = $result['others_link'];
-    $visitor_vounter_code = $result['visitor_vounter_code'];
-    $language_converter_code = $result['language_converter_code'];
-    $blog_url = $result['blog_url'];
-    $designed_dev = $result['designed_dev'];
-    $copyright = $result['copyright'];
-    $domain_name = $result['domain_name'];
-    $out_going_server = $result['out_going_server'];
-    $server_email = $result['server_email'];
-    $server_email_password = $result['server_email_password'];
-  }
-}
-
-// Fetch branches for the table
+// Fetch active branches for the bottom directory preview
 $branches = [];
-$result = $conn->query("SELECT * FROM `branches`");
-if ($result) {
-  while ($row = $result->fetch_assoc()) {
-    $branches[] = $row;
-  }
+$result = $conn->query("SELECT * FROM `branches` WHERE status = '1' ORDER BY id ASC");
+if (!$result || $result->num_rows === 0) {
+    $result = $conn->query("SELECT * FROM `branches` ORDER BY id ASC");
 }
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $branches[] = $row;
+    }
+}
+
+// Fallback values strictly following Rule #7 & DB values
+$company_name = !empty($company_name) ? $company_name : 'Amazing Infotech Private Limited';
+$mobile = !empty($mobile) ? $mobile : '8800577449';
+$whatsapp_number = !empty($whatsapp_number) ? $whatsapp_number : $mobile;
+$customer_support_number = !empty($customer_support_number) ? $customer_support_number : '01141403011';
+$email = !empty($email) ? $email : 'info@amazinginfotech.in';
+$enquiry_email = !empty($enquiry_email) ? $enquiry_email : 'falak@amzinginfotech.in';
+$address = !empty($address) ? $address : 'Ground Floor, 48, Village Hasanpur, Near Reliance Fresh, I.P Extension, New Delhi, 110092';
+$canonical_url = $site . "contact-us.php";
+$page_title = "Contact Us & HP Plotter Support Desk | " . $company_name;
+$meta_desc = "Get in touch with Amazing Infotech Pvt. Ltd. — Authorized HP Large-Format DesignJet Partner. Request quotations, AMC service support, or visit our Delhi showroom.";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content>
-  <meta name="keywords" content>
-  <title>Amazing Infotech Pvt. Ltd.</title>
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
-  <link rel="stylesheet" href="assets/css/flaticon.css">
-  <link rel="stylesheet" href="assets/css/animate.min.css">
-  <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
-  <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <!-- Official Amazing Infotech Favicon -->
-  <link rel="icon" type="image/jpeg" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
-  <link rel="shortcut icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
-  <link rel="apple-touch-icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
-  
-  <!-- Load jQuery and SweetAlert -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?></title>
+
+    <!-- SEO Meta Tags (Rule #2 & Rule #3 Compliant) -->
+    <meta name="description" content="<?= htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="keywords" content="Contact Amazing Infotech, HP Plotter customer care Delhi, HP DesignJet service number, HP plotter repair contact, Amazing Infotech address">
+    <link rel="canonical" href="<?= $canonical_url ?>">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Amazing Infotech Pvt. Ltd.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:url" content="<?= $canonical_url ?>">
+    <meta property="og:image" content="<?= $site ?>assets/img/hp-partner-experience.jpg">
+
+    <!-- Official Amazing Infotech Favicon (Rule #1 Compliant) -->
+    <link rel="icon" type="image/jpeg" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="shortcut icon" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="apple-touch-icon" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="<?= $site ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/flaticon.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/animate.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/modern-upgrade.css?v=<?= filemtime(__DIR__ . '/assets/css/modern-upgrade.css') ?>">
+
+    <!-- Scripts: jQuery & SweetAlert2 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="home-3">
-  <?php include('header.php') ?>
+<body class="home-3 contact-page">
+    <?php include('header.php') ?>
 
-  <main class="main">
-    <div class="site-breadcrumb" style="background: url(assets/img/breadcrumb/01.jpg)">
-      <div class="container">
-        <h2 class="breadcrumb-title">Contact us</h2>
-        <ul class="breadcrumb-menu">
-          <li><a href="<?= $site ?>index.php">Home</a></li>
-          <li class="active">Contact us</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="contact-area py-50">
-      <div class="container">
-        <div class="contact-wrap">
-          <div class="row">
-            <div class="col-lg-5">
-              <div class="contact-content">
-                <div class="contact-info">
-                  <div class="contact-info-icon">
-                    <i class="fal fa-location-dot"></i>
-                  </div>
-                  <div class="contact-info-content">
-                    <h5>Head Office Address</h5>
-                    <p><?= $address ?></p>
-                  </div>
-                </div>
-                <div class="contact-info">
-                  <div class="contact-info-icon">
-                    <i class="fal fa-phone-volume"></i>
-                  </div>
-                  <div class="contact-info-content">
-                    <h5>Call Us</h5>
-                    <p>+91 <?= $mobile ?>, <?= $customer_support_number ?></p>
-                  </div>
-                </div>
-                <div class="contact-info">
-                  <div class="contact-info-icon">
-                    <i class="fal fa-envelope"></i>
-                  </div>
-                  <div class="contact-info-content">
-                    <h5>Email Us</h5>
-                    <p><a href="mailto:<?= $email ?>"> <?= $email ?>,<br> <?= $enquiry_email ?></a></p>
-                  </div>
-                </div>
-              </div>
+    <main class="main">
+        <!-- Hero Breadcrumb Banner -->
+        <section class="page-hero-breadcrumb">
+            <div class="container">
+                <span class="page-hero-badge">
+                    <i class="fas fa-headset"></i> Dedicated HP Technical Desk
+                </span>
+                <h1 class="page-hero-title">Contact Amazing Infotech</h1>
+                <p class="page-hero-subtitle">
+                    Connect directly with our HP Enterprise Product Consultants, AMC Service Coordinators, and Consumables Dispatch Specialists.
+                </p>
+                <ul class="page-hero-nav">
+                    <li><a href="<?= $site ?>index.php"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="sep"><i class="fas fa-chevron-right"></i></li>
+                    <li class="current">Contact Us</li>
+                </ul>
             </div>
-            <div class="col-lg-7">
-              <div class="contact-form">
-                <div class="contact-form-header">
-                  <h2>Get In Touch</h2>
+        </section>
+
+        <!-- Main Contact Section -->
+        <section class="contact-modern-section bg-light">
+            <div class="container">
+                <!-- 4 Direct Support Desk Cards (Rule #7) -->
+                <div class="row g-3 mb-5">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="contact-desk-card h-100">
+                            <div class="contact-desk-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h5>Registered Head Office</h5>
+                            <p><?= htmlspecialchars($address, ENT_QUOTES, 'UTF-8') ?></p>
+                            <a href="https://maps.google.com/?q=<?= urlencode($address) ?>" target="_blank" rel="noopener noreferrer" class="mt-2 d-inline-block small">
+                                <i class="fas fa-directions me-1"></i> View on Google Maps
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="contact-desk-card h-100">
+                            <div class="contact-desk-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <h5>Direct Sales & Quotations</h5>
+                            <p class="mb-2">Immediate assistance for new HP plotters & pricing.</p>
+                            <a href="tel:+91<?= $mobile ?>" class="fw-bold d-block mb-1">
+                                <i class="fas fa-phone me-1"></i> +91-<?= $mobile ?>
+                            </a>
+                            <a href="https://wa.me/91<?= $whatsapp_number ?>?text=Hello%20Amazing%20Infotech,%20I%20need%20plotter%20quotation." target="_blank" rel="noopener noreferrer" class="text-success small fw-bold">
+                                <i class="fab fa-whatsapp me-1"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="contact-desk-card h-100">
+                            <div class="contact-desk-icon">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <h5>Technical AMC Helpdesk</h5>
+                            <p class="mb-2">Breakdown tickets, service SLA & engineer dispatch.</p>
+                            <?php if (!empty($customer_support_number)): ?>
+                                <a href="tel:<?= $customer_support_number ?>" class="fw-bold d-block mb-1">
+                                    <i class="fas fa-phone me-1"></i> <?= $customer_support_number ?>
+                                </a>
+                            <?php endif; ?>
+                            <a href="tel:+91<?= $mobile ?>" class="small text-muted">
+                                Mobile: +91-<?= $mobile ?>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="contact-desk-card h-100">
+                            <div class="contact-desk-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h5>Official Corporate Email</h5>
+                            <p class="mb-2">Purchase orders, billing & corporate queries.</p>
+                            <a href="mailto:<?= htmlspecialchars($email) ?>" class="d-block mb-1 text-truncate">
+                                <?= htmlspecialchars($email) ?>
+                            </a>
+                            <?php if (!empty($enquiry_email) && $enquiry_email !== $email): ?>
+                                <a href="mailto:<?= htmlspecialchars($enquiry_email) ?>" class="small text-muted text-truncate d-block">
+                                    <?= htmlspecialchars($enquiry_email) ?>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
-                <form method="post" id="contact-form">
-                  <!-- Honeypot field (hidden) -->
-                  <input type="text" name="website" style="display: none;">
-                  
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="fname" id="fname" placeholder="Your Name" required>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Mobile No." required>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Your Subject" required>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="form-group">
-                    <textarea name="message" id="message" cols="30" rows="5" class="form-control" placeholder="Write Your Message" required></textarea>
-                  </div>
-                  
-                  <!-- Submit button with ID -->
-                  <button type="submit" class="theme-btn" id="submit-btn" name="submit">Send Message <i class="far fa-paper-plane"></i></button>
-                  
-                  <div class="col-md-12 mt-3">
-                    <!-- Fixed ID for response -->
-                    <div id="form-response" class="form-messege"></div>
-                  </div>
-                </form>
-              </div>
+                <!-- Form + Map Split Row -->
+                <div class="row g-4 g-lg-5">
+                    <!-- Left Column: Interactive Form -->
+                    <div class="col-lg-7">
+                        <div class="contact-form-card-modern">
+                            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase" style="font-size:11px;">Direct Inquiry Form</span>
+                            <h3>Send Us an Official Message</h3>
+                            <p>Fill out the details below. Our Technical Manager will review your requirements and respond within 30 minutes.</p>
+
+                            <form id="contact-form" method="post">
+                                <!-- Anti-spam honeypot -->
+                                <input type="text" name="website" style="display: none !important;" tabindex="-1" autocomplete="off">
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label small fw-bold text-dark" for="fname">Your Full Name *</label>
+                                            <input type="text" class="form-control" name="fname" id="fname" placeholder="e.g. Rahul Sharma" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label small fw-bold text-dark" for="email">Work Email *</label>
+                                            <input type="email" class="form-control" name="email" id="email" placeholder="e.g. rahul@company.com" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label small fw-bold text-dark" for="phone">Phone / WhatsApp *</label>
+                                            <input type="tel" class="form-control" name="phone" id="phone" placeholder="e.g. 9876543210" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-2">
+                                            <label class="form-label small fw-bold text-dark" for="subject">Requirement Type *</label>
+                                            <select class="form-control" name="subject" id="subject" required>
+                                                <option value="New HP Plotter Quotation">New HP Plotter Purchase / Quotation</option>
+                                                <option value="Annual Maintenance Contract (AMC)">Annual Maintenance Contract (AMC)</option>
+                                                <option value="Emergency Breakdown Repair">Emergency Plotter Breakdown Repair</option>
+                                                <option value="Genuine HP Inks & Supplies Order">Genuine HP Inks & Media Paper Rolls</option>
+                                                <option value="Trade-In / Machine Upgrade">Plotter Trade-In / Machine Upgrade</option>
+                                                <option value="Other Commercial Query">Other Commercial Query</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label small fw-bold text-dark" for="message">Your Message / Specifications *</label>
+                                            <textarea class="form-control" name="message" id="message" rows="4" placeholder="Mention the printer model (e.g. DesignJet T850, T1700), issue symptoms, or requested print width..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="form-response" class="form-messege mb-2"></div>
+                                        <button type="submit" class="theme-btn w-100 justify-content-center" id="submit-btn" style="padding: 12px 24px;">
+                                            <span>Send Message</span> <i class="far fa-paper-plane ms-2"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive Map & Experience Center Info -->
+                    <div class="col-lg-5">
+                        <div class="contact-map-frame h-100 d-flex flex-column bg-white p-3 rounded-3 border">
+                            <div class="mb-3">
+                                <h4 class="fw-bold mb-1 text-dark">Delhi Corporate Showroom</h4>
+                                <p class="text-muted small mb-0">Visit our live demonstration suite to test HP DesignJet and Latex plotters prior to purchase.</p>
+                            </div>
+                            <div class="flex-grow-1" style="min-height: 380px;">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14008.142956740205!2d77.2918317664655!3d28.628690945084937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4b2f79b09d5%3A0x158880a7f1a9f5c4!2sI.P.Extension%2C%20Patparganj%2C%20Delhi!5e0!3m2!1sen!2sin!4v1729141530344!5m2!1sen!2sin"
+                                    width="100%" height="100%" style="border:0; border-radius: 10px; min-height: 380px;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade" title="Amazing Infotech Location Map">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Regional Branch Offices Directory Preview -->
+                <div class="mt-5 pt-4 border-top">
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between mb-4">
+                        <div>
+                            <h3 class="fw-bold text-dark mb-1">Our Regional Branch Offices</h3>
+                            <p class="text-muted small mb-0">Direct local branches serving western, central, and northern commercial corridors.</p>
+                        </div>
+                        <a href="<?= $site ?>our-branches.php" class="theme-btn border-btn mt-2 mt-md-0" style="padding: 8px 18px; font-size: 13.5px; background:#0F172A; color:#FFF; border-color:#0F172A;">
+                            <span>View All Branches</span> <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    <div class="row g-3">
+                        <?php foreach (array_slice($branches, 0, 4) as $branch): 
+                            $b_name = htmlspecialchars(stripslashes($branch['name']), ENT_QUOTES, 'UTF-8');
+                            $b_address = htmlspecialchars(stripslashes($branch['address']), ENT_QUOTES, 'UTF-8');
+                            $raw_phone = trim($branch['moblie_no']);
+                            $tel_link = "tel:" . preg_replace('/[^0-9+]/', '', $raw_phone);
+                        ?>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="p-3 bg-white rounded-3 border h-100">
+                                    <h6 class="fw-bold text-dark mb-1"><?= $b_name ?></h6>
+                                    <p class="text-muted small text-truncate mb-2" title="<?= $b_address ?>"><?= $b_address ?></p>
+                                    <a href="<?= $tel_link ?>" class="text-primary small fw-bold">
+                                        <i class="fas fa-phone-alt me-1"></i> <?= htmlspecialchars($raw_phone) ?>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
+        </section>
+    </main>
 
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14008.142956740205!2d77.2918317664655!3d28.628690945084937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4b2f79b09d5%3A0x158880a7f1a9f5c4!2sI.P.Extension%2C%20Patparganj%2C%20Delhi!5e0!3m2!1sen!2sin!4v1729141530344!5m2!1sen!2sin"
-          width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <?php include('footer.php') ?>
 
-      </div>
-    </div>
-
-    <div class="blog-single-area pt-50 pb-50">
-      <div class="container">
-        <h3 class="pb-3"> Branch Offices</h3>
-        <div class="row">
-          <?php foreach ($branches as $branch): ?>
-          <div class="col-md-6 col-12">
-            <div class="branches-box">
-              <h3><?php echo htmlspecialchars($branch['name']); ?></h3>
-              <p><b>Address:-</b> <?php echo htmlspecialchars($branch['address']); ?></p>
-              <p><b>Contact Person:-</b> <?php echo htmlspecialchars($branch['contact_person']); ?></p>
-              <p><b>Mobile No-</b> <a href="tel:<?php echo htmlspecialchars($branch['moblie_no']); ?>">+91-<?php echo htmlspecialchars($branch['moblie_no']); ?></a></p>
-            </div>
-          </div>  
-          <?php endforeach; ?>
-        </div>
-      </div>
-    </div>
-  </main>
-  
-  <?php include('footer.php') ?>
-  
-  <!-- AJAX Script -->
-  <script>
-  $(document).ready(function() {
-      $('#contact-form').on('submit', function(e) {
-          e.preventDefault();
-          
-          // Disable submit button and show loading state
-          var submitBtn = $('#submit-btn');
-          var originalText = submitBtn.html();
-          submitBtn.prop('disabled', true).html('Submitting... <i class="far fa-spinner fa-spin"></i>');
-          
-          // Clear previous messages
-          $('#form-response').removeClass('text-success text-danger').html('');
-          
-          // Get form data
-          var formData = {
-              fname: $('#fname').val(),
-              email: $('#email').val(),
-              phone: $('#phone').val(),
-              subject: $('#subject').val(),
-              message: $('#message').val(),
-              website: $('input[name="website"]').val() // honeypot
-          };
-          
-          // Validate required fields
-          if (!formData.fname || !formData.email || !formData.phone || !formData.message) {
-              $('#form-response').addClass('text-danger').html('Please fill all required fields.');
-              submitBtn.prop('disabled', false).html(originalText);
-              return false;
-          }
-          
-          // Email validation
-          var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailPattern.test(formData.email)) {
-              $('#form-response').addClass('text-danger').html('Please enter a valid email address.');
-              submitBtn.prop('disabled', false).html(originalText);
-              return false;
-          }
-          
-          // Phone validation (simple)
-          var phonePattern = /^[0-9]{10,15}$/;
-          var phoneDigits = formData.phone.replace(/\D/g, '');
-          if (!phonePattern.test(phoneDigits)) {
-              $('#form-response').addClass('text-danger').html('Please enter a valid phone number (10-15 digits).');
-              submitBtn.prop('disabled', false).html(originalText);
-              return false;
-          }
-          
-          // Send AJAX request
-          $.ajax({
-              url: 'send_mail.php',
-              type: 'POST',
-              data: formData,
-              dataType: 'json',
-              success: function(response) {
-                  if (response.status === 'success') {
-                      // Show success message
-                      $('#form-response').addClass('text-success').html(response.message);
-                      
-                      // Reset form
-                      $('#contact-form')[0].reset();
-                      
-                      // Show SweetAlert with contact ID
-                      var alertMessage = response.message;
-                      if (response.contact_id) {
-                          alertMessage += ' (Reference ID: #' + response.contact_id + ')';
-                      }
-                      
-                      Swal.fire({
-                          icon: 'success',
-                          title: 'Success!',
-                          text: alertMessage,
-                          timer: 4000,
-                          showConfirmButton: true
-                      });
-                  } else {
-                      // Show error message
-                      $('#form-response').addClass('text-danger').html(response.message);
-                      
-                      // Show SweetAlert for error
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Error!',
-                          text: response.message
-                      });
-                  }
-              },
-              error: function(xhr, status, error) {
-                  $('#form-response').addClass('text-danger').html('An error occurred. Please try again.');
-                  
-                  Swal.fire({
-                      icon: 'error',
-                      title: 'Network Error!',
-                      text: 'Please check your connection and try again.'
-                  });
-              },
-              complete: function() {
-                  submitBtn.prop('disabled', false).html(originalText);
-              }
-          });
-      });
-  });
-  </script>
+    <!-- AJAX Form Script -->
+    <script>
+    $(document).ready(function() {
+        $('#contact-form').on('submit', function(e) {
+            e.preventDefault();
+            
+            var submitBtn = $('#submit-btn');
+            var originalText = submitBtn.html();
+            submitBtn.prop('disabled', true).html('Submitting... <i class="far fa-spinner fa-spin ms-2"></i>');
+            
+            $('#form-response').removeClass('text-success text-danger').html('');
+            
+            var formData = {
+                fname: $('#fname').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                subject: $('#subject').val(),
+                message: $('#message').val(),
+                website: $('input[name="website"]').val() // Honeypot
+            };
+            
+            if (!formData.fname || !formData.email || !formData.phone || !formData.message) {
+                $('#form-response').addClass('text-danger').html('Please fill all required fields.');
+                submitBtn.prop('disabled', false).html(originalText);
+                return false;
+            }
+            
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(formData.email)) {
+                $('#form-response').addClass('text-danger').html('Please enter a valid email address.');
+                submitBtn.prop('disabled', false).html(originalText);
+                return false;
+            }
+            
+            $.ajax({
+                url: '<?= $site ?>send_mail.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('#form-response').addClass('text-success').html(response.message);
+                        $('#contact-form')[0].reset();
+                        
+                        var alertMessage = response.message;
+                        if (response.contact_id) {
+                            alertMessage += ' (Reference ID: #' + response.contact_id + ')';
+                        }
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Inquiry Submitted Successfully!',
+                            text: alertMessage,
+                            timer: 4000,
+                            showConfirmButton: true
+                        });
+                    } else {
+                        $('#form-response').addClass('text-danger').html(response.message || 'Error sending message.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Submission Error',
+                            text: response.message || 'Please check your inputs and try again.'
+                        });
+                    }
+                },
+                error: function() {
+                    $('#form-response').addClass('text-danger').html('Network error occurred. Please call our helpline directly.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'Unable to reach the server. Please call us directly at +91-<?= $mobile ?>.'
+                    });
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false).html(originalText);
+                }
+            });
+        });
+    });
+    </script>
 </body>
+
 </html>

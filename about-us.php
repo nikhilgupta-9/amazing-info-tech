@@ -1,346 +1,296 @@
 <?php
 include "conn.php";
 
-// Display errors for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 $sections = [];
 $result = $conn->query("SELECT * FROM `tbl_about_content`");
-while ($row = $result->fetch_assoc()) {
-   $sections[$row['heading']] = $row['description'];
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $sections[$row['heading']] = $row['description'];
+    }
 }
+
+// Fallback values strictly following Rule #7 & DB values
+$company_name = !empty($company_name) ? $company_name : 'Amazing Infotech Private Limited';
+$mobile = !empty($mobile) ? $mobile : '8800577449';
+$whatsapp_number = !empty($whatsapp_number) ? $whatsapp_number : $mobile;
+$customer_support_number = !empty($customer_support_number) ? $customer_support_number : '01141403011';
+$email = !empty($email) ? $email : 'info@amazinginfotech.in';
+$canonical_url = $site . "about-us.php";
+$page_title = "About Us | India's Premier HP Large-Format Partner | " . $company_name;
+$meta_desc = "Learn about Amazing Infotech Pvt. Ltd. — India's leading HP Large-Format Business Partner since 2018. Over 4,500+ plotters installed, certified engineers, and Pan-India AMC services.";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta name="description" content>
-   <meta name="keywords" content>
-   <title>Amazing Infotech Pvt. Ltd.</title>
-   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-   <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
-   <link rel="stylesheet" href="assets/css/flaticon.css">
-   <link rel="stylesheet" href="assets/css/animate.min.css">
-   <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
-   <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-   <link rel="stylesheet" href="assets/css/style.css">
-   <!-- Official Amazing Infotech Favicon -->
-   <link rel="icon" type="image/jpeg" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
-   <link rel="shortcut icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
-   <link rel="apple-touch-icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?></title>
+
+    <!-- SEO Meta Tags (Rule #2 & Rule #3 Compliant) -->
+    <meta name="description" content="<?= htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="keywords" content="About Amazing Infotech, HP Plotter Dealer India, HP Large-Format Business Partner, HP DesignJet AMC Delhi NCR, Vikas Kumar Managing Director">
+    <link rel="canonical" href="<?= $canonical_url ?>">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Amazing Infotech Pvt. Ltd.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<?= htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:url" content="<?= $canonical_url ?>">
+    <meta property="og:image" content="<?= $site ?>assets/img/hp-partner-experience.jpg">
+
+    <!-- Official Amazing Infotech Favicon (Rule #1 Compliant) -->
+    <link rel="icon" type="image/jpeg" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="shortcut icon" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="apple-touch-icon" href="<?= $site ?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="<?= $site ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/all-fontawesome.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/flaticon.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/animate.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= $site ?>assets/css/modern-upgrade.css?v=<?= filemtime(__DIR__ . '/assets/css/modern-upgrade.css') ?>">
 </head>
 
-<body class="home-3">
-   <?php include('header.php') ?>
+<body class="home-3 about-page">
+    <?php include('header.php') ?>
 
-   <main class="main">
-
-      <div class="site-breadcrumb" style="background: url(assets/img/breadcrumb/01.jpg)">
-         <div class="container">
-            <h2 class="breadcrumb-title">About Our Company</h2>
-            <ul class="breadcrumb-menu">
-               <li><a href="index.php">Home</a></li>
-               <li class="active">About Our Company</li>
-            </ul>
-         </div>
-      </div>
-
-      <div style="background: #00b6b173;" class="choose-area">
-         <div class="container">
-            <div class="row align-items-center">
-               <div class="col-lg-6">
-                  <div class="choose-content wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="site-heading mb-3">
-                        <span class="site-title-tagline"><i class="fas fa-bring-forward"></i> </span>
-                        <h2 class="site-title">
-                           Founder of <span style="color:#000;">Company</span>
-                        </h2>
-                     </div>
-                     <p style="color:#000;">
-                        <?php echo $sections['Founder of Company'] ?? 'Content not available.'; ?>
-
-                        <!-- Vikas Kumar, managing director of Amazing Infotech Private Limited, has helped the company grow into a leading IT solutions provider. Having worked in the technology industry for over seven years, Mr. Vikas has a comprehensive understanding of leveraging innovation, operational efficiency, and value for consumers. His journey into the IT industry began with a strong interest in finding innovative IT solutions to business problems. This passion, coupled with his drive for perfection, led him to establish Amazing Infotech.
-                        </p>
-                        
-                       <p style="color:#000;">Under Mr. Vikas’s leadership, Amazing Infotech has grown into a reputed brand as an IT service provider to numerous firms across India. His visionary leadership and ability to foresee changes in the business landscape have been invaluable in keeping the company’s strategy relevant in the highly competitive global market.</p> 
-                        <p style="color:#000;">As the Managing Director, Vikas Kumar is an active leader. He works closely with the company, providing ideas and oversight at every level to ensure that all decisions align with the firm’s strategic goal: delivering high-quality IT solutions. His focus on accessibility and accountability has fostered trust and confidence among clients, associates, and staff. Mr. Vikas continues to drive Amazing Infotech toward a sustainable vision of growth and development, poised to revamp the IT landscape.</p> -->
-                     </p>
-                  </div>
-               </div>
-               <div class="col-lg-6">
-                  <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="row g-4">
-                        <div class="col-12">
-                           <img class="img-1" src="assets/img/ceo.jpg" alt="Managing Director - Amazing Infotech Pvt. Ltd.">
-                        </div>
-                        <!--<div class="col-6">-->
-                        <!--   <img class="img-2" src="assets/img/adt-2.jpg" alt>-->
-                        <!--</div>-->
-                     </div>
-                  </div>
-               </div>
+    <main class="main">
+        <!-- Hero Breadcrumb Banner -->
+        <section class="page-hero-breadcrumb">
+            <div class="container">
+                <span class="page-hero-badge">
+                    <i class="fas fa-award"></i> India's #1 HP Large-Format Partner
+                </span>
+                <h1 class="page-hero-title">About Amazing Infotech</h1>
+                <p class="page-hero-subtitle">
+                    Pioneering advanced architectural, engineering, and industrial large-format printing hardware, genuine supplies, and certified nationwide maintenance services since 2018.
+                </p>
+                <ul class="page-hero-nav">
+                    <li><a href="<?= $site ?>index.php"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="sep"><i class="fas fa-chevron-right"></i></li>
+                    <li class="current">About Our Company</li>
+                </ul>
             </div>
-         </div>
-      </div>
+        </section>
 
-
-      <div style="background: #00b6b1a3;" class="choose-area">
-         <div class="container">
-            <div class="row align-items-center">
-
-               <div class="col-lg-6">
-                  <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="row g-4">
-                        <div class="col-12">
-                           <img class="img-1" src="assets/img/abt.png" alt="Amazing Infotech - Authorized HP Partner Facilities">
+        <!-- Section 1: Executive Leadership / Founder -->
+        <section class="about-section-padding bg-light">
+            <div class="container">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-5">
+                        <div class="about-leader-card wow fadeInLeft" data-wow-duration="0.8s">
+                            <div class="about-leader-img-wrap">
+                                <img src="<?= $site ?>assets/img/ceo.jpg" alt="Vikas Kumar - Founder & Managing Director | Amazing Infotech Pvt. Ltd." loading="lazy">
+                                <div class="about-leader-role-badge">
+                                    <h5>Mr. Vikas Kumar</h5>
+                                    <small>Founder & Managing Director</small>
+                                </div>
+                            </div>
                         </div>
-                        <!--<div class="col-6">-->
-                        <!--   <img class="img-2" src="assets/img/adt-2.jpg" alt>-->
-                        <!--</div>-->
-                     </div>
-                  </div>
-               </div>
-               <div class="col-lg-6">
-                  <div class="choose-content wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="site-heading mb-3">
-                        <span class="site-title-tagline"><i class="fas fa-bring-forward"></i> </span>
-                        <h2 class="site-title">
-                           About Amazing Infotech
-                        </h2>
-                     </div>
-                     <p style="color:#000;">
-                     <?php echo $sections['About Amazing Infotech'] ?? 'Content not available.'; ?>
-                        <!-- Amazing Infotech Private Limited was founded in 2018 and has quickly evolved into the top
-                        company offering quality and innovative HP large-format Printers. We cater to all kinds of
-                        businesses across the country by providing them with solution-oriented services that meet their
-                        needs and fill existing gaps. We provide reliable HP DesignJet/Pagewide and Latex printers and
-                        supplies and all the associated equipment/products/services to make it easy for businesses to
-                        achieve operational efficiency.</p>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="about-leader-content wow fadeInRight" data-wow-duration="0.8s">
+                            <span class="about-tagline"><i class="fas fa-user-tie"></i> Leadership & Vision</span>
+                            <h2 class="about-heading">Empowering Indian Enterprises with Precision Printing Technology</h2>
+                            <div class="about-desc-text">
+                                <p><?= nl2br(htmlspecialchars($sections['Founder of Company'] ?? 'Vikas Kumar, Managing Director of Amazing Infotech Private Limited, has spearheaded the company into India\'s leading large-format IT solutions provider.')) ?></p>
+                            </div>
 
-                     <p style="color:#000;">Ever since we started, Amazing Infotech has operated under a value-based
-                        strategy. Most of our services revolve around geographic information systems, mapping, AutoCAD
-                        services, architectural drawing services, and related services. In this way, we guarantee that
-                        clients with different activities in various sectors will find the best solutions.</p>
-
-                     <p style="color:#000;">We are recognized as India’s No.1 HP large-format Business Partner. This
-                        encourages us to supply high-quality HP plotters for office and industrial applications. Our OEM
-                        multifunction plotters are highly recommended for their low cost, high speed, and web
-                        accessibility, meeting the demands of small to large organizations.</p>
-
-                     <p style="color:#000;">We are a one-stop solution provider of products like HP DesignJet printers,
-                        HP Latex printers, and HP XL printers. We offer clients downloadable software or upgrades such
-                        as HP service packs, extended warranties, and replacements of inks, toners, and paper media to
-                        meet all the client’s printing and plotting requirements. All these offerings come with a
-                        quality and reliability guarantee that makes it possible to offer the best-performing products
-                        to any market.</p>
-
-                     <p style="color:#000;">Through the years, we have achieved significant accomplishments that are
-                        evidence of our credibility and dedication to quality work. Since our establishment in 2018, we
-                        have installed over 4,500 units and done business with over 3,500 corporate clients. This record
-                        is evidence of our success in unlocking sustainable solutions that serve real-time commercial
-                        needs.</p>
-                     <p style="color:#000;">Our key differentiator is our focus on the customer. We make an effort to
-                        get to know the client and their needs to provide solutions that will tackle their issues. No
-                        matter the level of innovation or customization required in the software and design, we exist to
-                        ensure our customers get the most out of it. -->
-                     </p>
-
-
-
-                  </div>
-               </div>
-
+                            <!-- Leadership Trust Highlights -->
+                            <div class="about-stats-grid">
+                                <div class="about-stat-item">
+                                    <h4>7+ Years</h4>
+                                    <p>Industry Leadership & Innovation</p>
+                                </div>
+                                <div class="about-stat-item">
+                                    <h4>4,500+</h4>
+                                    <p>HP Plotters Installed Across India</p>
+                                </div>
+                                <div class="about-stat-item">
+                                    <h4>3,500+</h4>
+                                    <p>Corporate, AEC & Government Clients</p>
+                                </div>
+                                <div class="about-stat-item">
+                                    <h4>4-Hour</h4>
+                                    <p>Rapid On-Site SLA in Delhi NCR</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="cta-area">
-         <div class="container">
-            <div class="row">
-               <div class="col-lg-7 mx-auto text-center wow fadeInDown" data-wow-duration="1s" data-wow-delay=".25s">
-                  <div class="cta-text">
-                     <h1>We Provide <span>Quality</span> Services</h1>
-                     <p>
-                     <?php echo $sections['We Provide Quality Services'] ?? 'Content not available.'; ?>
-                     </p>
-                  </div>
-                  <div class="mb-20 mt-10">
-                     <a href="tel:+91<?= $mobile ?>" class="cta-border-btn"><i class="fal fa-headset"></i> +91-<?= $mobile ?> </a>
-                  </div>
-                  <a href="#" class="theme-btn">Contact Now <i class="fas fa-arrow-right"></i></a>
-               </div>
+        </section>
+
+        <!-- Section 2: Company Story & Infrastructure -->
+        <section class="about-section-padding">
+            <div class="container">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-7 order-2 order-lg-1">
+                        <div class="about-story-content wow fadeInLeft" data-wow-duration="0.8s">
+                            <span class="about-tagline"><i class="fas fa-building"></i> Our Story & Growth</span>
+                            <h2 class="about-heading">Transforming Commercial Printing from Delhi NCR to Pan-India</h2>
+                            <div class="about-desc-text">
+                                <p><?= nl2br(htmlspecialchars($sections['About Amazing Infotech'] ?? 'Amazing Infotech Private Limited was founded in 2018 and has quickly evolved into the premier company offering quality and innovative HP large-format Printers.')) ?></p>
+                            </div>
+
+                            <div class="mt-4 d-flex flex-wrap gap-3">
+                                <a href="<?= $site ?>supplies-and-amc.php" class="theme-btn">
+                                    <i class="fas fa-tools me-2"></i> Our AMC & Supplies Services
+                                </a>
+                                <a href="<?= $site ?>contact-us.php" class="theme-btn border-btn" style="background:#0F172A; color:#FFF; border-color:#0F172A;">
+                                    <i class="fas fa-map-marker-alt me-2"></i> Visit Showroom
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 order-1 order-lg-2">
+                        <div class="about-facility-wrap wow fadeInRight" data-wow-duration="0.8s">
+                            <div class="about-leader-img-wrap">
+                                <img src="<?= $site ?>assets/img/abt.png" alt="Amazing Infotech - Authorized HP Partner Facilities & Experience Center" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
+        </section>
 
-      <div class="about-area py-120">
-         <div class="container">
-            <div class="row align-items-center">
-               <div class="col-lg-6">
-                  <div class="about-left wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="about-img">
-                        <div class="about-img-1">
-                           <img src="assets/img/about-us.png" alt="Amazing Infotech - India's Premier HP Large-Format Partner">
+        <!-- Section 3: Core Service Capabilities & Quality Pillars -->
+        <section class="about-section-padding bg-light">
+            <div class="container">
+                <div class="text-center max-w-700 mx-auto mb-5 wow fadeInDown" data-wow-duration="0.8s">
+                    <span class="about-tagline"><i class="fas fa-shield-alt"></i> Quality Guarantee</span>
+                    <h2 class="about-heading">Comprehensive Engineering & Support Services</h2>
+                    <p class="about-desc-text">
+                        <?= htmlspecialchars($sections['We Provide Quality Services'] ?? 'We are the trusted HP large format Designjet Business Partner in India, ensuring top-tier performance for every printing ecosystem.') ?>
+                    </p>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="about-feature-box wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h4>Technical Excellence</h4>
+                            <p><?= htmlspecialchars($sections['Technical Excellence'] ?? 'Our certified field engineers undergo continuous factory training by HP to deliver instant diagnostics, precision repairs, and firmware updates.') ?></p>
                         </div>
+                    </div>
 
-                     </div>
-                     <div class="about-shape"><img src="assets/img/shape/01.png" alt="Decorative Shape" aria-hidden="true"></div>
-                     <div class="about-experience">
-                        <h1>(India’s No.1 HP Plotters Business Partner)</h1>
+                    <div class="col-md-4">
+                        <div class="about-feature-box wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <h4>100% Genuine Supplies</h4>
+                            <p><?= htmlspecialchars($sections['Quality Products'] ?? 'We supply exclusively authentic HP OEM ink cartridges, long-life printheads, and certified media rolls to protect machine warranties.') ?></p>
+                        </div>
+                    </div>
 
-                     </div>
-                  </div>
-               </div>
-               <div class="col-lg-6">
-                  <div class="about-right wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="site-heading mb-3">
-                        <span class="site-title-tagline"><i class="fas fa-bring-forward"></i> AMAZING INFOTECH PRIVATE
-                           LIMITED</span>
-                        <h2 class="site-title">
-                           We Provide Quality <span>Repair</span> Services
-                        </h2>
-                     </div>
-                     <p class="about-text">
-                     <?php echo $sections['We Provide Quality Services'] ?? 'Content not available.'; ?>
-                     </p>
-                     <div class="about-list-wrap">
-                        <ul class="about-list list-unstyled">
-                           <li>
-                              <div class="icon">
-                                 <i class="fa-solid fa-gears"></i>
-                              </div>
-                              <div class="content">
-                                 <h4>Technical Excellence </h4>
-                                 <p>
-                                 <?php echo $sections['Technical Excellence'] ?? 'Content not available.'; ?>
-
-                                 </p>
-                              </div>
-                           </li>
-                           <li>
-                              <div class="icon">
-                                 <i class="fa-solid fa-certificate"></i>
-                              </div>
-                              <div class="content">
-                                 <h4>Quality Products</h4>
-                                 <p>                                 
-                                    <?php echo $sections['Quality Products'] ?? 'Content not available.'; ?>
-                                 </p>
-                              </div>
-                           </li>
-                           <li>
-                              <div class="icon">
-                                 <img src="assets/img/icon/trusted.svg" alt="Trusted HP Services Icon">
-                              </div>
-                              <div class="content">
-                                 <h4>End-to-End Services </h4>
-                                 <p>
-                                 <?php echo $sections['End-to-End Services'] ?? 'Content not available.'; ?>
-                                 </p>
-                              </div>
-                           </li>
-                        </ul>
-                     </div>
-
-                  </div>
-               </div>
+                    <div class="col-md-4">
+                        <div class="about-feature-box wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h4>End-to-End Solutions</h4>
+                            <p><?= htmlspecialchars($sections['End-to-End Services'] ?? 'From initial plotter consultation and site planning to delivery, installation, user operator training, and multi-year AMC maintenance.') ?></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-      <div class="choose-area">
-         <div class="container">
-            <div class="row align-items-center">
-               <div class="col-lg-6">
-                  <div class="choose-content wow fadeInUp" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="site-heading mb-3">
-                        <span class="site-title-tagline"><i class="fas fa-bring-forward"></i> Why Choose Amazing
-                           Infotech?</span>
-                        <h2 class="site-title">
-                           Find the Right Plotter, Which is Perfect For You!
-                        </h2>
-                     </div>
-                     <p>
-                         <?php echo $sections['Why Choose Us - Subsection 5'] ?? 'Content not available.'; ?>
-                     </p>
-                     <div class="choose-wrapper mt-4">
-                        <div class="row">
-                           <div class="col-lg-6">
-                              <div class="choose-item">
-                                 <div class="choose-icon">
-                                    <img src="assets/img/icon/team-2.svg" alt="Printers and Plotters for Every Need">
-                                 </div>
-                                 <div class="choose-item-content">
-                                    <h4>Printers/Plotters For Every Need</h4>
-                                    <p>
-                                    <?php echo $sections['Why Choose Us - Subsection 1'] ?? 'Content not available.'; ?>
-                                     </p>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-6">
-                              <div class="choose-item">
-                                 <div class="choose-icon">
-                                    <img src="assets/img/icon/quality.svg" alt="Comprehensive HP Support Services">
-                                 </div>
-                                 <div class="choose-item-content">
-                                    <h4>Comprehensive Support Services</h4>
-                                    <p>
-                                       <?php echo $sections['Why Choose Us - Subsection 2'] ?? 'Content not available.'; ?>
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-6">
-                              <div class="choose-item">
-                                 <div class="choose-icon">
-                                    <img src="assets/img/icon/trusted.svg" alt="Consistent High-Quality Results">
-                                 </div>
-                                 <div class="choose-item-content">
-                                    <h4>High-Quality Results, Consistently</h4>
-                                    <p>
-                                    <?php echo $sections['Why Choose Us - Subsection 3'] ?? 'Content not available.'; ?>
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-6">
-                              <div class="choose-item">
-                                 <div class="choose-icon">
-                                    <img src="assets/img/icon/happy.svg" alt="Improve Operational Efficiency">
-                                 </div>
-                                 <div class="choose-item-content">
-                                    <h4>Improve Operational Efficiency</h4>
-                                    <p>
-                                    <?php echo $sections['Why Choose Us - Subsection 4'] ?? 'Content not available.'; ?>
-                                    </p>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-lg-6">
-                  <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
-                     <div class="row g-4">
-                        <div class="col-6">
-                           <img class="img-1" src="assets/img/ab1.png" alt="HP Large-Format Plotter Demonstration Experience">
-                        </div>
-                        <div class="col-6">
-                           <img class="img-1" src="assets/img/ab2.jpg" alt="Certified Technical Plotter Maintenance Facility">
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+        </section>
 
-   </main>
-   <?php include('footer.php') ?>
+        <!-- Section 4: Why Choose Amazing Infotech Grid -->
+        <section class="about-section-padding">
+            <div class="container">
+                <div class="row align-items-center g-4 g-lg-5">
+                    <div class="col-lg-6">
+                        <div class="choose-content-modern wow fadeInLeft" data-wow-duration="0.8s">
+                            <span class="about-tagline"><i class="fas fa-check-circle"></i> Why Choose Amazing Infotech</span>
+                            <h2 class="about-heading">Find the Perfect Plotter & Reliable Support Partner</h2>
+                            <p class="about-desc-text">
+                                <?= htmlspecialchars($sections['Why Choose Us - Subsection 5'] ?? 'When it comes to reasons, we have a proven track record of exceeding client expectations across architecture, GIS mapping, education, and manufacturing.') ?>
+                            </p>
+
+                            <div class="row g-3 mt-2">
+                                <div class="col-sm-6">
+                                    <div class="about-stat-item">
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-print text-primary me-2"></i> Plotters For Every Need</h5>
+                                        <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 1'] ?? 'From entry-level 24" & 36" office plotters to 64" industrial Latex & PageWide systems.') ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="about-stat-item">
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-headset text-primary me-2"></i> Comprehensive AMC</h5>
+                                        <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 2'] ?? 'Preventive audits, genuine spare part replacements, and dedicated telephone support desks.') ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="about-stat-item">
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-award text-primary me-2"></i> Consistent Output</h5>
+                                        <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 3'] ?? 'Guaranteed crisp line accuracy and vibrant color gamuts for CAD blueprints and signage.') ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="about-stat-item">
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-tachometer-alt text-primary me-2"></i> Operational Efficiency</h5>
+                                        <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 4'] ?? 'Minimizing printer downtime and lowering cost-per-page with smart tank plotters.') ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row g-3 wow fadeInRight" data-wow-duration="0.8s">
+                            <div class="col-6">
+                                <div class="about-leader-img-wrap" style="height: 280px;">
+                                    <img src="<?= $site ?>assets/img/ab1.png" alt="HP Large-Format Plotter Demonstration Experience Center" loading="lazy" style="height:100%; object-fit:cover;">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="about-leader-img-wrap" style="height: 280px;">
+                                    <img src="<?= $site ?>assets/img/ab2.jpg" alt="Certified Technical Plotter Maintenance Facility Amazing Infotech" loading="lazy" style="height:100%; object-fit:cover;">
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <div class="about-leader-img-wrap" style="height: 220px;">
+                                    <img src="<?= $site ?>assets/img/about-us.png" alt="Amazing Infotech - India's Premier HP Large-Format Partner Experience" loading="lazy" style="height:100%; object-fit:cover;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Consultation Callout Strip (Rule #7 Dynamic Numbers) -->
+        <section class="py-5" style="background: linear-gradient(135deg, #0F172A 0%, #03466E 100%); border-top: 1px solid rgba(255,255,255,0.1);">
+            <div class="container">
+                <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between gap-4 text-center text-lg-start">
+                    <div>
+                        <span class="badge bg-info text-dark px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase">Direct Technical Operations</span>
+                        <h3 class="text-white mb-1 fw-bold">Need Plotter Guidance or Certified AMC Support?</h3>
+                        <p class="text-light mb-0" style="opacity: 0.85;">Connect directly with our HP Enterprise Product Specialists for pricing and service agreements.</p>
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center justify-content-center gap-3 flex-shrink-0">
+                        <a href="tel:+91<?= $mobile ?>" class="theme-btn" style="background:#00B6B1; border-color:#00B6B1; padding:12px 24px;">
+                            <i class="fas fa-phone-alt me-2"></i> Call +91-<?= $mobile ?>
+                        </a>
+                        <a href="https://wa.me/91<?= $whatsapp_number ?>?text=Hello%20Amazing%20Infotech,%20I%20would%20like%20to%20know%20more%20about%20your%20HP%20Plotters%20and%20Services." target="_blank" rel="noopener noreferrer" class="theme-btn" style="background:#25D366; border-color:#25D366; padding:12px 24px;">
+                            <i class="fab fa-whatsapp me-2"></i> WhatsApp Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <?php include('footer.php') ?>
 </body>
-
 </html>
