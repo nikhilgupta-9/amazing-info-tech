@@ -76,6 +76,10 @@ if ($result) {
   <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
   <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Official Amazing Infotech Favicon -->
+  <link rel="icon" type="image/jpeg" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+  <link rel="shortcut icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+  <link rel="apple-touch-icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
   
   <!-- Load jQuery and SweetAlert -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

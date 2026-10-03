@@ -35,11 +35,13 @@ $sub_cat_result = mysqli_query($conn, $sub_cat_query);
       <title>Amazing Infotech Pvt. Ltd.</title>
       <link rel="stylesheet" href="<?=$site?>assets/css/bootstrap.min.css">
       <link rel="stylesheet" href="<?=$site?>assets/css/all-fontawesome.min.css">
-      <link rel="stylesheet" href="<?=$site?>assets/css/flaticon.css">
-      <link rel="stylesheet" href="<?=$site?>assets/css/animate.min.css">
       <link rel="stylesheet" href="<?=$site?>assets/css/magnific-popup.min.css">
       <link rel="stylesheet" href="<?=$site?>assets/css/owl.carousel.min.css">
       <link rel="stylesheet" href="<?=$site?>assets/css/style.css">
+      <!-- Official Amazing Infotech Favicon -->
+      <link rel="icon" type="image/jpeg" href="<?=$site?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+      <link rel="shortcut icon" href="<?=$site?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
+      <link rel="apple-touch-icon" href="<?=$site?>admin/uploads/fav_icon_image/1789609951-logo.jpg">
    </head>
    <body class="home-3">
     <?php include('header.php')?>

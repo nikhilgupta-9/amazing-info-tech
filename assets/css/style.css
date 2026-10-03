@@ -1726,10 +1726,10 @@ label{
     font-size:60px;
     line-height:60px;
     font-weight:800;
-    color:var(--color-red);
-    -webkit-text-fill-color:transparent;
-    -webkit-text-stroke:1px var(--border-white-color);
-    z-index:-1
+    color:var(--theme-color2);
+    -webkit-text-fill-color:var(--theme-color2);
+    -webkit-text-stroke:0;
+    z-index:1
 }
 .feature-icon{
     color:var(--color-white);
@@ -1846,7 +1846,6 @@ label{
 }
 .choose-icon img{
     width:50px;
-    filter:brightness(0) invert(1)
 }
 .choose-item-content{
     flex:1
@@ -1989,15 +1988,15 @@ label{
     background-color:var(--theme-color)
 }
 .counter-area{
-    margin-top:-100px;
+    margin-top:0;
     position:relative
 }
 .counter-wrap{
-    padding:50px 15px 50px 30px;
-    background:var(--theme-color);
-    border-radius:100px;
+    padding:0;
+    background:transparent;
+    border-radius:0;
     position:relative;
-    border:10px solid var(--color-white);
+    border:none;
     z-index:1
 }
 .counter-box{
@@ -3370,7 +3369,7 @@ label{
     padding: 63px 0 0px;
 }
     .counter-area {
-    margin-top: -50px;
+    margin-top: 0;
     position: relative;
 }
     
@@ -3680,7 +3679,7 @@ label{
     color:var(--color-white)
 }
 .home-3 .feature-area{
-    margin-top:-130px
+    margin-top:0
 }
 .home-3 .counter-wrap{
     border:none;
@@ -3749,21 +3748,10 @@ label{
             width:180px;
         }
 
+        /* Mobile Carousel Rules moved to modern-upgrade.css */
         .home-3 #carouselExampleIndicators,
-        .home-3 #carouselExampleIndicators .carousel-item,
-        .home-3 #carouselExampleIndicators .carousel-item img{
+        .home-3 #carouselExampleIndicators .carousel-item{
             width:100%;
-        }
-
-        .home-3 #carouselExampleIndicators .carousel-item img{
-            height:190px;
-            object-fit:cover;
-            object-position:center;
-        }
-
-        .home-3 #carouselExampleIndicators .carousel-control-prev,
-        .home-3 #carouselExampleIndicators .carousel-control-next{
-            width:12%;
         }
 
         .home-3 main > br{
@@ -4807,3 +4795,6 @@ label{
             font-size:11px;
         }
     }
+
+/* Modern Upgrade Stylesheet Import */
+@import url('modern-upgrade.css');

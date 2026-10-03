@@ -26,6 +26,9 @@ if (!function_exists('ww_env')) {
 if (!function_exists('ww_is_local_host')) {
     function ww_is_local_host(): bool
     {
+        if (php_sapi_name() === 'cli') {
+            return true;
+        }
         $host = $_SERVER['HTTP_HOST'] ?? '';
         return strpos($host, 'localhost') !== false ||
             strpos($host, '127.0.0.1') !== false ||
@@ -72,6 +75,27 @@ $conn->set_charset('utf8mb4');
 if ($conn->connect_errno) {
     error_log("DB connection failed: " . $conn->connect_error);
     die($is_local ? $conn->connect_error : "Database error");
+}
+
+// Global Dynamic Admin-Controlled Settings (From users Table)
+$mobile = '';
+$whatsapp_number = '';
+$customer_support_number = '';
+$email = '';
+$enquiry_email = '';
+$address = '';
+$company_name = 'Amazing Infotech Private Limited';
+
+$site_admin_q = $conn->query("SELECT * FROM users WHERE id='1' LIMIT 1");
+if ($site_admin_q && $site_admin_q->num_rows > 0) {
+    $admin_data = $site_admin_q->fetch_assoc();
+    $mobile = trim((string)($admin_data['mobile'] ?? ''));
+    $whatsapp_number = trim((string)(!empty($admin_data['whatsapp_number']) ? $admin_data['whatsapp_number'] : $mobile));
+    $customer_support_number = trim((string)($admin_data['customer_support_number'] ?? ''));
+    $email = trim((string)($admin_data['email'] ?? 'info@amazinginfotech.in'));
+    $enquiry_email = trim((string)($admin_data['enquiry_email'] ?? 'support@amazinginfotech.in'));
+    $company_name = trim((string)($admin_data['company_name'] ?? 'Amazing Infotech Private Limited'));
+    $address = trim((string)($admin_data['address'] ?? ''));
 }
 
 // IP function

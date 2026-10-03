@@ -1,0 +1,547 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-10-03",
+  "company": {
+    "name": "Amazing Infotech Private Limited",
+    "brand_status": "India's Authorized HP Large-Format Business Partner",
+    "primary_hotline": "+91-9971314354",
+    "support_hotline": "+91-8800520198",
+    "support_email": "sales@amazinginfotech.in",
+    "head_office": "3rd Floor, S-15, Okhla Phase-2, New Delhi-110020, India",
+    "website": "https://amazinginfotech.in"
+  },
+  "regions_summary": {
+    "primary_focus_region": "Delhi NCR (Delhi, Gurgaon, Noida, Faridabad, Ghaziabad)",
+    "tier1_metro_cities": ["Mumbai", "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad"],
+    "key_regional_centers": ["Lucknow", "Nagpur", "Chandigarh", "Jaipur"]
+  },
+  "locations": [
+    {
+      "id": "delhi-ncr",
+      "city_name": "Delhi NCR (New Delhi, Gurgaon, Noida)",
+      "state": "National Capital Region (Delhi/Haryana/UP)",
+      "slug": "hp-plotters-delhi-ncr",
+      "primary_focus": true,
+      "tier": "National Headquarters & Experience Hub",
+      "tagline": "Authorized HP DesignJet Sales, Same-Day Deployment & Certified Field AMC in Delhi NCR",
+      "meta_title": "HP DesignJet Plotters in Delhi NCR | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "Buy HP DesignJet Plotters, HP Latex & PageWide systems in Delhi, Gurgaon & Noida. 4-hour on-site service response, 100% genuine HP inks & certified AMC.",
+      "h1_heading": "Authorized HP Large-Format Plotters in Delhi NCR",
+      "service_sla": "Within 2 to 4 Hours On-Site Engineer Dispatch",
+      "branch_office": {
+        "is_physical_branch": true,
+        "name": "Amazing Infotech Corporate HQ & Experience Center",
+        "address": "3rd Floor, S-15, Okhla Phase-2, New Delhi - 110020",
+        "contact_person": "Ms. Falak Ziya / Mr. Nikhil Gupta",
+        "phone": "+91-1141403011",
+        "mobile": "+91-9971314354",
+        "email": "delhi@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Okhla Industrial Area", "Nehru Place", "Connaught Place", "South Extension",
+        "Cyber City Gurugram", "Udyog Vihar", "Manesar Industrial Township",
+        "Noida Sector 62 & 63", "Greater Noida Expressway", "Faridabad Industrial Hub", "Ghaziabad"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer in Delhi",
+        "HP DesignJet Plotters in Gurgaon",
+        "HP Large format printer Noida",
+        "HP Plotter repair Okhla New Delhi",
+        "Plotter AMC service Delhi NCR",
+        "Architectural CAD printer dealers Delhi",
+        "Genuine HP DesignJet ink cartridges Delhi"
+      ],
+      "key_industries": [
+        "AEC (Architecture, Engineering & Construction)",
+        "Government PSUs, CPWD & Defense Agencies",
+        "Urban Planning & GIS Surveying",
+        "High-Speed Commercial Copy & Reprographic Shops"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet Smart Tank T858 36-in",
+        "HP DesignJet T1708 44-in CAD/GIS",
+        "HP DesignJet T2600 36-in Multi-Function",
+        "HP PageWide XL 5200 Production Hub"
+      ],
+      "schema_geo": {
+        "latitude": 28.5312,
+        "longitude": 77.2711,
+        "postal_code": "110020",
+        "address_locality": "Okhla Phase-2, New Delhi",
+        "address_region": "DL",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "mumbai",
+      "city_name": "Mumbai",
+      "state": "Maharashtra",
+      "slug": "hp-plotters-mumbai",
+      "primary_focus": true,
+      "tier": "Metro Commercial Capital",
+      "tagline": "India's #1 HP Large-Format Partner in Mumbai — Certified Plotters & Immediate AMC",
+      "meta_title": "HP DesignJet Plotters in Mumbai | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "Official HP Plotter Sales & Service Center in Mumbai (Andheri East). HP DesignJet, Latex & PageWide printers with certified technicians and genuine supplies.",
+      "h1_heading": "HP DesignJet Plotter Sales & Support in Mumbai",
+      "service_sla": "4-Hour On-Site SLA Across MMR (Mumbai, Navi Mumbai, Thane)",
+      "branch_office": {
+        "is_physical_branch": true,
+        "name": "Amazing Infotech Pvt. Ltd. (Mumbai Regional Office)",
+        "address": "Unit No 10, Mahavir Industrial Estate, Off Mahakali Caves Road, Andheri East, Mumbai - 400093",
+        "contact_person": "Mr. Shravan Singh",
+        "phone": "+91-9821654181",
+        "mobile": "+91-9821654181",
+        "email": "mumbai@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Andheri East Industrial Hub", "Bandra-Kurla Complex (BKC)", "Lower Parel",
+        "Navi Mumbai MIDC", "Thane Industrial Belt", "Kandivali & Borivali West"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Mumbai",
+        "HP DesignJet service center Andheri East",
+        "CAD Plotter repair Mumbai",
+        "HP Latex printer Mumbai",
+        "HP Large format printer price Mumbai",
+        "Plotter AMC provider Navi Mumbai"
+      ],
+      "key_industries": [
+        "Infrastructure & Real Estate Developers",
+        "Advertising Agencies & Signage Print Houses",
+        "Packaging Design & Prepress Studios",
+        "Maritime & Offshore Engineering"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T650 24-in Compact",
+        "HP Latex 335 / 365 64-in Signage",
+        "HP DesignJet SD Pro 44-in MFP",
+        "HP DesignJet T1600 36-in Dual-Roll"
+      ],
+      "schema_geo": {
+        "latitude": 19.1245,
+        "longitude": 72.8687,
+        "postal_code": "400093",
+        "address_locality": "Andheri East, Mumbai",
+        "address_region": "MH",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "bengaluru",
+      "city_name": "Bengaluru (Bangalore)",
+      "state": "Karnataka",
+      "slug": "hp-plotters-bengaluru",
+      "primary_focus": true,
+      "tier": "Metro Tech & AEC Capital",
+      "tagline": "Precision HP DesignJet Plotters for Tech Campuses, AEC & Aerospace in Bengaluru",
+      "meta_title": "HP DesignJet Plotters in Bengaluru | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "High-precision HP DesignJet CAD plotters & production printers in Bengaluru. Certified on-site installation, genuine HP consumables, and enterprise AMC support.",
+      "h1_heading": "HP Large-Format Plotters in Bengaluru",
+      "service_sla": "Same-Day Technician Visit Across Bengaluru Metro",
+      "branch_office": {
+        "is_physical_branch": false,
+        "name": "Amazing Infotech Bengaluru Support Hub",
+        "address": "Servicing Whitefield, Electronic City, Peenya & CBD",
+        "contact_person": "South India Service Desk",
+        "phone": "+91-9971314354",
+        "mobile": "+91-8800520198",
+        "email": "south@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Whitefield Tech Corridor", "Electronic City", "Peenya Industrial Area",
+        "Manyata Tech Park", "Indiranagar & Koramangala", "Rajajinagar CAD Hub"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Bengaluru",
+        "HP DesignJet Bangalore",
+        "CAD Plotter suppliers Peenya",
+        "HP 36 inch plotter price Bangalore",
+        "Plotter service repair Whitefield",
+        "HP DesignJet AMC Bangalore"
+      ],
+      "key_industries": [
+        "Aerospace & Defense Design Facilities",
+        "R&D Technology Campuses & Microelectronics",
+        "Architectural Firms & Urban Infrastructure",
+        "High-Tech GIS Mapping Enterprises"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet Smart Tank T858 36-in",
+        "HP DesignJet T1700 44-in PostScript",
+        "HP PageWide XL 4200 Multi-Function"
+      ],
+      "schema_geo": {
+        "latitude": 12.9716,
+        "longitude": 77.5946,
+        "postal_code": "560001",
+        "address_locality": "Bengaluru",
+        "address_region": "KA",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "pune",
+      "city_name": "Pune",
+      "state": "Maharashtra",
+      "slug": "hp-plotters-pune",
+      "primary_focus": true,
+      "tier": "Automotive, Engineering & CAD Hub",
+      "tagline": "Authorized HP DesignJet Sales & Certified Engineering Support in Pune",
+      "meta_title": "HP DesignJet Plotters in Pune | Authorized HP Dealer | Amazing Infotech",
+      "meta_description": "Authorized HP Large-Format Partner in Pune (Kasba Peth). Fast delivery, genuine HP inks, and certified AMC for automotive, AEC, and manufacturing clients.",
+      "h1_heading": "HP DesignJet Plotters & Services in Pune",
+      "service_sla": "4-Hour Local Engineer Response",
+      "branch_office": {
+        "is_physical_branch": true,
+        "name": "Amazing Infotech Pvt. Ltd. (Pune Branch)",
+        "address": "Agarwal Pride, A Wing Shop No 1, Near Agarwal Talim, 1308 Kasba Peth, Pune - 411011",
+        "contact_person": "Mr. Avinash Malusare",
+        "phone": "+91-9922200565",
+        "mobile": "+91-9922200565",
+        "email": "pune@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Kasba Peth Commercial Hub", "Bhosari & Pimpri-Chinchwad MIDC",
+        "Hinjewadi IT Park", "Chakan Automotive Belt", "Hadapsar & Magarpatta"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Pune",
+        "HP DesignJet Kasba Peth Pune",
+        "Automotive CAD plotter Bhosari",
+        "Plotter AMC service Pune",
+        "HP 24 inch CAD plotter Pune"
+      ],
+      "key_industries": [
+        "Automotive Design & Manufacturing",
+        "Precision Engineering & Heavy Machinery",
+        "Architectural & Urban Planning Consultancies",
+        "Educational & Poly-technical Institutes"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T230 24-in Desktop",
+        "HP DesignJet T858 36-in Smart Tank",
+        "HP DesignJet T1600 36-in Networked"
+      ],
+      "schema_geo": {
+        "latitude": 18.5204,
+        "longitude": 73.8567,
+        "postal_code": "411011",
+        "address_locality": "Kasba Peth, Pune",
+        "address_region": "MH",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "hyderabad",
+      "city_name": "Hyderabad",
+      "state": "Telangana",
+      "slug": "hp-plotters-hyderabad",
+      "primary_focus": true,
+      "tier": "Metro IT & Infrastructure Hub",
+      "tagline": "HP DesignJet Plotters for Architects, GIS & Pharmaceutical Engineering in Hyderabad",
+      "meta_title": "HP DesignJet Plotters in Hyderabad | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "Official HP Plotter solutions in Hyderabad. High-resolution CAD printers, GIS plotters, genuine HP ink cartridges, and dedicated field maintenance contracts.",
+      "h1_heading": "HP Large-Format Plotters in Hyderabad",
+      "service_sla": "Same-Day On-Site Support Across Hyderabad & Secunderabad",
+      "branch_office": {
+        "is_physical_branch": false,
+        "name": "Amazing Infotech Hyderabad Service Hub",
+        "address": "Servicing Hitec City, Gachibowli, Sanath Nagar & Balanagar",
+        "contact_person": "Telangana Service Coordinator",
+        "phone": "+91-9971314354",
+        "mobile": "+91-8800520198",
+        "email": "hyderabad@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Hitec City Cyber Corridor", "Gachibowli Financial District",
+        "Sanath Nagar Industrial Area", "Balanagar Precision Belt", "Secunderabad"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Hyderabad",
+        "HP DesignJet plotter price Hyderabad",
+        "Architectural plotter Hitec City",
+        "Plotter service repair Hyderabad",
+        "HP GIS map printer Hyderabad"
+      ],
+      "key_industries": [
+        "Pharma & Biotech Infrastructure Facility Design",
+        "IT Parks & High-Rise Real Estate Projects",
+        "GIS & Geospatial Survey Mapping",
+        "Commercial Engineering Reprographics"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T1708 44-in CAD/GIS",
+        "HP DesignJet Smart Tank T858 36-in",
+        "HP Latex 335 Wide Format"
+      ],
+      "schema_geo": {
+        "latitude": 17.3850,
+        "longitude": 78.4867,
+        "postal_code": "500001",
+        "address_locality": "Hyderabad",
+        "address_region": "TG",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "chennai",
+      "city_name": "Chennai",
+      "state": "Tamil Nadu",
+      "slug": "hp-plotters-chennai",
+      "primary_focus": true,
+      "tier": "Metro Automotive & Textile Hub",
+      "tagline": "Industrial HP Plotters for Automotive Engineering, Architecture & Signage in Chennai",
+      "meta_title": "HP DesignJet Plotters in Chennai | Authorized HP Dealer | Amazing Infotech",
+      "meta_description": "Authorized HP DesignJet and HP Latex printer supplier in Chennai. Serving Guindy, Ambattur, and OMR with certified field support, warranty, and original inks.",
+      "h1_heading": "HP DesignJet & Latex Plotters in Chennai",
+      "service_sla": "Same-Day Dispatch & 24/7 Remote Diagnostics",
+      "branch_office": {
+        "is_physical_branch": false,
+        "name": "Amazing Infotech Chennai Service Desk",
+        "address": "Servicing Guindy, Ambattur Industrial Estate, OMR & Sriperumbudur",
+        "contact_person": "Tamil Nadu Sales & AMC Desk",
+        "phone": "+91-9971314354",
+        "mobile": "+91-8800520198",
+        "email": "chennai@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Guindy Industrial Estate", "Ambattur MIDC", "OMR IT Expressway",
+        "Sriperumbudur Manufacturing Corridor", "T. Nagar Commercial Area"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Chennai",
+        "HP DesignJet printer Ambattur",
+        "Latex sign printer Chennai",
+        "CAD plotter Guindy Industrial Estate",
+        "HP plotter repair technician Chennai"
+      ],
+      "key_industries": [
+        "Automotive OEM R&D and Manufacturing",
+        "Port Logistics & Marine Engineering",
+        "Architectural & Construction Consultancies",
+        "Textile & Signage Printing"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T1600 36-in",
+        "HP Latex 365 64-in",
+        "HP DesignJet SD Pro 44-in MFP"
+      ],
+      "schema_geo": {
+        "latitude": 13.0827,
+        "longitude": 80.2707,
+        "postal_code": "600001",
+        "address_locality": "Chennai",
+        "address_region": "TN",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "kolkata",
+      "city_name": "Kolkata",
+      "state": "West Bengal",
+      "slug": "hp-plotters-kolkata",
+      "primary_focus": true,
+      "tier": "Metro Regional Gateway",
+      "tagline": "Eastern India's Premier HP Large-Format Destination — HP DesignJet & Supplies",
+      "meta_title": "HP DesignJet Plotters in Kolkata | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "Premier HP DesignJet plotters and certified maintenance across Kolkata and Eastern India. Complete range of CAD, GIS, and production systems with OEM warranty.",
+      "h1_heading": "HP Large-Format Plotters in Kolkata & Eastern India",
+      "service_sla": "Prompt On-Site Support Across Greater Kolkata",
+      "branch_office": {
+        "is_physical_branch": false,
+        "name": "Amazing Infotech Eastern India Coordination Hub",
+        "address": "Servicing Salt Lake Sector V, Rajarhat, Howrah & Dalhousie",
+        "contact_person": "East Zone Support Team",
+        "phone": "+91-9971314354",
+        "mobile": "+91-8800520198",
+        "email": "kolkata@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Salt Lake Sector V", "New Town Rajarhat", "Howrah Industrial Belt",
+        "Dalhousie & BBD Bagh", "Park Street & Central Kolkata"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Kolkata",
+        "HP DesignJet printer Kolkata",
+        "CAD Plotter repair Salt Lake",
+        "Plotter AMC service Howrah",
+        "Large format printer dealer West Bengal"
+      ],
+      "key_industries": [
+        "Heavy Infrastructure, Metro & Bridge Projects",
+        "Mining, Geological & Survey Engineering",
+        "Government Department Reprographics",
+        "Architectural & Urban Planning Offices"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T858 36-in Smart Tank",
+        "HP DesignJet T1708 44-in CAD/GIS",
+        "HP DesignJet T230 24-in Desk"
+      ],
+      "schema_geo": {
+        "latitude": 22.5726,
+        "longitude": 88.3639,
+        "postal_code": "700001",
+        "address_locality": "Kolkata",
+        "address_region": "WB",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "ahmedabad",
+      "city_name": "Ahmedabad",
+      "state": "Gujarat",
+      "slug": "hp-plotters-ahmedabad",
+      "primary_focus": true,
+      "tier": "Industrial & Textile Capital",
+      "tagline": "High-Efficiency HP DesignJet & Latex Plotters for Gujarat's Industrial Leaders",
+      "meta_title": "HP DesignJet Plotters in Ahmedabad | Authorized Partner | Amazing Infotech",
+      "meta_description": "Deploy HP DesignJet & HP Latex printers in Ahmedabad, Sanand, and Gandhinagar. Prompt delivery, factory-trained engineers, and genuine HP OEM inks.",
+      "h1_heading": "HP Plotters & Production Printers in Ahmedabad",
+      "service_sla": "Rapid On-Site Support Across Ahmedabad & Gandhinagar",
+      "branch_office": {
+        "is_physical_branch": false,
+        "name": "Amazing Infotech Gujarat Support Desk",
+        "address": "Servicing SG Highway, Sanand GIDC, Naroda & Gandhinagar",
+        "contact_person": "Gujarat Region Service Desk",
+        "phone": "+91-9971314354",
+        "mobile": "+91-8800520198",
+        "email": "gujarat@amazinginfotech.in"
+      },
+      "target_areas": [
+        "SG Highway Commercial Corridor", "Sanand GIDC Automotive Hub",
+        "Naroda & Vatva Industrial Estates", "Gandhinagar GIFT City", "Changodar"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Ahmedabad",
+        "HP Latex printer Gujarat",
+        "HP DesignJet dealer SG Highway",
+        "Plotter AMC service Sanand",
+        "HP CAD printer Ahmedabad price"
+      ],
+      "key_industries": [
+        "Textile Design & Digital Fabric Signage",
+        "Chemical & Petrochemical Process Plant Engineering",
+        "Automotive & Heavy Manufacturing",
+        "AEC & Smart City Infrastructure"
+      ],
+      "recommended_plotters": [
+        "HP Latex 365 64-in Wide Format",
+        "HP DesignJet Smart Tank T858 36-in",
+        "HP PageWide XL 5200 Heavy-Duty"
+      ],
+      "schema_geo": {
+        "latitude": 23.0225,
+        "longitude": 72.5714,
+        "postal_code": "380001",
+        "address_locality": "Ahmedabad",
+        "address_region": "GJ",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "lucknow",
+      "city_name": "Lucknow",
+      "state": "Uttar Pradesh",
+      "slug": "hp-plotters-lucknow",
+      "primary_focus": false,
+      "tier": "State Capital Regional Center",
+      "tagline": "Authorized HP DesignJet Sales & Certified Field Service in Lucknow",
+      "meta_title": "HP DesignJet Plotters in Lucknow | Authorized HP Branch | Amazing Infotech",
+      "meta_description": "Official Amazing Infotech branch in Aliganj, Lucknow. Authorized HP DesignJet plotters, genuine inks, and 4-hour field service response for UP government & AEC.",
+      "h1_heading": "HP DesignJet Plotters & Service in Lucknow",
+      "service_sla": "4-Hour Local Engineer SLA in Lucknow & Central UP",
+      "branch_office": {
+        "is_physical_branch": true,
+        "name": "Amazing Infotech Pvt. Ltd. (Lucknow Branch)",
+        "address": "183, Chanderlok Colony, Aliganj, Lucknow - 226024, Uttar Pradesh",
+        "contact_person": "Mr. Shafiq Alam",
+        "phone": "+91-8299191576",
+        "mobile": "+91-8299191576",
+        "email": "lucknow@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Aliganj Regional Center", "Hazratganj Administrative Core",
+        "Gomti Nagar Commercial Zone", "Amausi Industrial Area", "Transport Nagar"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Lucknow",
+        "HP DesignJet Aliganj Lucknow",
+        "Plotter service repair Uttar Pradesh",
+        "Government CPWD plotter dealer Lucknow",
+        "HP Plotter AMC Lucknow"
+      ],
+      "key_industries": [
+        "UP Government Public Works, Railways & Irrigation",
+        "Architectural & Town Planning Consultants",
+        "Engineering Colleges & Technical Universities",
+        "Commercial Blueprint & Reprographic Hubs"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T858 36-in Smart Tank",
+        "HP DesignJet T650 24-in",
+        "HP DesignJet T1708 44-in"
+      ],
+      "schema_geo": {
+        "latitude": 26.8467,
+        "longitude": 80.9462,
+        "postal_code": "226024",
+        "address_locality": "Aliganj, Lucknow",
+        "address_region": "UP",
+        "address_country": "IN"
+      }
+    },
+    {
+      "id": "nagpur",
+      "city_name": "Nagpur",
+      "state": "Maharashtra",
+      "slug": "hp-plotters-nagpur",
+      "primary_focus": false,
+      "tier": "Central India Regional Hub",
+      "tagline": "Central India's Authorized HP Large-Format Support Center in Nagpur",
+      "meta_title": "HP DesignJet Plotters in Nagpur | Authorized HP Partner | Amazing Infotech",
+      "meta_description": "Amazing Infotech branch office in Wadi, Nagpur. Sales, installation, genuine consumables, and certified repair of HP DesignJet and large-format printers.",
+      "h1_heading": "HP DesignJet Plotter Sales & Service in Nagpur",
+      "service_sla": "4-Hour Local Service Dispatch Across Vidarbha Region",
+      "branch_office": {
+        "is_physical_branch": true,
+        "name": "Amazing Infotech Pvt. Ltd. (Nagpur Branch)",
+        "address": "Office No. 11, Khadgaon Road, Vikas Nagar, Wadi, Behind Arco Roadways, Nagpur - 440023, Maharashtra",
+        "contact_person": "Mr. Bhupesh Vaidya",
+        "phone": "+91-8857918160",
+        "mobile": "+91-8857918160",
+        "email": "nagpur@amazinginfotech.in"
+      },
+      "target_areas": [
+        "Wadi Industrial Area", "MIHAN SEZ & Tech Corridor",
+        "Hingna MIDC", "Butibori Industrial Estate", "Sitabuldi Commercial Core"
+      ],
+      "target_keywords": [
+        "HP Plotter dealer Nagpur",
+        "HP DesignJet repair Wadi Nagpur",
+        "MIHAN CAD plotter dealer",
+        "HP Large format printer Nagpur",
+        "Plotter AMC service Vidarbha"
+      ],
+      "key_industries": [
+        "Multi-modal Logistics & Aviation Engineering at MIHAN",
+        "Mining, Mineral & Geological Exploration",
+        "Architectural & Civil Contracting Firms",
+        "Heavy Machinery Fabricators"
+      ],
+      "recommended_plotters": [
+        "HP DesignJet T858 36-in",
+        "HP DesignJet T230 24-in",
+        "HP DesignJet SD Pro 44-in MFP"
+      ],
+      "schema_geo": {
+        "latitude": 21.1458,
+        "longitude": 79.0882,
+        "postal_code": "440023",
+        "address_locality": "Wadi, Nagpur",
+        "address_region": "MH",
+        "address_country": "IN"
+      }
+    }
+  ]
+}

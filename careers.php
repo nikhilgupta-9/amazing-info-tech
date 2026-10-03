@@ -47,6 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Official Amazing Infotech Favicon -->
+    <link rel="icon" type="image/jpeg" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="shortcut icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+    <link rel="apple-touch-icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
     <script src="assets/js/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lf__TwrAAAAALKz4Z0g7EYSkE297cwgS9z5L5Xn"></script>

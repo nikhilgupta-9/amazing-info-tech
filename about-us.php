@@ -28,6 +28,10 @@ while ($row = $result->fetch_assoc()) {
    <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
    <link rel="stylesheet" href="assets/css/style.css">
+   <!-- Official Amazing Infotech Favicon -->
+   <link rel="icon" type="image/jpeg" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+   <link rel="shortcut icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
+   <link rel="apple-touch-icon" href="admin/uploads/fav_icon_image/1789609951-logo.jpg">
 </head>
 
 <body class="home-3">
@@ -71,7 +75,7 @@ while ($row = $result->fetch_assoc()) {
                   <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
                      <div class="row g-4">
                         <div class="col-12">
-                           <img class="img-1" src="assets/img/ceo.jpg" alt>
+                           <img class="img-1" src="assets/img/ceo.jpg" alt="Managing Director - Amazing Infotech Pvt. Ltd.">
                         </div>
                         <!--<div class="col-6">-->
                         <!--   <img class="img-2" src="assets/img/adt-2.jpg" alt>-->
@@ -92,7 +96,7 @@ while ($row = $result->fetch_assoc()) {
                   <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
                      <div class="row g-4">
                         <div class="col-12">
-                           <img class="img-1" src="assets/img/abt.png" alt>
+                           <img class="img-1" src="assets/img/abt.png" alt="Amazing Infotech - Authorized HP Partner Facilities">
                         </div>
                         <!--<div class="col-6">-->
                         <!--   <img class="img-2" src="assets/img/adt-2.jpg" alt>-->
@@ -164,7 +168,7 @@ while ($row = $result->fetch_assoc()) {
                      </p>
                   </div>
                   <div class="mb-20 mt-10">
-                     <a href="#" class="cta-border-btn"><i class="fal fa-headset"></i> +91-9971314354 </a>
+                     <a href="tel:+91<?= $mobile ?>" class="cta-border-btn"><i class="fal fa-headset"></i> +91-<?= $mobile ?> </a>
                   </div>
                   <a href="#" class="theme-btn">Contact Now <i class="fas fa-arrow-right"></i></a>
                </div>
@@ -179,11 +183,11 @@ while ($row = $result->fetch_assoc()) {
                   <div class="about-left wow fadeInLeft" data-wow-duration="1s" data-wow-delay=".25s">
                      <div class="about-img">
                         <div class="about-img-1">
-                           <img src="assets/img/about-us.png" alt>
+                           <img src="assets/img/about-us.png" alt="Amazing Infotech - India's Premier HP Large-Format Partner">
                         </div>
 
                      </div>
-                     <div class="about-shape"><img src="assets/img/shape/01.png" alt></div>
+                     <div class="about-shape"><img src="assets/img/shape/01.png" alt="Decorative Shape" aria-hidden="true"></div>
                      <div class="about-experience">
                         <h1>(India’s No.1 HP Plotters Business Partner)</h1>
 
@@ -229,7 +233,7 @@ while ($row = $result->fetch_assoc()) {
                            </li>
                            <li>
                               <div class="icon">
-                                 <img src="assets/img/icon/trusted.svg" alt>
+                                 <img src="assets/img/icon/trusted.svg" alt="Trusted HP Services Icon">
                               </div>
                               <div class="content">
                                  <h4>End-to-End Services </h4>
@@ -266,7 +270,7 @@ while ($row = $result->fetch_assoc()) {
                            <div class="col-lg-6">
                               <div class="choose-item">
                                  <div class="choose-icon">
-                                    <img src="assets/img/icon/team-2.svg" alt>
+                                    <img src="assets/img/icon/team-2.svg" alt="Printers and Plotters for Every Need">
                                  </div>
                                  <div class="choose-item-content">
                                     <h4>Printers/Plotters For Every Need</h4>
@@ -279,7 +283,7 @@ while ($row = $result->fetch_assoc()) {
                            <div class="col-lg-6">
                               <div class="choose-item">
                                  <div class="choose-icon">
-                                    <img src="assets/img/icon/quality.svg" alt>
+                                    <img src="assets/img/icon/quality.svg" alt="Comprehensive HP Support Services">
                                  </div>
                                  <div class="choose-item-content">
                                     <h4>Comprehensive Support Services</h4>
@@ -292,7 +296,7 @@ while ($row = $result->fetch_assoc()) {
                            <div class="col-lg-6">
                               <div class="choose-item">
                                  <div class="choose-icon">
-                                    <img src="assets/img/icon/trusted.svg" alt>
+                                    <img src="assets/img/icon/trusted.svg" alt="Consistent High-Quality Results">
                                  </div>
                                  <div class="choose-item-content">
                                     <h4>High-Quality Results, Consistently</h4>
@@ -305,7 +309,7 @@ while ($row = $result->fetch_assoc()) {
                            <div class="col-lg-6">
                               <div class="choose-item">
                                  <div class="choose-icon">
-                                    <img src="assets/img/icon/happy.svg" alt>
+                                    <img src="assets/img/icon/happy.svg" alt="Improve Operational Efficiency">
                                  </div>
                                  <div class="choose-item-content">
                                     <h4>Improve Operational Efficiency</h4>
@@ -323,10 +327,10 @@ while ($row = $result->fetch_assoc()) {
                   <div class="choose-img wow fadeInRight" data-wow-duration="1s" data-wow-delay=".25s">
                      <div class="row g-4">
                         <div class="col-6">
-                           <img class="img-1" src="assets/img/ab1.png" alt>
+                           <img class="img-1" src="assets/img/ab1.png" alt="HP Large-Format Plotter Demonstration Experience">
                         </div>
                         <div class="col-6">
-                           <img class="img-1" src="assets/img/ab2.jpg" alt>
+                           <img class="img-1" src="assets/img/ab2.jpg" alt="Certified Technical Plotter Maintenance Facility">
                         </div>
                      </div>
                   </div>

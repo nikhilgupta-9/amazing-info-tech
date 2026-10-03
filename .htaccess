@@ -9,6 +9,10 @@ RewriteRule ^product-details/(.*)$ product-details.php?alias=$1 [L,QSA]
 RewriteRule ^news-details/(.*)$ news-details.php?alias=$1 [L,QSA]
 RewriteRule ^allnews/(.*)$ news-and-events.php?alias=$1 [L,QSA]
 RewriteRule ^allproducts/(.*)$ products.php?alias=$1 [L,QSA]
+RewriteRule ^products/([a-zA-Z0-9_-]+)/?$ products.php?category=$1 [L,QSA]
+RewriteRule ^products/?$ products.php [L,QSA]
+RewriteRule ^supplies-and-amc/?$ supplies-and-amc.php [L,QSA]
+RewriteRule ^amc-services/?$ supplies-and-amc.php [L,QSA]
 
 # Handle existing files
 RewriteCond %{REQUEST_FILENAME} -f
