@@ -190,3 +190,28 @@ if (!function_exists('ww_truncate')) {
         return rtrim($short, " .,") . '…';
     }
 }
+
+// Safely resolve event featured & gallery image URLs
+if (!function_exists('get_event_img_url')) {
+    function get_event_img_url(?string $path, string $fallback = 'assets/img/breadcrumb/01.jpg'): string
+    {
+        global $site;
+        if (empty($path)) {
+            return $site . $fallback;
+        }
+        if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
+            return $path;
+        }
+        $clean = ltrim($path, '/\\');
+        if (strpos($clean, 'admin/') === 0) {
+            return $site . $clean;
+        }
+        if (file_exists(__DIR__ . '/admin/' . $clean)) {
+            return $site . 'admin/' . $clean;
+        }
+        if (file_exists(__DIR__ . '/' . $clean)) {
+            return $site . $clean;
+        }
+        return $site . 'admin/' . $clean;
+    }
+}

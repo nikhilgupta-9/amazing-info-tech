@@ -1,102 +1,123 @@
 <?php
 include "conn.php";
 
-// Display errors for debugging
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
-// Get the event slug from URL
-$slug = isset($_GET['slug']) ? mysqli_real_escape_string($conn, $_GET['slug']) : '';
+// Fetch event by slug or ID
+$slug = isset($_GET['slug']) ? mysqli_real_escape_string($conn, trim($_GET['slug'])) : '';
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-if (empty($slug)) {
+$event = null;
+if (!empty($slug)) {
+    $res = mysqli_query($conn, "SELECT * FROM events WHERE slug = '$slug' AND status = '1' LIMIT 1");
+    if ($res && mysqli_num_rows($res) > 0) {
+        $event = mysqli_fetch_assoc($res);
+    }
+}
+
+if (!$event && $id > 0) {
+    $res = mysqli_query($conn, "SELECT * FROM events WHERE id = '$id' AND status = '1' LIMIT 1");
+    if ($res && mysqli_num_rows($res) > 0) {
+        $event = mysqli_fetch_assoc($res);
+    }
+}
+
+// Fallback to latest active event if not found
+if (!$event) {
     header('Location: events.php');
     exit;
 }
 
-// Fetch event details
-$sql = "SELECT * FROM events WHERE slug = '$slug' AND status = '1'";
-$result = mysqli_query($conn, $sql);
+// Format dates & times
+$event_ts = !empty($event['event_date']) ? strtotime($event['event_date']) : time();
+$event_day = date('d', $event_ts);
+$event_month = date('F', $event_ts);
+$event_year = date('Y', $event_ts);
+$event_weekday = date('l', $event_ts);
+$event_date_formatted = date('l, d F Y', $event_ts);
+$event_date_iso = date('Y-m-d', $event_ts);
 
-if (!$result || mysqli_num_rows($result) == 0) {
-    header('Location: events.php');
-    exit;
+$end_date_formatted = null;
+if (!empty($event['end_date']) && $event['end_date'] !== '0000-00-00') {
+    $end_date_formatted = date('l, d F Y', strtotime($event['end_date']));
 }
 
-$event = mysqli_fetch_assoc($result);
-
-// Decode gallery images
-$gallery = [];
-if (!empty($event['gallery_images'])) {
-    $gallery = json_decode($event['gallery_images'], true);
-    if (!is_array($gallery)) {
-        $gallery = [];
-    }
-}
-
-// Get related events (same location or upcoming)
-$related_sql = "SELECT * FROM events 
-                WHERE status = '1' 
-                AND id != '{$event['id']}' 
-                AND (location = '{$event['location']}' OR event_date >= CURDATE())
-                ORDER BY event_date ASC 
-                LIMIT 3";
-$related_result = mysqli_query($conn, $related_sql);
-
-$related_events = [];
-if ($related_result && mysqli_num_rows($related_result) > 0) {
-    while ($row = mysqli_fetch_assoc($related_result)) {
-        $related_events[] = $row;
-    }
-}
-
-// Get next and previous events for navigation
-$prev_sql = "SELECT slug, title FROM events 
-             WHERE status = '1' AND event_date < '{$event['event_date']}' 
-             ORDER BY event_date DESC LIMIT 1";
-$prev_result = mysqli_query($conn, $prev_sql);
-$prev_event = ($prev_result && mysqli_num_rows($prev_result) > 0) ? mysqli_fetch_assoc($prev_result) : null;
-
-$next_sql = "SELECT slug, title FROM events 
-             WHERE status = '1' AND event_date > '{$event['event_date']}' 
-             ORDER BY event_date ASC LIMIT 1";
-$next_result = mysqli_query($conn, $next_sql);
-$next_event = ($next_result && mysqli_num_rows($next_result) > 0) ? mysqli_fetch_assoc($next_result) : null;
-
-// Format dates
-$event_date = strtotime($event['event_date']);
-$event_day = date('d', $event_date);
-$event_month = date('F', $event_date);
-$event_year = date('Y', $event_date);
-$event_weekday = date('l', $event_date);
-
-$end_date = !empty($event['end_date']) && $event['end_date'] != '0000-00-00' ? strtotime($event['end_date']) : null;
+$event_time = !empty($event['event_time']) ? date('h:i A', strtotime($event['event_time'])) : 'All Day';
 $end_time = !empty($event['end_time']) ? date('h:i A', strtotime($event['end_time'])) : null;
 
-// Format time
-$event_time = !empty($event['event_time']) ? date('h:i A', strtotime($event['event_time'])) : 'All Day';
-
-// Check event status
-$current_date = strtotime(date('Y-m-d'));
-$event_status = '';
-if ($event_date > $current_date) {
+// Determine event status
+$today_str = date('Y-m-d');
+if ($event_date_iso > $today_str) {
     $event_status = 'upcoming';
-} elseif ($event_date == $current_date) {
+    $status_label = 'Upcoming Event';
+    $status_class = 'chip-upcoming';
+} elseif ($event_date_iso == $today_str) {
     $event_status = 'ongoing';
+    $status_label = 'Happening Today';
+    $status_class = 'chip-live';
 } else {
     $event_status = 'past';
+    $status_label = 'Concluded Event';
+    $status_class = 'chip-past';
 }
 
-// Check if event has video
-$has_video = !empty($event['video_url']) || (!empty($event['video_file']) && file_exists($event['video_file']));
+// Featured Image resolved via helper
+$featured_img = get_event_img_url($event['featured_image']);
 
-// Get featured image
-$featured_image = !empty($event['featured_image']) && file_exists($event['featured_image'])
-    ? $event['featured_image']
-    : 'assets/img/event-default.jpg';
+// Decode Gallery Images
+$gallery = [];
+if (!empty($event['gallery_images'])) {
+    $decoded = json_decode($event['gallery_images'], true);
+    if (is_array($decoded)) {
+        foreach ($decoded as $g_path) {
+            $gallery[] = get_event_img_url($g_path);
+        }
+    }
+}
 
-// Increment view count (optional - if you have a views column)
-// $update_views = "UPDATE events SET views = views + 1 WHERE id = {$event['id']}";
-// mysqli_query($conn, $update_views);
+// Video handling
+$has_video = false;
+$video_url = $event['video_url'] ?? '';
+$video_type = $event['video_type'] ?? '';
+$video_file = $event['video_file'] ?? '';
+$local_video_url = '';
+
+if (!empty($video_url) && ($video_type === 'youtube' || $video_type === 'vimeo' || empty($video_type))) {
+    $has_video = true;
+    // Normalize youtube embed url
+    if (strpos($video_url, 'youtube.com/watch') !== false || strpos($video_url, 'youtu.be') !== false) {
+        if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/', $video_url, $m)) {
+            $video_url = 'https://www.youtube.com/embed/' . $m[1];
+        }
+    }
+} elseif (!empty($video_file)) {
+    $local_video_url = get_event_img_url($video_file);
+    if (!empty($local_video_url)) {
+        $has_video = true;
+    }
+}
+
+// Previous and Next Events navigation
+$prev_res = mysqli_query($conn, "SELECT slug, title, id FROM events WHERE status = '1' AND event_date < '{$event['event_date']}' ORDER BY event_date DESC LIMIT 1");
+$prev_event = ($prev_res && mysqli_num_rows($prev_res) > 0) ? mysqli_fetch_assoc($prev_res) : null;
+
+$next_res = mysqli_query($conn, "SELECT slug, title, id FROM events WHERE status = '1' AND event_date > '{$event['event_date']}' ORDER BY event_date ASC LIMIT 1");
+$next_event = ($next_res && mysqli_num_rows($next_res) > 0) ? mysqli_fetch_assoc($next_res) : null;
+
+// Related Events
+$related_res = mysqli_query($conn, "SELECT * FROM events WHERE status = '1' AND id != '{$event['id']}' ORDER BY CASE WHEN location = '{$event['location']}' THEN 0 ELSE 1 END, event_date DESC LIMIT 3");
+$related_events = [];
+if ($related_res && mysqli_num_rows($related_res) > 0) {
+    while ($rel = mysqli_fetch_assoc($related_res)) {
+        $related_events[] = $rel;
+    }
+}
+
+// Meta tags
+$meta_title = !empty($event['meta_title']) ? $event['meta_title'] : $event['title'];
+$meta_desc = !empty($event['meta_description']) ? $event['meta_description'] : (!empty($event['short_description']) ? $event['short_description'] : substr(strip_tags($event['description']), 0, 160));
+$current_page_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,17 +126,15 @@ $featured_image = !empty($event['featured_image']) && file_exists($event['featur
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="<?= htmlspecialchars($event['meta_description'] ?: substr(strip_tags($event['description']), 0, 160)) ?>">
-    <meta name="keywords" content="<?= htmlspecialchars($event['meta_keywords']) ?>">
-    <meta property="og:title" content="<?= htmlspecialchars($event['meta_title'] ?: $event['title']) ?>">
-    <meta property="og:description"
-        content="<?= htmlspecialchars(substr(strip_tags($event['description']), 0, 200)) ?>">
-    <meta property="og:image" content="<?= $featured_image ?>">
-    <meta property="og:url"
-        content="<?= (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>">
-    <meta property="og:type" content="event">
-    <title><?= htmlspecialchars($event['meta_title'] ?: $event['title']) ?> | Amazing Infotech Pvt. Ltd.</title>
+    <meta name="description" content="<?= htmlspecialchars($meta_desc) ?>">
+    <meta name="keywords" content="<?= htmlspecialchars($event['meta_keywords'] ?: 'HP plotter expo, Photo Video Asia, printing demonstration, Amazing Infotech') ?>">
+    <meta property="og:title" content="<?= htmlspecialchars($meta_title) ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($meta_desc) ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($featured_img) ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($current_page_url) ?>">
+    <meta property="og:type" content="article">
+    <title><?= htmlspecialchars($meta_title) ?> | Amazing Infotech Pvt. Ltd.</title>
+
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/all-fontawesome.min.css">
     <link rel="stylesheet" href="assets/css/flaticon.css">
@@ -123,789 +142,202 @@ $featured_image = !empty($event['featured_image']) && file_exists($event['featur
     <link rel="stylesheet" href="assets/css/magnific-popup.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
-    <style>
-        /* Event Detail Styles */
-        .event-detail-wrapper {
-            padding: 50px 0;
-        }
-
-        .event-detail {
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .event-header {
-            padding: 30px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .event-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .event-meta-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .event-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-
-        .event-meta-item:hover {
-            background: #00b6b1;
-            color: white;
-        }
-
-        .event-meta-item:hover i,
-        .event-meta-item:hover .event-meta-content h4,
-        .event-meta-item:hover .event-meta-content p {
-            color: white;
-        }
-
-        .event-meta-icon {
-            width: 50px;
-            height: 50px;
-            background: #00b6b1;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .event-meta-content h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #666;
-        }
-
-        .event-meta-content p {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 0;
-            color: #333;
-        }
-
-        .event-status-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 10px;
-        }
-
-        .status-upcoming {
-            background: #28a745;
-            color: white;
-        }
-
-        .status-ongoing {
-            background: #ffc107;
-            color: #333;
-        }
-
-        .status-past {
-            background: #6c757d;
-            color: white;
-        }
-
-        .event-featured-badge {
-            background: #f39c12;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .event-featured-badge i {
-            margin-right: 5px;
-        }
-
-        /* Event Image */
-        .event-featured-image {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .event-featured-image img {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-        }
-
-        .event-image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
-        }
-
-        .event-countdown {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .countdown-item {
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .countdown-item .count {
-            font-size: 36px;
-            font-weight: 700;
-            color: #00b6b1;
-            line-height: 1;
-        }
-
-        .countdown-item .label {
-            font-size: 14px;
-            color: #666;
-            text-transform: uppercase;
-        }
-
-        /* Event Content */
-        .event-content-wrapper {
-            padding: 30px;
-        }
-
-        .event-description {
-            color: #666;
-            line-height: 1.8;
-            font-size: 16px;
-        }
-
-        .event-description h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 30px 0 20px;
-            color: #333;
-        }
-
-        .event-description h4 {
-            font-size: 20px;
-            font-weight: 600;
-            margin: 25px 0 15px;
-            color: #333;
-        }
-
-        .event-description p {
-            margin-bottom: 20px;
-        }
-
-        .event-description ul,
-        .event-description ol {
-            margin-bottom: 20px;
-            padding-left: 20px;
-        }
-
-        .event-description li {
-            margin-bottom: 10px;
-        }
-
-        /* Gallery Section */
-        .gallery-section {
-            padding: 30px;
-            border-top: 1px solid #eee;
-        }
-
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #00b6b1;
-            position: relative;
-        }
-
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: #f39c12;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            aspect-ratio: 1;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.5s;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        .gallery-overlay i {
-            color: white;
-            font-size: 30px;
-        }
-
-        /* Video Section */
-        .video-section {
-            padding: 30px;
-            border-top: 1px solid #eee;
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .video-container iframe,
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Event Info Card */
-        .event-info-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .event-info-card h4 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #00b6b1;
-            color: #333;
-        }
-
-        .event-info-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .event-info-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .event-info-list li:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .event-info-list li i {
-            width: 30px;
-            color: #00b6b1;
-            font-size: 18px;
-            margin-top: 3px;
-        }
-
-        .event-info-list li .info-content {
-            flex: 1;
-        }
-
-        .event-info-list li .info-content strong {
-            display: block;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .event-info-list li .info-content span {
-            color: #666;
-        }
-
-        /* Share Buttons */
-        .share-buttons {
-            margin-top: 20px;
-        }
-
-        .share-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .share-icons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .share-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .share-btn:hover {
-            transform: translateY(-3px);
-            color: white;
-        }
-
-        .share-facebook {
-            background: #3b5998;
-        }
-
-        .share-twitter {
-            background: #1da1f2;
-        }
-
-        .share-linkedin {
-            background: #0077b5;
-        }
-
-        .share-whatsapp {
-            background: #25d366;
-        }
-
-        .share-email {
-            background: #ea4335;
-        }
-
-        .share-copy {
-            background: #6c757d;
-        }
-
-        /* Event Navigation */
-        .event-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-
-        /* .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-            max-width: 45%;
-            text-decoration: none;
-        } */
-
-
-
-        /* Related Events */
-        .related-events {
-            margin-top: 50px;
-        }
-
-        .related-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .related-event-item {
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            transition: all 0.3s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .related-event-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .related-event-img {
-            position: relative;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .related-event-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.5s;
-        }
-
-        .related-event-item:hover .related-event-img img {
-            transform: scale(1.1);
-        }
-
-        .related-event-date {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #00b6b1;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .related-event-date .day {
-            font-size: 18px;
-            font-weight: 700;
-            display: block;
-        }
-
-        .related-event-date .month {
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-
-        .related-event-content {
-            padding: 20px;
-            flex: 1;
-        }
-
-        .related-event-content h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .related-event-content h4 a {
-            color: #333;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .related-event-content h4 a:hover {
-            color: #00b6b1;
-        }
-
-        .related-event-content p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-
-        .related-event-content p i {
-            color: #00b6b1;
-            margin-right: 5px;
-        }
-
-        .related-event-btn {
-            display: block;
-            padding: 12px;
-            background: #00b6b1;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .related-event-btn:hover {
-            background: #367fa9;
-            color: white;
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            text-align: center;
-            padding: 50px;
-            display: none;
-        }
-
-        .loading-spinner i {
-            font-size: 48px;
-            color: #00b6b1;
-            margin-bottom: 15px;
-        }
-
-        /* Print Styles */
-        @media print {
-
-            .header,
-            .footer,
-            .event-navigation,
-            .related-events,
-            .share-buttons,
-            .event-info-card {
-                display: none !important;
-            }
-
-            .event-detail {
-                box-shadow: none;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .event-title {
-                font-size: 28px;
-            }
-
-            .event-meta-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .event-countdown {
-                position: static;
-                transform: none;
-                margin-top: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .event-navigation {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-link {
-                max-width: 100%;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-        }
-    </style>
+    <!-- Phase 5 Modern Design Language -->
+    <link rel="stylesheet" href="assets/css/modern-upgrade.css">
 </head>
 
 <body class="home-3">
     <?php include('header.php'); ?>
 
     <main class="main">
-        <!-- Breadcrumb -->
-        <div class="site-breadcrumb" style="background: url(assets/img/breadcrumb/01.jpg)">
+        <!-- Modern Phase 5 Breadcrumb -->
+        <div class="site-breadcrumb page-hero-breadcrumb" style="background: url('assets/img/breadcrumb/01.jpg') center/cover no-repeat;">
             <div class="container">
-                <h2 class="breadcrumb-title">Event Details</h2>
+                <div class="hero-badge-wrap">
+                    <span class="hero-badge"><i class="fas fa-calendar-alt"></i> Event Overview</span>
+                </div>
+                <h1 class="breadcrumb-title"><?= htmlspecialchars($event['title']) ?></h1>
+                <p class="hero-tagline">
+                    <?= htmlspecialchars(!empty($event['short_description']) ? $event['short_description'] : 'Join Amazing Infotech for industry exhibitions, technology demonstrations, and partner summits.') ?>
+                </p>
                 <ul class="breadcrumb-menu">
-                    <li><a href="index.php">Home</a></li>
+                    <li><a href="index.php"><i class="fas fa-home me-1"></i> Home</a></li>
                     <li><a href="events.php">Events</a></li>
-                    <li class="active"><?= htmlspecialchars(substr($event['title'], 0, 30)) ?>...</li>
+                    <li class="active"><?= htmlspecialchars(mb_substr($event['title'], 0, 28)) ?>...</li>
                 </ul>
             </div>
         </div>
 
-        <!-- Event Detail Section -->
-        <div class="event-detail-wrapper">
+        <!-- Event Detail Main Container -->
+        <section class="events-page-wrap">
             <div class="container">
-                <div class="row">
-                    <!-- Main Content -->
+                <div class="row g-4">
+                    <!-- Main Event Content Column -->
                     <div class="col-lg-8">
-                        <div class="event-detail">
-                            <!-- Event Header -->
-                            <div class="event-header">
-                                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-                                    <div>
-                                        <span class="event-status-badge status-<?= $event_status ?>">
-                                            <?= ucfirst($event_status) ?>
+                        <div class="event-detail-main-card">
+                            <!-- Detail Header Bar -->
+                            <div class="event-detail-header">
+                                <div class="event-detail-status-bar">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="event-status-chip position-static <?= $status_class ?>">
+                                            <?php if ($event_status === 'upcoming'): ?>
+                                                <span class="chip-pulse"></span> Upcoming Event
+                                            <?php elseif ($event_status === 'ongoing'): ?>
+                                                <span class="chip-pulse"></span> Happening Today
+                                            <?php else: ?>
+                                                <i class="fas fa-check-circle"></i> Concluded Event
+                                            <?php endif; ?>
                                         </span>
-                                        <?php if ($event['is_featured'] == 1): ?>
-                                            <span class="event-featured-badge">
-                                                <i class="fas fa-star"></i> Featured Event
+
+                                        <?php if (!empty($event['is_featured'])): ?>
+                                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill font-weight-bold">
+                                                <i class="fas fa-star me-1"></i> Featured Event
                                             </span>
                                         <?php endif; ?>
                                     </div>
+
+                                    <div class="text-muted small">
+                                        <i class="far fa-eye me-1"></i> Official Event Coverage
+                                    </div>
                                 </div>
 
-                                <h1 class="event-title"><?= htmlspecialchars($event['title']) ?></h1>
+                                <h1 class="event-detail-title"><?= htmlspecialchars($event['title']) ?></h1>
 
-                                <!-- Event Meta Grid -->
-                                <div class="event-meta-grid">
-                                    <div class="event-meta-item">
-                                        <div class="event-meta-icon">
+                                <!-- Meta Cards Grid -->
+                                <div class="event-meta-cards-grid">
+                                    <!-- Date Box -->
+                                    <div class="event-meta-box">
+                                        <div class="event-meta-icon-wrap">
                                             <i class="far fa-calendar-alt"></i>
                                         </div>
-                                        <div class="event-meta-content">
-                                            <h4>Date</h4>
-                                            <p><?= $event_weekday ?>, <?= $event_month ?> <?= $event_day ?>,
-                                                <?= $event_year ?>
-                                            </p>
-                                            <?php if ($end_date): ?>
-                                                <small>to <?= date('l, F d, Y', $end_date) ?></small>
+                                        <div class="event-meta-box-text">
+                                            <small>Event Date</small>
+                                            <strong><?= $event_date_formatted ?></strong>
+                                            <?php if ($end_date_formatted): ?>
+                                                <div class="text-muted small mt-1">To: <?= $end_date_formatted ?></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
 
-                                    <div class="event-meta-item">
-                                        <div class="event-meta-icon">
+                                    <!-- Time Box -->
+                                    <div class="event-meta-box">
+                                        <div class="event-meta-icon-wrap">
                                             <i class="far fa-clock"></i>
                                         </div>
-                                        <div class="event-meta-content">
-                                            <h4>Time</h4>
-                                            <p><?= $event_time ?></p>
+                                        <div class="event-meta-box-text">
+                                            <small>Timing</small>
+                                            <strong><?= $event_time ?></strong>
                                             <?php if ($end_time): ?>
-                                                <small>to <?= $end_time ?></small>
+                                                <div class="text-muted small mt-1">Ends: <?= $end_time ?></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
 
-                                    <div class="event-meta-item">
-                                        <div class="event-meta-icon">
+                                    <!-- Location Box -->
+                                    <div class="event-meta-box">
+                                        <div class="event-meta-icon-wrap">
                                             <i class="fas fa-map-marker-alt"></i>
                                         </div>
-                                        <div class="event-meta-content">
-                                            <h4>Location</h4>
-                                            <p><?= htmlspecialchars($event['location'] ?: 'TBD') ?></p>
+                                        <div class="event-meta-box-text">
+                                            <small>Location & Venue</small>
+                                            <strong><?= htmlspecialchars($event['location'] ?: 'Delhi NCR') ?></strong>
                                             <?php if (!empty($event['venue'])): ?>
-                                                <small><?= htmlspecialchars($event['venue']) ?></small>
+                                                <div class="text-muted small mt-1"><?= htmlspecialchars($event['venue']) ?></div>
                                             <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Featured Image -->
-                            <div class="event-featured-image">
-                                <img src="admin/<?= $event['featured_image'] ?>"
-                                    alt="<?= htmlspecialchars($event['title']) ?>">
-                                <div class="event-image-overlay"></div>
+                            <!-- UNCROPPED SHOWCASE STAGE: "Image pura dikhna chahiye" -->
+                            <div class="event-detail-stage">
+                                <!-- Blurred Ambient Backdrop -->
+                                <div class="event-stage-backdrop" style="background-image: url('<?= htmlspecialchars($featured_img) ?>');"></div>
+                                
+                                <!-- Uncropped Full Foreground Image -->
+                                <a href="<?= htmlspecialchars($featured_img) ?>" class="event-popup-single" title="<?= htmlspecialchars($event['title']) ?>" style="display:contents;">
+                                    <img src="<?= htmlspecialchars($featured_img) ?>" 
+                                         alt="<?= htmlspecialchars($event['title']) ?>" 
+                                         class="event-stage-img">
+                                </a>
 
-                                <?php if ($event_status == 'upcoming'): ?>
-                                    <!-- Countdown Timer -->
-                                    <div class="event-countdown" id="countdown">
-                                        <div class="countdown-item">
-                                            <div class="count" id="days">00</div>
-                                            <div class="label">Days</div>
+                                <!-- Click to Zoom Button -->
+                                <a href="<?= htmlspecialchars($featured_img) ?>" class="event-stage-expand-btn event-popup-single" title="Click to view full image">
+                                    <i class="fas fa-search-plus"></i> View Full Image
+                                </a>
+
+                                <!-- Countdown timer for upcoming events -->
+                                <?php if ($event_status === 'upcoming'): ?>
+                                    <div class="event-stage-countdown" id="eventCountdown">
+                                        <div class="countdown-box">
+                                            <div class="count-num" id="cdDays">00</div>
+                                            <div class="count-label">Days</div>
                                         </div>
-                                        <div class="countdown-item">
-                                            <div class="count" id="hours">00</div>
-                                            <div class="label">Hours</div>
+                                        <div class="countdown-box">
+                                            <div class="count-num" id="cdHours">00</div>
+                                            <div class="count-label">Hrs</div>
                                         </div>
-                                        <div class="countdown-item">
-                                            <div class="count" id="minutes">00</div>
-                                            <div class="label">Mins</div>
+                                        <div class="countdown-box">
+                                            <div class="count-num" id="cdMins">00</div>
+                                            <div class="count-label">Min</div>
                                         </div>
-                                        <div class="countdown-item">
-                                            <div class="count" id="seconds">00</div>
-                                            <div class="label">Secs</div>
+                                        <div class="countdown-box">
+                                            <div class="count-num" id="cdSecs">00</div>
+                                            <div class="count-label">Sec</div>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Event Content -->
-                            <div class="event-content-wrapper">
-                                <div class="event-description">
-                                    <?= nl2br(htmlspecialchars($event['description'])) ?>
-                                </div>
+                            <!-- Detailed Description Area -->
+                            <div class="event-detail-content-area">
+                                <h3 class="mt-0 mb-3"><i class="fas fa-info-circle text-teal me-2"></i> About This Event</h3>
+                                <?php if (!empty($event['description'])): ?>
+                                    <?= nl2br($event['description']) ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Detailed description will be updated shortly. Contact our team for immediate registration and booth location details.</p>
+                                <?php endif; ?>
                             </div>
 
-                            <!-- Gallery Section -->
+                            <!-- Full Photo Gallery (100% Connected to DB with Uncropped Zoom) -->
                             <?php if (!empty($gallery)): ?>
-                                <div class="gallery-section">
-                                    <h3 class="section-title">Event Gallery</h3>
-                                    <div class="gallery-grid">
-                                        <?php foreach ($gallery as $index => $image): ?>
-                                            <?php if (file_exists($image)): ?>
-                                                <div class="gallery-item">
-                                                    <a href="<?= $image ?>" data-lightbox="event-gallery"
-                                                        data-title="<?= htmlspecialchars($event['title']) ?> - Image <?= $index + 1 ?>">
-                                                        <img src="<?= $image ?>" alt="Gallery Image <?= $index + 1 ?>">
-                                                        <div class="gallery-overlay">
-                                                            <i class="fas fa-search-plus"></i>
-                                                        </div>
-                                                    </a>
+                                <div class="event-gallery-section">
+                                    <h3 class="event-section-title">
+                                        <i class="far fa-images"></i> Event Photo Gallery (<?= count($gallery) ?>)
+                                    </h3>
+                                    <div class="event-gallery-grid">
+                                        <?php foreach ($gallery as $idx => $photo_url): ?>
+                                            <a href="<?= htmlspecialchars($photo_url) ?>" 
+                                               class="event-gallery-card event-popup-gallery" 
+                                               title="<?= htmlspecialchars($event['title']) ?> - Photo <?= $idx + 1 ?>">
+                                                <!-- Ambient Backdrop -->
+                                                <div class="gallery-backdrop" style="background-image: url('<?= htmlspecialchars($photo_url) ?>');"></div>
+                                                <!-- Uncropped Contain Image -->
+                                                <img src="<?= htmlspecialchars($photo_url) ?>" 
+                                                     alt="Event Photo <?= $idx + 1 ?>" 
+                                                     class="gallery-fg-img" 
+                                                     loading="lazy">
+                                                <div class="gallery-zoom-badge">
+                                                    <i class="fas fa-search-plus"></i>
                                                 </div>
-                                            <?php endif; ?>
+                                            </a>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
                             <?php endif; ?>
 
-                            <!-- Video Section -->
+                            <!-- Video Showcase Section -->
                             <?php if ($has_video): ?>
-                                <div class="video-section">
-                                    <h3 class="section-title">Event Video</h3>
-                                    <div class="video-container">
-                                        <?php if ($event['video_type'] == 'youtube' || $event['video_type'] == 'vimeo'): ?>
-                                            <iframe src="<?= $event['video_url'] ?>" allowfullscreen></iframe>
-                                        <?php elseif ($event['video_type'] == 'local' && !empty($event['video_file']) && file_exists($event['video_file'])): ?>
-                                            <video controls>
-                                                <source src="<?= $event['video_file'] ?>" type="video/mp4">
+                                <div class="event-video-section">
+                                    <h3 class="event-section-title">
+                                        <i class="fas fa-play-circle"></i> Event Video Coverage
+                                    </h3>
+                                    <div class="event-video-frame">
+                                        <?php if (!empty($video_url)): ?>
+                                            <iframe src="<?= htmlspecialchars($video_url) ?>" allowfullscreen loading="lazy"></iframe>
+                                        <?php elseif (!empty($local_video_url)): ?>
+                                            <video controls preload="metadata">
+                                                <source src="<?= htmlspecialchars($local_video_url) ?>" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                         <?php endif; ?>
@@ -913,203 +345,176 @@ $featured_image = !empty($event['featured_image']) && file_exists($event['featur
                                 </div>
                             <?php endif; ?>
 
-                            <!-- Event Navigation -->
-                            <div class="event-navigation">
+                            <!-- Previous / Next Navigation Strip -->
+                            <div class="event-nav-strip">
                                 <?php if ($prev_event): ?>
-                                    <a href="event-detail.php?slug=<?= $prev_event['slug'] ?>" class="nav-link prev">
-                                        <div class="nav-icon">
+                                    <?php $p_url = 'event-detail.php?slug=' . urlencode($prev_event['slug'] ?: 'event-' . $prev_event['id']); ?>
+                                    <a href="<?= $p_url ?>" class="event-nav-link prev-link">
+                                        <div class="event-nav-icon">
                                             <i class="fas fa-chevron-left"></i>
                                         </div>
-                                        <div class="nav-text">
-                                            <span>Previous Event</span>
+                                        <div class="event-nav-text">
+                                            <small>Previous Event</small>
                                             <strong><?= htmlspecialchars($prev_event['title']) ?></strong>
                                         </div>
                                     </a>
+                                <?php else: ?>
+                                    <div></div>
                                 <?php endif; ?>
 
                                 <?php if ($next_event): ?>
-                                    <a href="event-detail.php?slug=<?= $next_event['slug'] ?>" class="nav-link next">
-                                        <div class="nav-icon">
+                                    <?php $n_url = 'event-detail.php?slug=' . urlencode($next_event['slug'] ?: 'event-' . $next_event['id']); ?>
+                                    <a href="<?= $n_url ?>" class="event-nav-link next-link">
+                                        <div class="event-nav-icon">
                                             <i class="fas fa-chevron-right"></i>
                                         </div>
-                                        <div class="nav-text">
-                                            <span>Next Event</span>
+                                        <div class="event-nav-text">
+                                            <small>Next Event</small>
                                             <strong><?= htmlspecialchars($next_event['title']) ?></strong>
                                         </div>
                                     </a>
+                                <?php else: ?>
+                                    <div></div>
                                 <?php endif; ?>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Sidebar -->
+                    <!-- Sidebar Column -->
                     <div class="col-lg-4">
-                        <!-- Event Info Card -->
-                        <div class="event-info-card">
-                            <h4><i class="fas fa-info-circle"></i> Event Information</h4>
-                            <ul class="event-info-list">
-                                <li>
-                                    <i class="fas fa-calendar-check"></i>
-                                    <div class="info-content">
-                                        <strong>Start Date</strong>
-                                        <span><?= date('l, F d, Y', $event_date) ?></span>
+                        <!-- Key Information Widget -->
+                        <div class="event-sidebar-box">
+                            <h3 class="event-sidebar-heading">
+                                <i class="fas fa-info-circle text-teal"></i> Event Snapshot
+                            </h3>
+                            <ul class="list-unstyled mb-0">
+                                <li class="d-flex align-items-start gap-3 py-2 border-bottom">
+                                    <div class="text-teal mt-1"><i class="far fa-calendar-check fa-lg"></i></div>
+                                    <div>
+                                        <strong class="d-block text-dark">Date</strong>
+                                        <span class="text-muted small"><?= $event_date_formatted ?></span>
                                     </div>
                                 </li>
-
-                                <?php if (!empty($event['event_time'])): ?>
-                                    <li>
-                                        <i class="fas fa-clock"></i>
-                                        <div class="info-content">
-                                            <strong>Start Time</strong>
-                                            <span><?= date('h:i A', strtotime($event['event_time'])) ?></span>
-                                        </div>
-                                    </li>
-                                <?php endif; ?>
-
-                                <?php if ($end_date): ?>
-                                    <li>
-                                        <i class="fas fa-calendar-times"></i>
-                                        <div class="info-content">
-                                            <strong>End Date</strong>
-                                            <span><?= date('l, F d, Y', $end_date) ?></span>
-                                        </div>
-                                    </li>
-                                <?php endif; ?>
-
-                                <?php if ($end_time): ?>
-                                    <li>
-                                        <i class="fas fa-clock"></i>
-                                        <div class="info-content">
-                                            <strong>End Time</strong>
-                                            <span><?= $end_time ?></span>
-                                        </div>
-                                    </li>
-                                <?php endif; ?>
-
-                                <li>
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <div class="info-content">
-                                        <strong>Location</strong>
-                                        <span><?= htmlspecialchars($event['location'] ?: 'TBD') ?></span>
+                                <li class="d-flex align-items-start gap-3 py-2 border-bottom">
+                                    <div class="text-teal mt-1"><i class="far fa-clock fa-lg"></i></div>
+                                    <div>
+                                        <strong class="d-block text-dark">Timing</strong>
+                                        <span class="text-muted small"><?= $event_time ?></span>
                                     </div>
                                 </li>
-
+                                <li class="d-flex align-items-start gap-3 py-2 border-bottom">
+                                    <div class="text-teal mt-1"><i class="fas fa-map-marker-alt fa-lg"></i></div>
+                                    <div>
+                                        <strong class="d-block text-dark">City / State</strong>
+                                        <span class="text-muted small"><?= htmlspecialchars($event['location'] ?: 'Delhi NCR') ?></span>
+                                    </div>
+                                </li>
                                 <?php if (!empty($event['venue'])): ?>
-                                    <li>
-                                        <i class="fas fa-building"></i>
-                                        <div class="info-content">
-                                            <strong>Venue</strong>
-                                            <span><?= htmlspecialchars($event['venue']) ?></span>
+                                    <li class="d-flex align-items-start gap-3 py-2 border-bottom">
+                                        <div class="text-teal mt-1"><i class="fas fa-building fa-lg"></i></div>
+                                        <div>
+                                            <strong class="d-block text-dark">Venue Details</strong>
+                                            <span class="text-muted small"><?= htmlspecialchars($event['venue']) ?></span>
                                         </div>
                                     </li>
                                 <?php endif; ?>
-
-                                <li>
-                                    <i class="fas fa-tag"></i>
-                                    <div class="info-content">
-                                        <strong>Status</strong>
-                                        <span
-                                            class="badge bg-<?= $event_status == 'upcoming' ? 'success' : ($event_status == 'ongoing' ? 'warning' : 'secondary') ?>">
+                                <li class="d-flex align-items-start gap-3 py-2">
+                                    <div class="text-teal mt-1"><i class="fas fa-tag fa-lg"></i></div>
+                                    <div>
+                                        <strong class="d-block text-dark">Status</strong>
+                                        <span class="badge <?= $event_status === 'upcoming' ? 'bg-success' : ($event_status === 'ongoing' ? 'bg-warning text-dark' : 'bg-secondary') ?> rounded-pill px-3 py-1 mt-1">
                                             <?= ucfirst($event_status) ?>
                                         </span>
                                     </div>
                                 </li>
                             </ul>
 
-                            <!-- Share Buttons -->
-                            <div class="share-buttons">
-                                <h5 class="share-title">Share This Event:</h5>
-                                <div class="share-icons">
+                            <!-- Social Share Buttons -->
+                            <div class="mt-4 pt-3 border-top">
+                                <h6 class="fw-bold text-dark mb-2">Share This Event:</h6>
+                                <div class="event-share-strip">
                                     <?php
-                                    $share_url = urlencode((isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-                                    $share_title = urlencode($event['title']);
+                                    $encoded_share_url = urlencode($current_page_url);
+                                    $encoded_share_title = urlencode($event['title']);
                                     ?>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $share_url ?>"
-                                        target="_blank" class="share-btn share-facebook" title="Share on Facebook">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="https://twitter.com/intent/tweet?url=<?= $share_url ?>&text=<?= $share_title ?>"
-                                        target="_blank" class="share-btn share-twitter" title="Share on Twitter">
-                                        <i class="fab fa-twitter"></i>
-                                    </a>
-                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $share_url ?>&title=<?= $share_title ?>"
-                                        target="_blank" class="share-btn share-linkedin" title="Share on LinkedIn">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                    <a href="https://api.whatsapp.com/send?text=<?= $share_title ?> - <?= $share_url ?>"
-                                        target="_blank" class="share-btn share-whatsapp" title="Share on WhatsApp">
+                                    <a href="https://api.whatsapp.com/send?text=<?= $encoded_share_title ?>%20-%20<?= $encoded_share_url ?>" 
+                                       target="_blank" rel="noopener noreferrer" class="btn-share-icon share-whatsapp" title="Share via WhatsApp">
                                         <i class="fab fa-whatsapp"></i>
                                     </a>
-                                    <a href="mailto:?subject=<?= $share_title ?>&body=Check out this event: <?= $share_url ?>"
-                                        class="share-btn share-email" title="Share via Email">
-                                        <i class="fas fa-envelope"></i>
+                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?= $encoded_share_url ?>&title=<?= $encoded_share_title ?>" 
+                                       target="_blank" rel="noopener noreferrer" class="btn-share-icon share-linkedin" title="Share on LinkedIn">
+                                        <i class="fab fa-linkedin-in"></i>
                                     </a>
-                                    <button class="share-btn share-copy"
-                                        onclick="copyToClipboard('<?= (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>')"
-                                        title="Copy Link">
+                                    <a href="https://twitter.com/intent/tweet?url=<?= $encoded_share_url ?>&text=<?= $encoded_share_title ?>" 
+                                       target="_blank" rel="noopener noreferrer" class="btn-share-icon share-twitter" title="Share on X / Twitter">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?= $encoded_share_url ?>" 
+                                       target="_blank" rel="noopener noreferrer" class="btn-share-icon share-facebook" title="Share on Facebook">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <button class="btn-share-icon share-copy" onclick="copyEventLink()" title="Copy Event Link">
                                         <i class="fas fa-link"></i>
                                     </button>
+                                </div>
+                                <div id="copyAlert" class="small text-success mt-2" style="display:none;">
+                                    <i class="fas fa-check-circle"></i> Event link copied to clipboard!
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Call to Action -->
-                        <div class="event-info-card text-center">
-                            <h4><i class="fas fa-bell"></i> Don't Miss Out!</h4>
-                            <p>Stay updated with our latest events and announcements.</p>
-                            <a href="contact.php" class="theme-btn mt-3"
-                                style="display: inline-block; padding: 12px 30px;">
-                                <i class="fas fa-envelope"></i> Contact Us
+                        <!-- Direct WhatsApp RSVP / Consultation CTA -->
+                        <div class="event-cta-card">
+                            <span class="event-cta-badge"><i class="fas fa-ticket-alt me-1"></i> RSVP & Inquiries</span>
+                            <h4>Attend or Schedule a Demo</h4>
+                            <p>Planning to visit our booth or need detailed product information regarding this event?</p>
+                            <?php
+                            $wa_digits = preg_replace('/[^0-9]/', '', $whatsapp_number);
+                            $rsvp_text = urlencode("Hello Amazing Infotech, I would like to inquire / RSVP for the event: " . $event['title']);
+                            ?>
+                            <a href="https://wa.me/<?= $wa_digits ?>?text=<?= $rsvp_text ?>" target="_blank" rel="noopener noreferrer" class="btn-whatsapp-rsvp mb-2">
+                                <i class="fab fa-whatsapp"></i> Connect on WhatsApp
+                            </a>
+                            <a href="tel:<?= preg_replace('/[^0-9+]/', '', $mobile) ?>" class="btn btn-outline-light w-100 rounded-pill py-2 font-weight-bold small">
+                                <i class="fas fa-phone-alt me-1"></i> Call <?= htmlspecialchars($mobile) ?>
                             </a>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Related Events -->
-                <?php if (!empty($related_events)): ?>
-                    <div class="related-events">
-                        <h3 class="related-title">You Might Also Like</h3>
-                        <div class="row">
-                            <?php foreach ($related_events as $related): ?>
-                                <?php
-                                $rel_date = strtotime($related['event_date']);
-                                $rel_image = !empty($related['featured_image']) && file_exists($related['featured_image'])
-                                    ? $related['featured_image']
-                                    : 'assets/img/event-default.jpg';
-                                ?>
-                                <div class="col-md-4">
-                                    <div class="related-event-item">
-                                        <div class="related-event-img">
-                                            <img src="<?= $rel_image ?>" alt="<?= htmlspecialchars($related['title']) ?>">
-                                            <div class="related-event-date">
-                                                <span class="day"><?= date('d', $rel_date) ?></span>
-                                                <span class="month"><?= date('M', $rel_date) ?></span>
+                        <!-- Related Events Widget -->
+                        <?php if (!empty($related_events)): ?>
+                            <div class="event-sidebar-box mt-4">
+                                <h3 class="event-sidebar-heading">
+                                    <i class="fas fa-calendar-alt text-teal"></i> Related Events
+                                </h3>
+                                <div class="mini-events-list">
+                                    <?php foreach ($related_events as $rel): ?>
+                                        <?php
+                                        $r_ts = strtotime($rel['event_date']);
+                                        $r_url = 'event-detail.php?slug=' . urlencode($rel['slug'] ?: 'event-' . $rel['id']);
+                                        ?>
+                                        <div class="mini-event-item">
+                                            <div class="mini-event-date">
+                                                <span class="mini-day"><?= date('d', $r_ts) ?></span>
+                                                <span class="mini-month"><?= date('M', $r_ts) ?></span>
+                                            </div>
+                                            <div class="mini-event-details">
+                                                <h4 class="mini-event-title">
+                                                    <a href="<?= $r_url ?>"><?= htmlspecialchars($rel['title']) ?></a>
+                                                </h4>
+                                                <p class="mini-event-loc">
+                                                    <i class="fas fa-map-marker-alt text-teal me-1"></i>
+                                                    <?= htmlspecialchars($rel['location'] ?: 'Delhi NCR') ?>
+                                                </p>
                                             </div>
                                         </div>
-                                        <div class="related-event-content">
-                                            <h4><a
-                                                    href="event-detail.php?slug=<?= $related['slug'] ?>"><?= htmlspecialchars($related['title']) ?></a>
-                                            </h4>
-                                            <p><i class="fas fa-map-marker-alt"></i>
-                                                <?= htmlspecialchars($related['location'] ?: 'TBD') ?></p>
-                                        </div>
-                                        <a href="event-detail.php?slug=<?= $related['slug'] ?>" class="related-event-btn">
-                                            View Details <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
-        </div>
-
-        <!-- Loading Spinner -->
-        <div class="loading-spinner" id="loadingSpinner">
-            <i class="fas fa-circle-notch fa-spin"></i>
-            <p>Loading...</p>
-        </div>
+        </section>
     </main>
 
     <?php include('footer.php'); ?>
@@ -1117,81 +522,88 @@ $featured_image = !empty($event['featured_image']) && file_exists($event['featur
     <script src="assets/js/jquery-3.6.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
     <script src="assets/js/owl.carousel.min.js"></script>
     <script src="assets/js/script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
     <script>
-        // Countdown Timer
-        <?php if ($event_status == 'upcoming'): ?>
-            function updateCountdown() {
-                const eventDate = new Date("<?= $event['event_date'] . ' ' . ($event['event_time'] ?: '00:00:00') ?>").getTime();
+        // Magnific Popup Lightbox for Gallery Photos
+        $(document).ready(function() {
+            if ($.fn.magnificPopup) {
+                $('.event-popup-gallery').magnificPopup({
+                    type: 'image',
+                    gallery: {
+                        enabled: true,
+                        navigateByImgClick: true,
+                        preload: [0, 2]
+                    },
+                    image: {
+                        titleSrc: 'title'
+                    },
+                    zoom: {
+                        enabled: true,
+                        duration: 300
+                    }
+                });
 
-                const timer = setInterval(function () {
+                $('.event-popup-single').magnificPopup({
+                    type: 'image',
+                    closeOnContentClick: true,
+                    zoom: {
+                        enabled: true,
+                        duration: 300
+                    }
+                });
+            }
+        });
+
+        // Copy link to clipboard
+        function copyEventLink() {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() {
+                    $('#copyAlert').fadeIn().delay(3000).fadeOut();
+                });
+            } else {
+                const dummy = document.createElement('input');
+                document.body.appendChild(dummy);
+                dummy.value = url;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                $('#copyAlert').fadeIn().delay(3000).fadeOut();
+            }
+        }
+
+        // Countdown Timer for Upcoming Events
+        <?php if ($event_status === 'upcoming'): ?>
+            (function() {
+                const targetTime = new Date("<?= $event['event_date'] . ' ' . (!empty($event['event_time']) ? $event['event_time'] : '09:00:00') ?>").getTime();
+                
+                function updateCountdown() {
                     const now = new Date().getTime();
-                    const distance = eventDate - now;
+                    const diff = targetTime - now;
 
-                    if (distance < 0) {
-                        clearInterval(timer);
-                        document.getElementById('countdown').innerHTML = '<div class="text-center">Event Started!</div>';
+                    if (diff <= 0) {
+                        $('#eventCountdown').html('<span class="fw-bold text-success px-2 py-1"><i class="fas fa-play-circle me-1"></i> Event Started</span>');
                         return;
                     }
 
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-                    document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
-                    document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
-                    document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
-                    document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
-                }, 1000);
-            }
+                    $('#cdDays').text(String(days).padStart(2, '0'));
+                    $('#cdHours').text(String(hours).padStart(2, '0'));
+                    $('#cdMins').text(String(mins).padStart(2, '0'));
+                    $('#cdSecs').text(String(secs).padStart(2, '0'));
+                }
 
-            updateCountdown();
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            })();
         <?php endif; ?>
-
-        // Copy to clipboard function
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function () {
-                alert('Link copied to clipboard!');
-            }, function (err) {
-                console.error('Could not copy text: ', err);
-            });
-        }
-
-        // Lightbox configuration
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'albumLabel': 'Image %1 of %2',
-            'fadeDuration': 300,
-            'imageFadeDuration': 300
-        });
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Show loading spinner on AJAX requests
-        $(document).ajaxStart(function () {
-            $('#loadingSpinner').show();
-        }).ajaxStop(function () {
-            $('#loadingSpinner').hide();
-        });
-
-        // Initialize tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        });
     </script>
 </body>
 

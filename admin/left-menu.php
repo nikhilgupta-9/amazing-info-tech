@@ -1,4 +1,4 @@
-mi<aside class="main-sidebar">
+<aside class="main-sidebar">
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
@@ -15,6 +15,30 @@ mi<aside class="main-sidebar">
           <a href="index.php">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-calendar"></i> <span>Events & Expos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="add-event.php"><i class="fa fa-circle-o"></i> Add Event</a></li>
+            <li><a href="view-events.php"><i class="fa fa-circle-o"></i> View Events</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-trophy"></i> <span>Awards & Recognition</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="add-news-event.php"><i class="fa fa-circle-o"></i> Add Award / News</a></li>
+            <li><a href="view-newsevent.php"><i class="fa fa-circle-o"></i> View Awards</a></li>
+          </ul>
         </li>
         <li class="treeview">
           <a href="#">
@@ -48,10 +72,6 @@ mi<aside class="main-sidebar">
           </a>
           <ul class="treeview-menu">
             <li><a href="view-gallery.php"><i class="fa fa-circle-o"></i> View Gallery</a></li>
-           <!--  <li><a href="view-vgallery.php"><i class="fa fa-circle-o"></i> Video View Gallery</a></li>
-            <li><a href="view-download.php"><i class="fa fa-circle-o"></i> View Download</a></li>
-            <li><a href="view-mcenter.php"><i class="fa fa-circle-o"></i> View Media Center</a></li> -->
-          
           </ul>
         </li>
   

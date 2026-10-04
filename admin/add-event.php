@@ -20,27 +20,45 @@ foreach ($upload_dirs as $dir) {
 
 // Handle form submission
 if (isset($_POST['submit'])) {
-    $title = $conn->real_escape_string($_POST['title']);
-    $slug = $conn->real_escape_string(strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $_POST['title']))));
-    $description = $conn->real_escape_string($_POST['description']);
-    $short_description = $conn->real_escape_string($_POST['short_description']);
-    $event_date = $_POST['event_date'];
-    $event_time = $_POST['event_time'];
-    $end_date = !empty($_POST['end_date']) ? $_POST['end_date'] : null;
-    $end_time = !empty($_POST['end_time']) ? $_POST['end_time'] : null;
-    $location = $conn->real_escape_string($_POST['location']);
-    $venue = $conn->real_escape_string($_POST['venue']);
+    $title = trim($_POST['title']);
+    
+    // Unique slug generation
+    $base_slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+    $base_slug = trim($base_slug, '-');
+    if (empty($base_slug)) {
+        $base_slug = 'event-' . time();
+    }
+    $slug = $base_slug;
+    $slug_check = $conn->query("SELECT id FROM events WHERE slug = '" . $conn->real_escape_string($slug) . "'");
+    $slug_counter = 1;
+    while ($slug_check && $slug_check->num_rows > 0) {
+        $slug = $base_slug . '-' . $slug_counter;
+        $slug_check = $conn->query("SELECT id FROM events WHERE slug = '" . $conn->real_escape_string($slug) . "'");
+        $slug_counter++;
+    }
+
+    $description = trim($_POST['description'] ?? '');
+    $short_description = trim($_POST['short_description'] ?? '');
+    $event_date = !empty($_POST['event_date']) ? trim($_POST['event_date']) : date('Y-m-d');
+    $event_time = !empty(trim($_POST['event_time'] ?? '')) ? trim($_POST['event_time']) : null;
+    $end_date = !empty(trim($_POST['end_date'] ?? '')) ? trim($_POST['end_date']) : null;
+    $end_time = !empty(trim($_POST['end_time'] ?? '')) ? trim($_POST['end_time']) : null;
+    $location = trim($_POST['location'] ?? '');
+    $venue = trim($_POST['venue'] ?? '');
     $is_featured = isset($_POST['is_featured']) ? 1 : 0;
-    $meta_title = $conn->real_escape_string($_POST['meta_title']);
-    $meta_description = $conn->real_escape_string($_POST['meta_description']);
-    $meta_keywords = $conn->real_escape_string($_POST['meta_keywords']);
+    $meta_title = trim($_POST['meta_title'] ?? '');
+    $meta_description = trim($_POST['meta_description'] ?? '');
+    $meta_keywords = trim($_POST['meta_keywords'] ?? '');
 
     // Handle featured image upload
     $featured_image = '';
     if (!empty($_FILES['featured_image']['name'])) {
         $target_dir = "uploads/events/";
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
         $file_ext = strtolower(pathinfo($_FILES['featured_image']['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
 
         if (in_array($file_ext, $allowed)) {
             $new_filename = uniqid() . '_' . time() . '.' . $file_ext;
@@ -58,12 +76,15 @@ if (isset($_POST['submit'])) {
     $gallery_images = [];
     if (!empty($_FILES['gallery_images']['name'][0])) {
         $gallery_dir = "uploads/events/gallery/";
+        if (!file_exists($gallery_dir)) {
+            mkdir($gallery_dir, 0777, true);
+        }
         $files = $_FILES['gallery_images'];
 
         for ($i = 0; $i < count($files['name']); $i++) {
             if ($files['error'][$i] === 0) {
                 $file_ext = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
-                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
 
                 if (in_array($file_ext, $allowed)) {
                     $new_filename = uniqid() . '_' . $i . '_' . time() . '.' . $file_ext;
@@ -78,16 +99,14 @@ if (isset($_POST['submit'])) {
     }
 
     // Handle video
-    $video_url = '';
-    $video_type = 'none';
-    $video_file = '';
+    $video_url = !empty(trim($_POST['video_url'] ?? '')) ? trim($_POST['video_url']) : null;
+    $video_type = null;
+    $video_file = null;
 
-    if (!empty($_POST['video_url'])) {
+    if (!empty($video_url)) {
         // External video (YouTube/Vimeo)
-        $video_url = $conn->real_escape_string($_POST['video_url']);
         if (strpos($video_url, 'youtube.com') !== false || strpos($video_url, 'youtu.be') !== false) {
             $video_type = 'youtube';
-            // Convert to embed URL if needed
             if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/', $video_url, $matches)) {
                 $video_url = 'https://www.youtube.com/embed/' . $matches[1];
             }
@@ -96,10 +115,15 @@ if (isset($_POST['submit'])) {
             if (preg_match('/vimeo\.com\/(\d+)/', $video_url, $matches)) {
                 $video_url = 'https://player.vimeo.com/video/' . $matches[1];
             }
+        } else {
+            $video_type = 'youtube';
         }
     } elseif (!empty($_FILES['video_file']['name'])) {
         // Local video upload
         $video_dir = "uploads/events/videos/";
+        if (!file_exists($video_dir)) {
+            mkdir($video_dir, 0777, true);
+        }
         $file_ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
         $allowed_video = ['mp4', 'webm', 'ogg'];
 
