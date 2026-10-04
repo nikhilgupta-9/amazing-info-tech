@@ -154,10 +154,10 @@ $current_page_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "h
         <div class="site-breadcrumb page-hero-breadcrumb" style="background: url('assets/img/breadcrumb/01.jpg') center/cover no-repeat;">
             <div class="container">
                 <div class="hero-badge-wrap">
-                    <span class="hero-badge"><i class="fas fa-calendar-alt"></i> Event Overview</span>
+                    <span class="hero-badge text-light"><i class="fas fa-calendar-alt"></i> Event Overview</span>
                 </div>
                 <h1 class="breadcrumb-title"><?= htmlspecialchars($event['title']) ?></h1>
-                <p class="hero-tagline">
+                <p class="hero-tagline text-light">
                     <?= htmlspecialchars(!empty($event['short_description']) ? $event['short_description'] : 'Join Amazing Infotech for industry exhibitions, technology demonstrations, and partner summits.') ?>
                 </p>
                 <ul class="breadcrumb-menu">
@@ -293,7 +293,7 @@ $current_page_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "h
                             <div class="event-detail-content-area">
                                 <h3 class="mt-0 mb-3"><i class="fas fa-info-circle text-teal me-2"></i> About This Event</h3>
                                 <?php if (!empty($event['description'])): ?>
-                                    <?= nl2br($event['description']) ?>
+                                    <?= $event['description'] ?>
                                 <?php else: ?>
                                     <p class="text-muted">Detailed description will be updated shortly. Contact our team for immediate registration and booth location details.</p>
                                 <?php endif; ?>

@@ -141,10 +141,10 @@ $today_str = date('Y-m-d');
         <div class="site-breadcrumb page-hero-breadcrumb" style="background: url('assets/img/breadcrumb/01.jpg') center/cover no-repeat;">
             <div class="container">
                 <div class="hero-badge-wrap">
-                    <span class="hero-badge"><i class="fas fa-calendar-alt"></i> Corporate Expos & Events</span>
+                    <span class="hero-badge text-light"><i class="fas fa-calendar-alt"></i> Corporate Expos & Events</span>
                 </div>
                 <h1 class="breadcrumb-title">Events & Exhibitions</h1>
-                <p class="hero-tagline">
+                <p class="hero-tagline text-light">
                     Experience live demonstrations of HP DesignJet & PageWide plotters, technical seminars, and photo video expos organized and represented by Amazing Infotech.
                 </p>
                 <ul class="breadcrumb-menu">
