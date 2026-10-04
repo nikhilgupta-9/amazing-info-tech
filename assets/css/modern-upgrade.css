@@ -5246,11 +5246,36 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 
 /* 1. Global Page Hero Breadcrumbs */
+.page-hero-breadcrumb,
+.site-breadcrumb {
+    position: relative;
+    overflow: hidden;
+}
+
 .page-hero-breadcrumb {
     padding: 70px 0 60px;
     background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(3, 70, 110, 0.92) 100%), url('../img/breadcrumb/01.jpg') center/cover no-repeat;
-    position: relative;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Very Light Subtle Architectural Grid Overlay */
+.page-hero-breadcrumb::after,
+.site-breadcrumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 34px 34px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.page-hero-breadcrumb .container,
+.site-breadcrumb .container {
+    position: relative;
+    z-index: 2;
 }
 .page-hero-badge {
     display: inline-flex;
