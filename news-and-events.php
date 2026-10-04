@@ -109,7 +109,7 @@ $meta_desc = "Explore the industry awards and corporate accolades earned by Amaz
                                 </div>
                                 <div class="award-card-body">
                                     <div>
-                                        <span class="badge bg-primary-subtle text-primary px-2 py-1 rounded-pill mb-2 fw-bold" style="font-size: 11px;">
+                                        <span class="badge px-2 py-1 rounded-pill mb-2 fw-bold" style="background: rgba(0, 182, 177, 0.12); color: #008f8b; border: 1px solid rgba(0, 182, 177, 0.3); font-size: 11px;">
                                             <i class="fas fa-certificate me-1"></i> HP Accolade
                                         </span>
                                         <h3 class="award-card-title"><?= $title ?></h3>
@@ -125,7 +125,7 @@ $meta_desc = "Explore the industry awards and corporate accolades earned by Amaz
                 <div class="mt-5 p-4 rounded-3 text-center" style="background: #FFFFFF; border: 1px dashed #CBD5E1;">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-md-start">
                         <div>
-                            <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-handshake text-primary me-2"></i> Partner With India's Leading HP Large-Format Specialist</h4>
+                            <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-handshake text-teal me-2"></i> Partner With India's Leading HP Large-Format Specialist</h4>
                             <p class="text-muted mb-0 small">Experience award-winning reliability for your architectural, CAD, and corporate printing workflows.</p>
                         </div>
                         <div class="d-flex gap-2 flex-shrink-0">

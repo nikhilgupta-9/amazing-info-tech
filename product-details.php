@@ -468,12 +468,12 @@ $wa_quote_url = "https://api.whatsapp.com/send?phone=91" . $whatsapp_number . "&
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Mumbai & Pune (Maharashtra Hubs)</strong></td>
-                                                    <td><span class="badge bg-primary">Under 8 Hours</span></td>
+                                                    <td><span class="badge" style="background: #00B6B1; color: #FFF;">Under 8 Hours</span></td>
                                                     <td>Certified Field Engineers, Preventive Maintenance, Inks & Printheads</td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Bengaluru, Hyderabad & Chennai (South India)</strong></td>
-                                                    <td><span class="badge bg-primary">Within 24 Hours</span></td>
+                                                    <td><span class="badge" style="background: #00B6B1; color: #FFF;">Within 24 Hours</span></td>
                                                     <td>Architectural CAD Setup, Color Calibration, On-Site AMC Visits</td>
                                                 </tr>
                                                 <tr>

@@ -245,7 +245,7 @@ $meta_desc = "Locate Amazing Infotech branch offices and HP Plotter service cent
                 <div class="mt-5 p-4 rounded-3 text-center" style="background: #FFFFFF; border: 1px dashed #CBD5E1;">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-md-start">
                         <div>
-                            <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-truck-fast text-primary me-2"></i> Operating in Another City or Industrial Zone?</h4>
+                            <h4 class="fw-bold mb-1 text-dark"><i class="fas fa-truck-fast text-teal me-2"></i> Operating in Another City or Industrial Zone?</h4>
                             <p class="text-muted mb-0 small">We deliver HP plotters, genuine ink batches, and dispatch field technicians across all 28 states and union territories in India.</p>
                         </div>
                         <div class="d-flex gap-2 flex-shrink-0">

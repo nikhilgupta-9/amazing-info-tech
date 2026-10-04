@@ -166,7 +166,7 @@ $meta_desc = "Get in touch with Amazing Infotech Pvt. Ltd. — Authorized HP Lar
                     <!-- Left Column: Interactive Form -->
                     <div class="col-lg-7">
                         <div class="contact-form-card-modern">
-                            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase" style="font-size:11px;">Direct Inquiry Form</span>
+                            <span class="badge px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase" style="background: rgba(0, 182, 177, 0.12); color: #008f8b; border: 1px solid rgba(0, 182, 177, 0.3); font-size:11.5px; letter-spacing: 0.5px;"><i class="fas fa-paper-plane me-1"></i> Direct Inquiry Form</span>
                             <h3>Send Us an Official Message</h3>
                             <p>Fill out the details below. Our Technical Manager will review your requirements and respond within 30 minutes.</p>
 
@@ -261,10 +261,10 @@ $meta_desc = "Get in touch with Amazing Infotech Pvt. Ltd. — Authorized HP Lar
                             $tel_link = "tel:" . preg_replace('/[^0-9+]/', '', $raw_phone);
                         ?>
                             <div class="col-md-6 col-lg-3">
-                                <div class="p-3 bg-white rounded-3 border h-100">
+                                <div class="p-3 bg-white h-100 contact-branch-preview-card">
                                     <h6 class="fw-bold text-dark mb-1"><?= $b_name ?></h6>
                                     <p class="text-muted small text-truncate mb-2" title="<?= $b_address ?>"><?= $b_address ?></p>
-                                    <a href="<?= $tel_link ?>" class="text-primary small fw-bold">
+                                    <a href="<?= $tel_link ?>" class="contact-branch-phone small fw-bold">
                                         <i class="fas fa-phone-alt me-1"></i> <?= htmlspecialchars($raw_phone) ?>
                                     </a>
                                 </div>

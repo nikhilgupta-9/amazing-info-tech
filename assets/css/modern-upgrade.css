@@ -5853,52 +5853,39 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-/* ==========================================================================
-   ARCHITECTURAL CAD GRID PATTERN FOR BREADCRUMBS
-   ========================================================================== */
-.page-hero-breadcrumb,
-.site-breadcrumb {
-    position: relative !important;
-    overflow: hidden !important;
-    background: linear-gradient(135deg, rgba(11, 19, 43, 0.94) 0%, rgba(3, 70, 110, 0.90) 100%), url('../img/breadcrumb/01.jpg') center/cover no-repeat !important;
-    border-bottom: 1px solid rgba(0, 182, 177, 0.25) !important;
+/* Theme Teal Utility & Contact/Career Theme Alignment */
+.text-teal {
+    color: #00B6B1 !important;
 }
 
-/* CAD Technical Grid Overlay */
-.page-hero-breadcrumb::before,
-.site-breadcrumb::before {
-    content: '' !important;
-    position: absolute !important;
-    inset: 0 !important;
-    background-image: 
-        linear-gradient(to right, rgba(0, 182, 177, 0.14) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 182, 177, 0.14) 1px, transparent 1px) !important;
-    background-size: 36px 36px !important;
-    mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 45%, transparent 95%) !important;
-    -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 45%, transparent 95%) !important;
-    pointer-events: none !important;
-    z-index: 1 !important;
+.contact-branch-preview-card {
+    border-radius: 12px !important;
+    border: 1px solid #E2E8F0 !important;
+    transition: all 0.25s ease !important;
 }
 
-/* Diagonal Tech Blueprint Scan Accent */
-.page-hero-breadcrumb::after,
-.site-breadcrumb::after {
-    content: '' !important;
-    position: absolute !important;
-    top: -50% !important;
-    left: -20% !important;
-    width: 140% !important;
-    height: 200% !important;
-    background: radial-gradient(circle at 50% 30%, rgba(0, 182, 177, 0.22) 0%, rgba(2, 132, 199, 0.08) 40%, transparent 65%) !important;
-    pointer-events: none !important;
-    z-index: 2 !important;
+.contact-branch-preview-card:hover {
+    border-color: #00B6B1 !important;
+    box-shadow: 0 8px 24px rgba(0, 182, 177, 0.12) !important;
+    transform: translateY(-2px);
 }
 
-/* Ensure Breadcrumb Elements Float Crisply Above Grid */
-.page-hero-breadcrumb .container,
-.site-breadcrumb .container {
-    position: relative !important;
-    z-index: 3 !important;
+.contact-branch-phone {
+    color: #00B6B1 !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    transition: color 0.2s ease !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.contact-branch-phone:hover {
+    color: #0F172A !important;
+}
+
+.career-opening-meta i {
+    color: #00B6B1 !important;
 }
 
 /* ==========================================================================

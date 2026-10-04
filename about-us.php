@@ -221,25 +221,25 @@ $meta_desc = "Learn about Amazing Infotech Pvt. Ltd. — India's leading HP Larg
                             <div class="row g-3 mt-2">
                                 <div class="col-sm-6">
                                     <div class="about-stat-item">
-                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-print text-primary me-2"></i> Plotters For Every Need</h5>
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-print text-teal me-2"></i> Plotters For Every Need</h5>
                                         <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 1'] ?? 'From entry-level 24" & 36" office plotters to 64" industrial Latex & PageWide systems.') ?></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="about-stat-item">
-                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-headset text-primary me-2"></i> Comprehensive AMC</h5>
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-headset text-teal me-2"></i> Comprehensive AMC</h5>
                                         <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 2'] ?? 'Preventive audits, genuine spare part replacements, and dedicated telephone support desks.') ?></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="about-stat-item">
-                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-award text-primary me-2"></i> Consistent Output</h5>
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-award text-teal me-2"></i> Consistent Output</h5>
                                         <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 3'] ?? 'Guaranteed crisp line accuracy and vibrant color gamuts for CAD blueprints and signage.') ?></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="about-stat-item">
-                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-tachometer-alt text-primary me-2"></i> Operational Efficiency</h5>
+                                        <h5 style="color:#0F172A; font-weight:700; margin-bottom:6px;"><i class="fas fa-tachometer-alt text-teal me-2"></i> Operational Efficiency</h5>
                                         <p><?= htmlspecialchars($sections['Why Choose Us - Subsection 4'] ?? 'Minimizing printer downtime and lowering cost-per-page with smart tank plotters.') ?></p>
                                     </div>
                                 </div>

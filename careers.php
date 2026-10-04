@@ -211,9 +211,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="career-opening-info">
                                 <h4>HP Certified Field Service Engineer</h4>
                                 <div class="career-opening-meta">
-                                    <span><i class="fas fa-map-marker-alt text-primary"></i> Delhi NCR / Mumbai / Pune</span>
-                                    <span><i class="fas fa-clock text-primary"></i> Full Time</span>
-                                    <span><i class="fas fa-briefcase text-primary"></i> 2–5 Yrs Exp</span>
+                                    <span><i class="fas fa-map-marker-alt text-teal"></i> Delhi NCR / Mumbai / Pune</span>
+                                    <span><i class="fas fa-clock text-teal"></i> Full Time</span>
+                                    <span><i class="fas fa-briefcase text-teal"></i> 2–5 Yrs Exp</span>
                                 </div>
                                 <p class="small text-muted mt-2 mb-0">On-site diagnostics, plotter installation, printhead maintenance, and AMC SLA execution for DesignJet systems.</p>
                             </div>
@@ -227,9 +227,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="career-opening-info">
                                 <h4>B2B Technical Sales Manager (HP Plotters)</h4>
                                 <div class="career-opening-meta">
-                                    <span><i class="fas fa-map-marker-alt text-primary"></i> New Delhi Head Office</span>
-                                    <span><i class="fas fa-clock text-primary"></i> Full Time</span>
-                                    <span><i class="fas fa-briefcase text-primary"></i> 3–6 Yrs Exp</span>
+                                    <span><i class="fas fa-map-marker-alt text-teal"></i> New Delhi Head Office</span>
+                                    <span><i class="fas fa-clock text-teal"></i> Full Time</span>
+                                    <span><i class="fas fa-briefcase text-teal"></i> 3–6 Yrs Exp</span>
                                 </div>
                                 <p class="small text-muted mt-2 mb-0">Drive enterprise plotter sales, client demonstrations, tender proposals, and corporate client accounts in Delhi NCR.</p>
                             </div>
@@ -243,9 +243,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="career-opening-info">
                                 <h4>CAD / GIS Applications & RIP Software Specialist</h4>
                                 <div class="career-opening-meta">
-                                    <span><i class="fas fa-map-marker-alt text-primary"></i> Delhi NCR (Hybrid)</span>
-                                    <span><i class="fas fa-clock text-primary"></i> Full Time</span>
-                                    <span><i class="fas fa-briefcase text-primary"></i> 1–4 Yrs Exp</span>
+                                    <span><i class="fas fa-map-marker-alt text-teal"></i> Delhi NCR (Hybrid)</span>
+                                    <span><i class="fas fa-clock text-teal"></i> Full Time</span>
+                                    <span><i class="fas fa-briefcase text-teal"></i> 1–4 Yrs Exp</span>
                                 </div>
                                 <p class="small text-muted mt-2 mb-0">Operator workflow consulting, AutoCAD driver setup, Onyx/Caldera RIP integration, and color profile configuration.</p>
                             </div>
@@ -259,9 +259,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="career-opening-info">
                                 <h4>Supply Chain & AMC Operations Executive</h4>
                                 <div class="career-opening-meta">
-                                    <span><i class="fas fa-map-marker-alt text-primary"></i> New Delhi Office</span>
-                                    <span><i class="fas fa-clock text-primary"></i> Full Time</span>
-                                    <span><i class="fas fa-briefcase text-primary"></i> 1–3 Yrs Exp</span>
+                                    <span><i class="fas fa-map-marker-alt text-teal"></i> New Delhi Office</span>
+                                    <span><i class="fas fa-clock text-teal"></i> Full Time</span>
+                                    <span><i class="fas fa-briefcase text-teal"></i> 1–3 Yrs Exp</span>
                                 </div>
                                 <p class="small text-muted mt-2 mb-0">Coordinate technician dispatch, genuine ink shipments, AMC contract renewals, and customer support desks.</p>
                             </div>
@@ -274,7 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- Right Column: Application Form -->
                     <div class="col-lg-6" id="careerApplicationSection">
                         <div class="contact-form-card-modern">
-                            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase" style="font-size:11px;">Candidate Portal</span>
+                            <span class="badge px-3 py-2 rounded-pill mb-2 fw-bold text-uppercase" style="background: rgba(0, 182, 177, 0.12); color: #008f8b; border: 1px solid rgba(0, 182, 177, 0.3); font-size:11.5px; letter-spacing: 0.5px;"><i class="fas fa-user-check me-1"></i> Candidate Portal</span>
                             <h3>Submit Your Job Application</h3>
                             <p>Send your updated resume. Our Talent Acquisition team reviews every submission with discretion.</p>
 
@@ -358,9 +358,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     // Highlight the select
                     selectDropdown.focus();
-                    selectDropdown.classList.add('border-primary');
+                    selectDropdown.style.borderColor = '#00B6B1';
+                    selectDropdown.style.boxShadow = '0 0 0 3px rgba(0, 182, 177, 0.25)';
                     setTimeout(function() {
-                        selectDropdown.classList.remove('border-primary');
+                        selectDropdown.style.borderColor = '';
+                        selectDropdown.style.boxShadow = '';
                     }, 2000);
                 }
             });

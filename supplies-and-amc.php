@@ -468,12 +468,12 @@ $og_image = $site . "assets/img/hp-partner-experience.jpg";
                                     </tr>
                                     <tr>
                                         <td style="padding: 12px;"><strong>Mumbai & Pune (Western Hub)</strong></td>
-                                        <td><span class="badge bg-primary">Under 8 Hours</span></td>
+                                        <td><span class="badge" style="background: #00B6B1; color: #FFF;">Under 8 Hours</span></td>
                                         <td>Andheri & Kasba Peth service centers, onsite calibration</td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 12px;"><strong>Bengaluru, Hyderabad & Chennai (South India)</strong></td>
-                                        <td><span class="badge bg-primary">Within 24 Hours</span></td>
+                                        <td><span class="badge" style="background: #00B6B1; color: #FFF;">Within 24 Hours</span></td>
                                         <td>Certified architectural CAD engineers & preventive care</td>
                                     </tr>
                                     <tr>
