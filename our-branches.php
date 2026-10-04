@@ -84,32 +84,52 @@ $meta_desc = "Locate Amazing Infotech branch offices and HP Plotter service cent
             </div>
         </section>
 
-        <!-- Regional SLA & SLA Highlights Strip (Rule #4) -->
-        <section class="py-4 bg-white border-bottom">
+        <!-- Regional SLA & SLA Highlights Strip (Rule #4 - Brand Theme Aligned) -->
+        <section class="branches-sla-section">
             <div class="container">
-                <div class="row g-3 text-center">
-                    <div class="col-6 col-md-3">
-                        <div class="p-2">
-                            <h4 class="text-primary fw-bold mb-1">< 4 Hours</h4>
-                            <p class="text-muted small mb-0">On-Site SLA in Delhi NCR</p>
+                <div class="row g-3">
+                    <div class="col-6 col-lg-3">
+                        <div class="sla-highlight-card">
+                            <div class="sla-highlight-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="sla-highlight-content">
+                                <div class="sla-highlight-val"><span class="highlight-teal">&lt; 4</span> Hours</div>
+                                <p class="sla-highlight-desc">On-Site SLA in Delhi NCR</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <div class="p-2">
-                            <h4 class="text-primary fw-bold mb-1">5+ Major Hubs</h4>
-                            <p class="text-muted small mb-0">Direct Physical Offices</p>
+                    <div class="col-6 col-lg-3">
+                        <div class="sla-highlight-card">
+                            <div class="sla-highlight-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="sla-highlight-content">
+                                <div class="sla-highlight-val"><span class="highlight-teal">5+</span> Hubs</div>
+                                <p class="sla-highlight-desc">Direct Regional Offices</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <div class="p-2">
-                            <h4 class="text-primary fw-bold mb-1">100% OEM</h4>
-                            <p class="text-muted small mb-0">Genuine Spares in Stock</p>
+                    <div class="col-6 col-lg-3">
+                        <div class="sla-highlight-card">
+                            <div class="sla-highlight-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="sla-highlight-content">
+                                <div class="sla-highlight-val"><span class="highlight-teal">100%</span> OEM</div>
+                                <p class="sla-highlight-desc">Genuine Spares &amp; Inks</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
-                        <div class="p-2">
-                            <h4 class="text-primary fw-bold mb-1">Pan-India</h4>
-                            <p class="text-muted small mb-0">Rapid Express Dispatch</p>
+                    <div class="col-6 col-lg-3">
+                        <div class="sla-highlight-card">
+                            <div class="sla-highlight-icon">
+                                <i class="fas fa-truck-fast"></i>
+                            </div>
+                            <div class="sla-highlight-content">
+                                <div class="sla-highlight-val"><span class="highlight-teal">Pan</span>-India</div>
+                                <p class="sla-highlight-desc">Rapid Express Dispatch</p>
+                            </div>
                         </div>
                     </div>
                 </div>

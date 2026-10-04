@@ -39,7 +39,7 @@ if (!function_exists('ww_is_local_host')) {
 $is_local = ww_is_local_host();
 
 // Site URLs
-$site = $is_local ? ww_env('SITE_URL_LOCAL', 'http://localhost/amazing/') : ww_env('SITE_URL_PROD');
+$site = $is_local ? ww_env('SITE_URL_LOCAL', 'http://localhost/amazing/') : ww_env('SITE_URL_PROD', 'https://amazinginfotech.in/');
 $site_root = rtrim($site, '/') . '/admin';
 
 if (!defined("SITE_URL"))
@@ -63,10 +63,10 @@ $db_config = $is_local
         'name' => ww_env('DB_NAME', 'amazing_db'),
     ]
     : [
-        'host' => ww_env('DB_HOST_PROD'),
-        'user' => ww_env('DB_USER_PROD'),
-        'pass' => ww_env('DB_PASS_PROD'),
-        'name' => ww_env('DB_NAME_PROD'),
+        'host' => ww_env('DB_HOST_PROD', 'localhost'),
+        'user' => ww_env('DB_USER_PROD', 'amazing'),
+        'pass' => ww_env('DB_PASS_PROD', 'KJcd+j(g2yPL'),
+        'name' => ww_env('DB_NAME_PROD', 'amazing'),
     ];
 
 $conn = new mysqli($db_config['host'], $db_config['user'], $db_config['pass'], $db_config['name']);
@@ -110,8 +110,8 @@ if (!function_exists('ww_get_client_ip')) {
 if (!function_exists('ww_encryptor')) {
     function ww_encryptor($string)
     {
-        $key = hash('sha512', ww_env('ENCRYPTION_KEY'));
-        $iv = substr(hash('sha512', ww_env('ENCRYPTION_IV_SEED')), 0, 16);
+        $key = hash('sha512', ww_env('ENCRYPTION_KEY', 'e@c@l@i@c@k'));
+        $iv = substr(hash('sha512', ww_env('ENCRYPTION_IV_SEED', 'S3cur3')), 0, 16);
         return base64_encode(openssl_encrypt($string, 'AES-256-CBC', $key, 0, $iv));
     }
 }
@@ -119,8 +119,8 @@ if (!function_exists('ww_encryptor')) {
 if (!function_exists('ww_decryptor')) {
     function ww_decryptor($string)
     {
-        $key = hash('sha512', ww_env('ENCRYPTION_KEY'));
-        $iv = substr(hash('sha512', ww_env('ENCRYPTION_IV_SEED')), 0, 16);
+        $key = hash('sha512', ww_env('ENCRYPTION_KEY', 'e@c@l@i@c@k'));
+        $iv = substr(hash('sha512', ww_env('ENCRYPTION_IV_SEED', 'S3cur3')), 0, 16);
         return openssl_decrypt(base64_decode($string), 'AES-256-CBC', $key, 0, $iv);
     }
 }

@@ -5852,3 +5852,158 @@ h1, h2, h3, h4, h5, h6 {
         padding: 24px 18px;
     }
 }
+
+/* ==========================================================================
+   ARCHITECTURAL CAD GRID PATTERN FOR BREADCRUMBS
+   ========================================================================== */
+.page-hero-breadcrumb,
+.site-breadcrumb {
+    position: relative !important;
+    overflow: hidden !important;
+    background: linear-gradient(135deg, rgba(11, 19, 43, 0.94) 0%, rgba(3, 70, 110, 0.90) 100%), url('../img/breadcrumb/01.jpg') center/cover no-repeat !important;
+    border-bottom: 1px solid rgba(0, 182, 177, 0.25) !important;
+}
+
+/* CAD Technical Grid Overlay */
+.page-hero-breadcrumb::before,
+.site-breadcrumb::before {
+    content: '' !important;
+    position: absolute !important;
+    inset: 0 !important;
+    background-image: 
+        linear-gradient(to right, rgba(0, 182, 177, 0.14) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 182, 177, 0.14) 1px, transparent 1px) !important;
+    background-size: 36px 36px !important;
+    mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 45%, transparent 95%) !important;
+    -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 50%, #000 45%, transparent 95%) !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+}
+
+/* Diagonal Tech Blueprint Scan Accent */
+.page-hero-breadcrumb::after,
+.site-breadcrumb::after {
+    content: '' !important;
+    position: absolute !important;
+    top: -50% !important;
+    left: -20% !important;
+    width: 140% !important;
+    height: 200% !important;
+    background: radial-gradient(circle at 50% 30%, rgba(0, 182, 177, 0.22) 0%, rgba(2, 132, 199, 0.08) 40%, transparent 65%) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+/* Ensure Breadcrumb Elements Float Crisply Above Grid */
+.page-hero-breadcrumb .container,
+.site-breadcrumb .container {
+    position: relative !important;
+    z-index: 3 !important;
+}
+
+/* ==========================================================================
+   OUR BRANCHES: REGIONAL SLA HIGHLIGHTS STRIP (THEME-ALIGNED)
+   ========================================================================== */
+.branches-sla-section {
+    background: #0B132B;
+    border-top: 1px solid rgba(0, 182, 177, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 30px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.branches-sla-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 182, 177, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(2, 132, 199, 0.08) 0%, transparent 40%);
+    pointer-events: none;
+}
+
+.sla-highlight-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px 14px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+
+.sla-highlight-card:hover {
+    background: rgba(0, 182, 177, 0.08);
+    border-color: rgba(0, 182, 177, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 182, 177, 0.1);
+}
+
+.sla-highlight-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(0, 182, 177, 0.15);
+    border: 1px solid rgba(0, 182, 177, 0.3);
+    color: #00B6B1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.sla-highlight-card:hover .sla-highlight-icon {
+    background: #00B6B1;
+    color: #0B132B;
+    transform: scale(1.05);
+}
+
+.sla-highlight-content {
+    text-align: left;
+}
+
+.sla-highlight-val {
+    font-size: 19px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 2px;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sla-highlight-val span.highlight-teal {
+    color: #00B6B1;
+}
+
+.sla-highlight-desc {
+    font-size: 12px;
+    color: #94A3B8;
+    margin: 0;
+    font-weight: 500;
+}
+
+@media (max-width: 575.98px) {
+    .sla-highlight-card {
+        padding: 12px 10px;
+        gap: 10px;
+    }
+    .sla-highlight-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+    }
+    .sla-highlight-val {
+        font-size: 16px;
+    }
+    .sla-highlight-desc {
+        font-size: 11px;
+    }
+}

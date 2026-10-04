@@ -209,7 +209,7 @@ $address = !empty($address) ? $address : 'Ground Floor, 48, Village Hasanpur, Ne
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
                     <p class="copyright-text">
-                        © <?= date('Y') ?> <?= htmlspecialchars($company_name) ?>. All Rights Reserved.
+                        © <?= date('Y') ?> <?= htmlspecialchars($company_name) ?>. All Rights Reserved. <span class="d-none d-sm-inline" style="opacity: 0.4; margin: 0 5px;">|</span> <span class="dev-tag" style="opacity: 0.75; font-size: 12px;">Managed by <a href="https://nikhilworks.com" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;" onmouseover="this.style.color='#00B6B1'" onmouseout="this.style.color='inherit'">Nikhil Works</a></span>
                     </p>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
