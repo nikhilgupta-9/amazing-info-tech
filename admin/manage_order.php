@@ -179,10 +179,7 @@ if(isset($_POST['delete_all']) && !empty($_POST['delete_all']))
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
- <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2020 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+ <?php include('footer.php'); ?>
 
 </div>
 <!-- ./wrapper -->

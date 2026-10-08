@@ -134,6 +134,23 @@ $query = "SELECT * FROM events ORDER BY
     event_date ASC, 
     created_at DESC";
 $result = mysqli_query($conn, $query);
+
+$events = [];
+$today = date('Y-m-d');
+$stats = ['total' => 0, 'upcoming' => 0, 'active' => 0, 'featured' => 0];
+while ($result && $row = mysqli_fetch_assoc($result)) {
+    $events[] = $row;
+    $stats['total']++;
+    if ($row['event_date'] >= $today) {
+        $stats['upcoming']++;
+    }
+    if ($row['status'] == 1) {
+        $stats['active']++;
+    }
+    if ($row['is_featured'] == 1) {
+        $stats['featured']++;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,117 +167,7 @@ $result = mysqli_query($conn, $query);
     <link rel="stylesheet" href="bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert.min.css" />
-
-    <style>
-        .status-badge {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background: #00a65a;
-            color: white;
-        }
-
-        .status-inactive {
-            background: #dd4b39;
-            color: white;
-        }
-
-        .featured-badge {
-            background: #f39c12;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .event-thumb {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .action-icons a {
-            margin: 0 5px;
-            font-size: 16px;
-            display: inline-block;
-        }
-
-        .action-icons .fa-pencil-square-o {
-            color: #00a65a;
-        }
-
-        .action-icons .fa-trash-o {
-            color: #dd4b39;
-        }
-
-        .action-icons .fa-eye {
-            color: #00c0ef;
-        }
-
-        .action-icons .fa-toggle-on {
-            color: #00a65a;
-        }
-
-        .action-icons .fa-toggle-off {
-            color: #dd4b39;
-        }
-
-        .action-icons .fa-star {
-            color: #f39c12;
-        }
-
-        .action-icons .fa-star-o {
-            color: #888;
-        }
-
-        .table>thead>tr>th {
-            background: #3c8dbc;
-            color: white;
-            border-bottom: none;
-        }
-
-        .bulk-actions {
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .video-indicator {
-            color: #00c0ef;
-            margin-left: 5px;
-        }
-
-        .gallery-indicator {
-            color: #f39c12;
-            margin-left: 5px;
-        }
-
-        .event-date {
-            font-weight: 600;
-        }
-
-        .past-event {
-            opacity: 0.7;
-            background: #f9f9f9;
-        }
-
-        .upcoming-event {
-            background: #f0f8ff;
-        }
-    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -269,280 +176,241 @@ $result = mysqli_query($conn, $query);
         <?php include('left-menu.php'); ?>
 
         <div class="content-wrapper">
-            <section class="content-header">
-                <h1>
-                    View Events
-                    <small>Manage all events</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="dashboard.php"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li class="active">Events</li>
-                </ol>
+            <section class="content-header adm-page-head">
+                <div>
+                    <ol class="breadcrumb adm-breadcrumb">
+                        <li><a href="index.php">Dashboard</a></li>
+                        <li class="active">Events</li>
+                    </ol>
+                    <h1>Events &amp; Expos</h1>
+                    <p class="adm-page-sub">Manage the events shown on the website.</p>
+                </div>
+                <a href="add-event.php" class="adm-btn adm-btn-primary">
+                    <i class="fa fa-plus"></i> Add New Event
+                </a>
             </section>
 
             <section class="content">
                 <!-- Success/Error Messages -->
                 <?php if ($success_message): ?>
-                    <div class="alert alert-success alert-dismissible">
+                    <div class="alert alert-success alert-dismissible adm-alert">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <i class="icon fa fa-check"></i> <?php echo $success_message; ?>
                     </div>
                 <?php endif; ?>
 
                 <?php if ($error_message): ?>
-                    <div class="alert alert-danger alert-dismissible">
+                    <div class="alert alert-danger alert-dismissible adm-alert">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                         <i class="icon fa fa-ban"></i> <?php echo $error_message; ?>
                     </div>
                 <?php endif; ?>
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box box-primary">
-                            <div class="box-header with-border">
-                                <h3 class="box-title"><i class="fa fa-calendar"></i> Events List</h3>
-                                <div class="box-tools pull-right">
-                                    <a href="add-event.php" class="btn btn-sm btn-success">
-                                        <i class="fa fa-plus"></i> Add New Event
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="box-body">
-                                <form action="" method="post" id="bulkActionForm">
-                                    <div class="bulk-actions">
-                                        <div class="checkbox" style="margin: 0;">
-                                            <label>
-                                                <input type="checkbox" id="selectAll"> Select All
-                                            </label>
-                                        </div>
-
-                                        <select name="bulk_status" class="form-control input-sm" style="width: 150px;">
-                                            <option value="">-- Change Status --</option>
-                                            <option value="1">Active</option>
-                                            <option value="0">Inactive</option>
-                                        </select>
-
-                                        <button type="submit" name="update_status" class="btn btn-sm btn-info"
-                                            onclick="return confirm('Update status for selected items?')">
-                                            <i class="fa fa-refresh"></i> Update Status
-                                        </button>
-
-                                        <button type="submit" name="delete_all" class="btn btn-sm btn-danger"
-                                            onclick="return confirm('Are you sure you want to delete selected items? This will also delete all associated images and videos.')">
-                                            <i class="fa fa-trash"></i> Delete Selected
-                                        </button>
-                                    </div>
-
-                                    <div class="table-responsive">
-                                        <table id="eventsTable" class="table table-bordered table-striped table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th width="3%">
-                                                        <input type="checkbox" id="checkAll" class="checkbox">
-                                                    </th>
-                                                    <th width="5%">ID</th>
-                                                    <th width="10%">Image</th>
-                                                    <th width="20%">Title</th>
-                                                    <th width="12%">Event Date</th>
-                                                    <th width="10%">Location</th>
-                                                    <th width="8%">Media</th>
-                                                    <th width="8%">Status</th>
-                                                    <th width="8%">Featured</th>
-                                                    <th width="10%">Created</th>
-                                                    <th width="15%">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                if (mysqli_num_rows($result) > 0) {
-                                                    $i = 1;
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                                        $current_date = date('Y-m-d');
-                                                        $event_date = $row['event_date'];
-                                                        $row_class = ($event_date < $current_date) ? 'past-event' : 'upcoming-event';
-
-                                                        // Check if event has media
-                                                        $has_gallery = !empty($row['gallery_images']) && $row['gallery_images'] != '[]' && $row['gallery_images'] != 'null';
-                                                        $has_video = !empty($row['video_url']) || (!empty($row['video_file']) && file_exists($row['video_file']));
-                                                        ?>
-                                                        <tr class="<?php echo $row_class; ?>">
-                                                            <td class="text-center">
-                                                                <input type="checkbox" name="check_status[]"
-                                                                    value="<?php echo $row['id']; ?>" class="checkItem">
-                                                            </td>
-                                                            <td><?php echo $i; ?></td>
-                                                            <td>
-                                                                <?php if (!empty($row['featured_image']) && file_exists($row['featured_image'])): ?>
-                                                                    <img src="<?php echo $row['featured_image']; ?>"
-                                                                        class="event-thumb" alt="Event">
-                                                                <?php else: ?>
-                                                                    <img src="dist/img/default-event.png" class="event-thumb"
-                                                                        alt="No Image">
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td>
-                                                                <strong><?php echo htmlspecialchars($row['title']); ?></strong>
-                                                                <?php if (!empty($row['short_description'])): ?>
-                                                                    <br>
-                                                                    <small
-                                                                        class="text-muted"><?php echo substr(htmlspecialchars($row['short_description']), 0, 50); ?>...</small>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td>
-                                                                <span class="event-date">
-                                                                    <?php echo date('d M Y', strtotime($row['event_date'])); ?>
-                                                                </span>
-                                                                <?php if (!empty($row['event_time'])): ?>
-                                                                    <br>
-                                                                    <small
-                                                                        class="text-muted"><?php echo date('h:i A', strtotime($row['event_time'])); ?></small>
-                                                                <?php endif; ?>
-
-                                                                <?php if (!empty($row['end_date']) && $row['end_date'] != '0000-00-00'): ?>
-                                                                    <br>
-                                                                    <small class="text-muted">to
-                                                                        <?php echo date('d M Y', strtotime($row['end_date'])); ?></small>
-                                                                <?php endif; ?>
-
-                                                                <?php if ($event_date < $current_date): ?>
-                                                                    <br>
-                                                                    <span class="label label-default">Past</span>
-                                                                <?php elseif ($event_date == $current_date): ?>
-                                                                    <br>
-                                                                    <span class="label label-warning">Today</span>
-                                                                <?php else: ?>
-                                                                    <br>
-                                                                    <span class="label label-success">Upcoming</span>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td>
-                                                                <?php echo htmlspecialchars($row['location']); ?>
-                                                                <?php if (!empty($row['venue'])): ?>
-                                                                    <br>
-                                                                    <small
-                                                                        class="text-muted"><?php echo htmlspecialchars($row['venue']); ?></small>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <?php if ($has_gallery): ?>
-                                                                    <span class="badge bg-yellow" title="Has Gallery Images">
-                                                                        <i class="fa fa-images"></i>
-                                                                    </span>
-                                                                <?php endif; ?>
-
-                                                                <?php if ($has_video): ?>
-                                                                    <span class="badge bg-aqua" title="Has Video">
-                                                                        <i class="fa fa-video"></i>
-                                                                    </span>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <?php if ($row['status'] == 1): ?>
-                                                                    <span class="status-badge status-active">
-                                                                        <i class="fa fa-check-circle"></i> Active
-                                                                    </span>
-                                                                    <br>
-                                                                    <a href="?type=status&operation=active&id=<?php echo $row['id']; ?>"
-                                                                        class="btn btn-xs btn-warning" style="margin-top: 5px;"
-                                                                        onclick="return confirm('Deactivate this event?')">
-                                                                        <i class="fa fa-toggle-off"></i> Deactivate
-                                                                    </a>
-                                                                <?php else: ?>
-                                                                    <span class="status-badge status-inactive">
-                                                                        <i class="fa fa-ban"></i> Inactive
-                                                                    </span>
-                                                                    <br>
-                                                                    <a href="?type=status&operation=inactive&id=<?php echo $row['id']; ?>"
-                                                                        class="btn btn-xs btn-success" style="margin-top: 5px;"
-                                                                        onclick="return confirm('Activate this event?')">
-                                                                        <i class="fa fa-toggle-on"></i> Activate
-                                                                    </a>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                <?php if ($row['is_featured'] == 1): ?>
-                                                                    <span class="featured-badge">
-                                                                        <i class="fa fa-star"></i> Featured
-                                                                    </span>
-                                                                    <br>
-                                                                    <a href="?type=featured&operation=yes&id=<?php echo $row['id']; ?>"
-                                                                        class="btn btn-xs btn-warning" style="margin-top: 5px;"
-                                                                        onclick="return confirm('Remove from featured?')">
-                                                                        <i class="fa fa-star-o"></i> Remove
-                                                                    </a>
-                                                                <?php else: ?>
-                                                                    <span class="badge bg-default">
-                                                                        <i class="fa fa-star-o"></i> Normal
-                                                                    </span>
-                                                                    <br>
-                                                                    <a href="?type=featured&operation=no&id=<?php echo $row['id']; ?>"
-                                                                        class="btn btn-xs btn-warning" style="margin-top: 5px;"
-                                                                        onclick="return confirm('Mark as featured?')">
-                                                                        <i class="fa fa-star"></i> Feature
-                                                                    </a>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                            <td>
-                                                                <?php echo date('d M Y', strtotime($row['created_at'])); ?>
-                                                                <br>
-                                                                <small
-                                                                    class="text-muted"><?php echo date('h:i A', strtotime($row['created_at'])); ?></small>
-                                                            </td>
-                                                            <td class="action-icons text-center">
-                                                                <a href="view-event-detail.php?id=<?php echo $row['id']; ?>"
-                                                                    class="btn btn-xs btn-info " title="View Details"
-                                                                    data-toggle="tooltip">
-                                                                    View
-                                                                </a>
-
-                                                                <a href="edit-event.php?id=<?php echo $row['id']; ?>"
-                                                                    class="btn btn-xs btn-success" title="Edit"
-                                                                    data-toggle="tooltip">
-                                                                    Edit
-                                                                </a>
-
-                                                                <a href="javascript:void(0);"
-                                                                    onclick="deleteEvent(<?php echo $row['id']; ?>)"
-                                                                    class="btn btn-xs btn-danger" title="Delete"
-                                                                    data-toggle="tooltip">
-                                                                    Delete
-                                                                </a>
-
-                                                                <?php if ($has_gallery): ?>
-                                                                    <a href="event-gallery.php?id=<?php echo $row['id']; ?>"
-                                                                        class="btn btn-xs btn-warning" title="Manage Gallery"
-                                                                        data-toggle="tooltip">
-                                                                        Gallery
-                                                                    </a>
-                                                                <?php endif; ?>
-                                                            </td>
-                                                        </tr>
-                                                        <?php
-                                                        $i++;
-                                                    }
-                                                } else {
-                                                    echo '<tr><td colspan="11" class="text-center">No events found. <a href="add-event.php">Add your first event</a></td></tr>';
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </form>
-                            </div>
+                <div class="adm-stats">
+                    <div class="adm-stat">
+                        <span class="adm-stat-icon adm-tone-blue"><i class="fa fa-calendar"></i></span>
+                        <div>
+                            <div class="adm-stat-value"><?php echo $stats['total']; ?></div>
+                            <div class="adm-stat-label">Total events</div>
                         </div>
                     </div>
+                    <div class="adm-stat">
+                        <span class="adm-stat-icon adm-tone-green"><i class="fa fa-clock-o"></i></span>
+                        <div>
+                            <div class="adm-stat-value"><?php echo $stats['upcoming']; ?></div>
+                            <div class="adm-stat-label">Upcoming</div>
+                        </div>
+                    </div>
+                    <div class="adm-stat">
+                        <span class="adm-stat-icon adm-tone-teal"><i class="fa fa-eye"></i></span>
+                        <div>
+                            <div class="adm-stat-value"><?php echo $stats['active']; ?></div>
+                            <div class="adm-stat-label">Active on site</div>
+                        </div>
+                    </div>
+                    <div class="adm-stat">
+                        <span class="adm-stat-icon adm-tone-amber"><i class="fa fa-star"></i></span>
+                        <div>
+                            <div class="adm-stat-value"><?php echo $stats['featured']; ?></div>
+                            <div class="adm-stat-label">Featured</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="adm-card">
+                    <form action="" method="post" id="bulkActionForm">
+                        <div class="adm-toolbar">
+                            <span class="adm-toolbar-count"><b id="selectedCount">0</b> selected</span>
+
+                            <select name="bulk_status" class="form-control input-sm adm-bulk-control" disabled>
+                                <option value="">Change status…</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+
+                            <button type="submit" name="update_status" class="adm-btn adm-btn-default adm-bulk-control" disabled
+                                onclick="return confirm('Update status for selected items?')">
+                                <i class="fa fa-refresh"></i> Update Status
+                            </button>
+
+                            <button type="submit" name="delete_all" class="adm-btn adm-btn-danger adm-bulk-control" disabled
+                                onclick="return confirm('Are you sure you want to delete selected items? This will also delete all associated images and videos.')">
+                                <i class="fa fa-trash-o"></i> Delete Selected
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table id="eventsTable" class="table adm-table">
+                                <thead>
+                                    <tr>
+                                        <th width="36">
+                                            <input type="checkbox" id="checkAll" title="Select all">
+                                        </th>
+                                        <th>Event</th>
+                                        <th>Date</th>
+                                        <th>Location</th>
+                                        <th>Media</th>
+                                        <th>Status</th>
+                                        <th>Featured</th>
+                                        <th>Created</th>
+                                        <th class="text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($events as $row):
+                                        $event_date = $row['event_date'];
+
+                                        // Check if event has media
+                                        $has_gallery = !empty($row['gallery_images']) && $row['gallery_images'] != '[]' && $row['gallery_images'] != 'null';
+                                        $has_video = !empty($row['video_url']) || (!empty($row['video_file']) && file_exists($row['video_file']));
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" name="check_status[]"
+                                                    value="<?php echo $row['id']; ?>" class="checkItem">
+                                            </td>
+                                            <td>
+                                                <div class="adm-media">
+                                                    <?php if (!empty($row['featured_image']) && file_exists($row['featured_image'])): ?>
+                                                        <img src="<?php echo $row['featured_image']; ?>" class="adm-thumb" alt="">
+                                                    <?php else: ?>
+                                                        <span class="adm-thumb adm-thumb-empty"><i class="fa fa-picture-o"></i></span>
+                                                    <?php endif; ?>
+                                                    <div class="adm-media-body">
+                                                        <a href="view-event-detail.php?id=<?php echo $row['id']; ?>"
+                                                            class="adm-title"><?php echo htmlspecialchars($row['title']); ?></a>
+                                                        <?php if (!empty($row['short_description'])): ?>
+                                                            <div class="adm-sub"><?php echo htmlspecialchars($row['short_description']); ?></div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-order="<?php echo htmlspecialchars($event_date); ?>" class="adm-nowrap">
+                                                <div class="adm-strong">
+                                                    <?php echo date('d M Y', strtotime($row['event_date'])); ?>
+                                                </div>
+                                                <?php if (!empty($row['end_date']) && $row['end_date'] != '0000-00-00'): ?>
+                                                    <div class="adm-sub">to <?php echo date('d M Y', strtotime($row['end_date'])); ?></div>
+                                                <?php endif; ?>
+                                                <?php if (!empty($row['event_time'])): ?>
+                                                    <div class="adm-sub"><?php echo date('h:i A', strtotime($row['event_time'])); ?></div>
+                                                <?php endif; ?>
+
+                                                <?php if ($event_date < $today): ?>
+                                                    <span class="adm-pill adm-tone-gray">Past</span>
+                                                <?php elseif ($event_date == $today): ?>
+                                                    <span class="adm-pill adm-tone-amber">Today</span>
+                                                <?php else: ?>
+                                                    <span class="adm-pill adm-tone-green">Upcoming</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="adm-wide">
+                                                <?php echo htmlspecialchars($row['location']); ?>
+                                                <?php if (!empty($row['venue'])): ?>
+                                                    <div class="adm-sub"><?php echo htmlspecialchars($row['venue']); ?></div>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="adm-nowrap">
+                                                <?php if ($has_gallery): ?>
+                                                    <span class="adm-chip" title="Has gallery images" data-toggle="tooltip">
+                                                        <i class="fa fa-picture-o"></i>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if ($has_video): ?>
+                                                    <span class="adm-chip" title="Has video" data-toggle="tooltip">
+                                                        <i class="fa fa-video-camera"></i>
+                                                    </span>
+                                                <?php endif; ?>
+                                                <?php if (!$has_gallery && !$has_video): ?>
+                                                    <span class="adm-sub">&mdash;</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td data-order="<?php echo (int) $row['status']; ?>">
+                                                <?php if ($row['status'] == 1): ?>
+                                                    <a href="?type=status&operation=active&id=<?php echo $row['id']; ?>"
+                                                        class="adm-pill adm-pill-toggle adm-tone-green" title="Click to deactivate"
+                                                        data-toggle="tooltip" onclick="return confirm('Deactivate this event?')">
+                                                        <span class="adm-dot"></span> Active
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="?type=status&operation=inactive&id=<?php echo $row['id']; ?>"
+                                                        class="adm-pill adm-pill-toggle adm-tone-red" title="Click to activate"
+                                                        data-toggle="tooltip" onclick="return confirm('Activate this event?')">
+                                                        <span class="adm-dot"></span> Inactive
+                                                    </a>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td data-order="<?php echo (int) $row['is_featured']; ?>">
+                                                <?php if ($row['is_featured'] == 1): ?>
+                                                    <a href="?type=featured&operation=yes&id=<?php echo $row['id']; ?>"
+                                                        class="adm-star is-on" title="Featured — click to remove"
+                                                        data-toggle="tooltip" onclick="return confirm('Remove from featured?')">
+                                                        <i class="fa fa-star"></i>
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="?type=featured&operation=no&id=<?php echo $row['id']; ?>"
+                                                        class="adm-star" title="Not featured — click to feature"
+                                                        data-toggle="tooltip" onclick="return confirm('Mark as featured?')">
+                                                        <i class="fa fa-star-o"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td data-order="<?php echo htmlspecialchars($row['created_at']); ?>" class="adm-nowrap">
+                                                <?php echo date('d M Y', strtotime($row['created_at'])); ?>
+                                                <div class="adm-sub"><?php echo date('h:i A', strtotime($row['created_at'])); ?></div>
+                                            </td>
+                                            <td class="adm-actions">
+                                                <a href="view-event-detail.php?id=<?php echo $row['id']; ?>"
+                                                    class="adm-icon-btn" title="View details" data-toggle="tooltip">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                                <a href="edit-event.php?id=<?php echo $row['id']; ?>"
+                                                    class="adm-icon-btn" title="Edit" data-toggle="tooltip">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                                <?php if ($has_gallery): ?>
+                                                    <a href="event-gallery.php?id=<?php echo $row['id']; ?>"
+                                                        class="adm-icon-btn" title="Manage gallery" data-toggle="tooltip">
+                                                        <i class="fa fa-picture-o"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <a href="javascript:void(0);"
+                                                    onclick="deleteEvent(<?php echo $row['id']; ?>)"
+                                                    class="adm-icon-btn adm-icon-btn-danger" title="Delete" data-toggle="tooltip">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
                 </div>
             </section>
         </div>
 
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 2.4.0
-            </div>
-            <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="#">Your Company</a>.</strong> All rights
-            reserved.
-        </footer>
+        <?php include('footer.php'); ?>
     </div>
 
     <!-- Scripts -->
@@ -557,15 +425,17 @@ $result = mysqli_query($conn, $query);
 
     <script>
         $(function () {
-            // Initialize DataTable
+            // Initialize DataTable (keeps the server order: upcoming first)
             $('#eventsTable').DataTable({
-                "order": [[4, "asc"]], // Sort by event date
+                "order": [],
                 "pageLength": 25,
                 "language": {
-                    "emptyTable": "No events available",
+                    "emptyTable": "No events yet. <a href=\"add-event.php\">Add your first event</a>",
                     "info": "Showing _START_ to _END_ of _TOTAL_ events",
                     "infoEmpty": "Showing 0 to 0 of 0 events",
-                    "search": "Search events:",
+                    "search": "",
+                    "searchPlaceholder": "Search events…",
+                    "lengthMenu": "Show _MENU_",
                     "paginate": {
                         "first": "First",
                         "last": "Last",
@@ -574,29 +444,28 @@ $result = mysqli_query($conn, $query);
                     }
                 },
                 "columnDefs": [
-                    { "orderable": false, "targets": [0, 2, 6, 7, 8, 10] } // Disable sorting on certain columns
+                    { "orderable": false, "targets": [0, 4, 8] } // Disable sorting on certain columns
                 ]
             });
 
             // Initialize tooltips
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
 
-            // Select All functionality
-            $("#selectAll, #checkAll").change(function () {
+            // Bulk actions are only usable once something is selected
+            function syncSelection() {
+                var total = $(".checkItem").length;
+                var checked = $(".checkItem:checked").length;
+                $("#selectedCount").text(checked);
+                $(".adm-bulk-control").prop("disabled", checked === 0);
+                $("#checkAll").prop("checked", total > 0 && checked === total);
+            }
+
+            $("#checkAll").change(function () {
                 $(".checkItem").prop('checked', $(this).prop("checked"));
+                syncSelection();
             });
 
-            // Individual checkbox change
-            $(".checkItem").change(function () {
-                if (!$(this).prop("checked")) {
-                    $("#selectAll, #checkAll").prop("checked", false);
-                }
-
-                // Check if all are checked
-                if ($(".checkItem:checked").length == $(".checkItem").length) {
-                    $("#selectAll, #checkAll").prop("checked", true);
-                }
-            });
+            $("#eventsTable").on("change", ".checkItem", syncSelection);
         });
 
         // Delete event with SweetAlert

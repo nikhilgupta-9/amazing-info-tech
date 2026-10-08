@@ -72,14 +72,14 @@ $meta_desc = "Locate Amazing Infotech branch offices and HP Plotter service cent
                 <span class="page-hero-badge">
                     <i class="fas fa-network-wired"></i> Nationwide Sales & Engineering Network
                 </span>
-                <h1 class="page-hero-title">Our Branches & Service Centers</h1>
+                <h1 class="page-hero-title">Our Branch Offices & Units</h1>
                 <p class="page-hero-subtitle">
                     Strategic branch offices, regional demonstration centers, and certified HP field engineer depots across key Indian commercial hubs.
                 </p>
                 <ul class="page-hero-nav">
                     <li><a href="<?= $site ?>index.php"><i class="fas fa-home"></i> Home</a></li>
                     <li class="sep"><i class="fas fa-chevron-right"></i></li>
-                    <li class="current">Our Branches</li>
+                    <li class="current">Our Branch Offices & Units</li>
                 </ul>
             </div>
         </section>
@@ -140,8 +140,8 @@ $meta_desc = "Locate Amazing Infotech branch offices and HP Plotter service cent
         <section class="branches-directory-section">
             <div class="container">
                 <div class="site-heading text-center mb-5 wow fadeInDown" data-wow-duration="0.8s">
-                    <span class="about-tagline"><i class="fas fa-map-marked-alt"></i> Pan-India Presence</span>
-                    <h2 class="site-title">Authorized HP Service & Experience Centers</h2>
+                    <span class="about-tagline"><i class="fas fa-map-marked-alt"></i> Authorized HP Service & Experience Centers</span>
+                    <h2 class="site-title">Our Branch Offices & Units</h2>
                     <p class="text-muted max-w-700 mx-auto">
                         Connect with our dedicated branch managers or drop by our showroom for live plotter demonstrations, ink supply pickups, and certified engineer dispatch.
                     </p>

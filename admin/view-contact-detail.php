@@ -683,10 +683,7 @@ $server_email_password = $result['server_email_password'];
     </section>
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+  <?php include('footer.php'); ?>
 </div>
 	
 <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>

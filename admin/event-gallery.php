@@ -595,9 +595,7 @@ if (isset($_POST['reorder_images'])) {
         </section>
     </div>
     
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="#">Your Company</a>.</strong> All rights reserved.
-    </footer>
+    <?php include('footer.php'); ?>
 </div>
 
 <!-- Loading Spinner -->

@@ -37,13 +37,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Admin</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style>
+    body.register-page {
+      align-items: center;
+      background: #ecf0f5;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 15px;
+    }
+
+    .register-box {
+      width: min(420px, 100%);
+    }
+
+    .register-logo {
+      font-size: 35px;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .register-logo a {
+      color: #444;
+      text-decoration: none;
+    }
+
+    .register-box-body {
+      background: #fff;
+      color: #666;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    }
+
+    .login-box-msg {
+      margin: 0;
+      padding: 0 20px 20px;
+      text-align: center;
+    }
+
+    .form-group.has-feedback {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .form-control-feedback {
+      color: #777;
+      height: 34px;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      top: 0;
+      width: 38px;
+    }
+  </style>
 </head>
 <body class="hold-transition register-page">
 <div class="register-box">
@@ -64,11 +117,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="row">
-        <div class="col-xs-8">
+        <div class="col-8">
            <a href="login.php" class="text-center">Back to login</a>
         </div>
         <!-- /.col -->
-        <div class="col-xs-4">
+        <div class="col-4">
           <button type="submit" class="btn btn-primary btn-block btn-flat">Reset Now</button>
         </div>
         <!-- /.col -->
@@ -82,9 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- /.register-box -->
 
 <!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery-3.7.1.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>

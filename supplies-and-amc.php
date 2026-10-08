@@ -620,7 +620,7 @@ $og_image = $site . "assets/img/hp-partner-experience.jpg";
                                     <div class="amc-desk-icon"><i class="fas fa-envelope"></i></div>
                                     <div class="amc-desk-text">
                                         <h5>Service Email Desk</h5>
-                                        <a href="mailto:support@amazinginfotech.in">support@amazinginfotech.in</a>
+                                        <a href="mailto:<?= $email ?>"><?= $email ?></a>
                                     </div>
                                 </div>
 

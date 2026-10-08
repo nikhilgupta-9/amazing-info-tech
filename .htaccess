@@ -14,6 +14,21 @@ RewriteRule ^products/?$ products.php [L,QSA]
 RewriteRule ^supplies-and-amc/?$ supplies-and-amc.php [L,QSA]
 RewriteRule ^amc-services/?$ supplies-and-amc.php [L,QSA]
 
+# Keep legacy admin asset URLs working with the local frontend bundles.
+RewriteRule ^admin/(.*)bower_components/jquery/dist/jquery\.min\.js$ assets/js/jquery-3.7.1.min.js [L]
+RewriteRule ^admin/(.*)bower_components/bootstrap/dist/js/bootstrap\.min\.js$ https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js [R=302,L]
+RewriteRule ^admin/(.*)bower_components/bootstrap/dist/css/bootstrap\.min\.css$ https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css [R=302,L]
+RewriteRule ^admin/(.*)dist/css/AdminLTE\.min\.css$ admin/admin-layout.css [L]
+RewriteRule ^admin/(.*)dist/css/skins/_all-skins\.min\.css$ https://cdn.jsdelivr.net/npm/admin-lte@2.4.18/dist/css/skins/_all-skins.min.css [R=302,L]
+RewriteRule ^admin/(.*)bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker\.min\.css$ https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css [R=302,L]
+RewriteRule ^admin/(.*)dist/js/adminlte\.min\.js$ https://cdn.jsdelivr.net/npm/admin-lte@2.4.18/dist/js/adminlte.min.js [R=302,L]
+RewriteRule ^admin/(.*)bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker\.min\.js$ https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js [R=302,L]
+RewriteRule ^admin/(.*)bower_components/jquery-knob/dist/jquery\.knob\.min\.js$ https://cdn.jsdelivr.net/npm/admin-lte@2.4.18/bower_components/jquery-knob/dist/jquery.knob.min.js [R=302,L]
+RewriteRule ^admin/(.*)bower_components/jquery-sparkline/dist/jquery\.sparkline\.min\.js$ https://cdn.jsdelivr.net/npm/admin-lte@2.4.18/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js [R=302,L]
+RewriteRule ^admin/(.*)dist/js/editor\.js$ https://cdn.jsdelivr.net/gh/suyati/line-control@master/editor.js [R=302,L]
+RewriteRule ^admin/(.*)dist/css/editor\.css$ https://cdn.jsdelivr.net/gh/suyati/line-control@master/editor.css [R=302,L]
+RewriteRule ^admin/(.*)plugins/ckeditor/(.*)$ https://cdn.ckeditor.com/4.15.0/standard/$2 [R=302,L]
+
 # Handle existing files
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]

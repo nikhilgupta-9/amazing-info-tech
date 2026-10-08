@@ -232,7 +232,7 @@ $meta_desc = "Get in touch with Amazing Infotech Pvt. Ltd. — Authorized HP Lar
                             </div>
                             <div class="flex-grow-1" style="min-height: 380px;">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14008.142956740205!2d77.2918317664655!3d28.628690945084937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce4b2f79b09d5%3A0x158880a7f1a9f5c4!2sI.P.Extension%2C%20Patparganj%2C%20Delhi!5e0!3m2!1sen!2sin!4v1729141530344!5m2!1sen!2sin"
+                                    src="https://www.google.com/maps?q=<?= urlencode($address) ?>&amp;z=16&amp;output=embed"
                                     width="100%" height="100%" style="border:0; border-radius: 10px; min-height: 380px;" allowfullscreen="" loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade" title="Amazing Infotech Location Map">
                                 </iframe>

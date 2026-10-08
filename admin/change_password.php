@@ -141,10 +141,7 @@ $sessss_msg = "";
     </section>
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-<?php echo date("Y"); ?> <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+  <?php include('footer.php'); ?>
 </div>
 	
 

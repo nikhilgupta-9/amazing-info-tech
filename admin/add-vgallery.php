@@ -211,10 +211,7 @@ if($id!="")
     </section>
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+  <?php include('footer.php'); ?>
 </div>
 <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 <script>

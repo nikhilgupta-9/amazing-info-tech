@@ -353,10 +353,7 @@ if(isset($_POST['updateorder']) && !empty($_POST['updateorder']))
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
- <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+ <?php include('footer.php'); ?>
 
 </div>
 <!-- ./wrapper -->
@@ -370,9 +367,7 @@ if(isset($_POST['updateorder']) && !empty($_POST['updateorder']))
 <script src="dist/js/adminlte.min.js"></script>
 
     <!-- AdminLTE App -->
-    <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert-dev.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert-dev.min.js"></script>

@@ -390,10 +390,7 @@ $galimg_width = $result['galimg_width'];
     </section>
   </div>
 
- <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+ <?php include('footer.php'); ?>
 
 </div>
 <!-- ./wrapper -->

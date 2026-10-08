@@ -141,7 +141,7 @@ $address = !empty($address) ? $address : 'Ground Floor, 48, Village Hasanpur, Ne
                             <div class="mt-4 pt-2 footer-support-info">
                                 <div class="d-flex align-items-center gap-2 mb-2 text-white">
                                     <i class="fas fa-clock" style="color: var(--theme-color); font-size: 15px;"></i>
-                                    <span class="text-white" style="font-size: 13.5px; font-weight: 500;">Mon - Sat: 9:30 AM - 6:30 PM</span>
+                                    <span class="text-white" style="font-size: 13.5px; font-weight: 500;">Mon - Sat: 10:00 AM - 6:30 PM</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2 text-white">
                                     <i class="fas fa-shield-alt" style="color: var(--theme-color); font-size: 15px;"></i>

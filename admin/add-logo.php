@@ -597,10 +597,7 @@ foreach (array_merge(array('logo_image' => 'logo'), $logo_asset_folders) as $log
     </section>
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-<?php echo date("Y"); ?> <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+  <?php include('footer.php'); ?>
 </div>
 	
 

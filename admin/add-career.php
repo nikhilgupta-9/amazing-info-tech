@@ -169,9 +169,7 @@ if (isset($_POST['delete_all']) && isset($_POST['check_status'])) {
       </section>
     </div>
 
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2014-2020 <a href="#">Dashboard</a>.</strong> All rights reserved.
-    </footer>
+    <?php include('footer.php'); ?>
   </div>
 
   <!-- Scripts -->

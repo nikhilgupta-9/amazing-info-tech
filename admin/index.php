@@ -69,8 +69,10 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
     .quick-action-buttons {
       margin-top: 20px;
       padding: 20px;
-      background: #f9f9f9;
-      border-radius: 5px;
+      background: #fff;
+      border: 1px solid #d5dde8;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
     }
 
     .quick-action-buttons .btn {
@@ -382,12 +384,7 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
     </div>
     <!-- /.content-wrapper -->
 
-    <footer class="main-footer">
-      <div class="pull-right hidden-xs">
-        <b>Version</b> 2.4.0
-      </div>
-      <strong>Copyright &copy; 2014-<?php echo date('Y'); ?> <a href="#">Your Company</a>.</strong> All rights reserved.
-    </footer>
+    <?php include('footer.php'); ?>
   </div>
   <!-- ./wrapper -->
 
@@ -425,9 +422,7 @@ $recent_careers = mysqli_query($conn, "SELECT * FROM career_applications ORDER B
   <!-- AdminLTE App -->
   <script src="dist/js/adminlte.min.js"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <script src="dist/js/pages/dashboard.js"></script>
   <!-- AdminLTE for demo purposes -->
-  <script src="dist/js/demo.js"></script>
 
   <script>
     $(document).ready(function () {

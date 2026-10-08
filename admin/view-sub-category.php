@@ -78,10 +78,7 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
- <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+ <?php include('footer.php'); ?>
 
 </div>
 <!-- ./wrapper -->

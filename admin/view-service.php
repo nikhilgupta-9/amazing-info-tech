@@ -1459,10 +1459,7 @@ $dataq="SELECT * FROM cat_service WHERE sub_category_id7='".$_GET['proid']."'";
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
- <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-    reserved.
-  </footer>
+ <?php include('footer.php'); ?>
 
 </div>
 <!-- ./wrapper -->
@@ -1476,9 +1473,7 @@ $dataq="SELECT * FROM cat_service WHERE sub_category_id7='".$_GET['proid']."'";
 <script src="dist/js/adminlte.min.js"></script>
 
     <!-- AdminLTE App -->
-    <script src="dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert-dev.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.2/sweetalert-dev.min.js"></script>

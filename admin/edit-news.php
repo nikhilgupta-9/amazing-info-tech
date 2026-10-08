@@ -122,10 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2019 <a href="#">Dashboard</a>.</strong> All rights
-            reserved.
-        </footer>
+        <?php include('footer.php'); ?>
     </div>
 
 

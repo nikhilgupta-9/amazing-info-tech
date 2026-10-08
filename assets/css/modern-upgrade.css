@@ -1268,13 +1268,15 @@ h1, h2, h3, h4, h5, h6 {
     gap: 14px;
 }
 
-.footer-contact li {
+.footer-contact li,
+.footer-area .footer-contact li {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
     font-size: 13.5px;
     line-height: 1.6;
     color: #CBD5E1;
+    margin-bottom: 0;
 }
 
 .footer-contact li i {
@@ -1288,7 +1290,7 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center !important;
     justify-content: center !important;
     font-size: 14px !important;
-    margin-top: 2px !important;
+    margin-top: 0 !important;
     flex-shrink: 0 !important;
 }
 

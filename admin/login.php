@@ -121,12 +121,59 @@ if(isset($_POST['submit']))
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Admin</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="plugins/iCheck/square/blue.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+	<style>
+		body.login-page {
+			align-items: center;
+			background: #ecf0f5;
+			display: flex;
+			justify-content: center;
+			min-height: 100vh;
+			padding: 15px;
+		}
+
+		.login-box {
+			width: min(360px, 100%);
+		}
+
+		.login-logo {
+			font-size: 35px;
+			margin-bottom: 25px;
+			text-align: center;
+		}
+
+		.login-logo a {
+			color: #444;
+			text-decoration: none;
+		}
+
+		.login-box-body {
+			background: #fff;
+			color: #666;
+			padding: 20px;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+		}
+
+		.form-group.has-feedback {
+			margin-bottom: 15px;
+			position: relative;
+		}
+
+		.form-control-feedback {
+			color: #777;
+			height: 34px;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+			text-align: center;
+			top: 0;
+			width: 38px;
+		}
+	</style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -150,13 +197,13 @@ if(isset($_POST['submit']))
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
-        <div class="col-xs-8">
+		<div class="col-8">
           <div class="checkbox icheck">
              <a href="forgotpassword.php">I forgot my password</a>
           </div>
         </div>
         <!-- /.col -->
-        <div class="col-xs-4">
+		<div class="col-4">
           <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
@@ -170,8 +217,7 @@ if(isset($_POST['submit']))
 </div>
 <!-- /.login-box -->
 
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../assets/js/jquery-3.7.1.min.js"></script>
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
